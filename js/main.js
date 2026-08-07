@@ -181,14 +181,34 @@ function mountMatchups({ matchups }) {
     return null;
   }
 
+  let openSlug = null;
+
   function route() {
     const h = location.hash.replace(/^#/, '');
-    const mm = h.match(/^\/vs\/(.+)$/);
-    if (!mm) return closeOverlay();
+    // #/vs/<champion> and #/vs/<champion>/<section> — the section form makes the
+    // per-heading anchors real deep links instead of bare fragments, which the
+    // router would otherwise read as "not a matchup" and close the overlay.
+    const mm = h.match(/^\/vs\/([^/]+)(?:\/([^/]+))?$/);
+    if (!mm) { openSlug = null; return closeOverlay(); }
     const slug = resolveSlug(decodeURIComponent(mm[1]));
-    if (!slug) return closeOverlay();
-    if (slug !== mm[1]) history.replaceState(null, '', `#/vs/${slug}`);
+    if (!slug) { openSlug = null; return closeOverlay(); }
+    const section = mm[2] || '';
+    if (slug !== mm[1]) {
+      history.replaceState(null, '', `#/vs/${slug}${section ? '/' + section : ''}`);
+    }
+    if (openSlug === slug) return scrollToSection(section);   // already open: just move
+    openSlug = slug;
     openOverlay(slugs.get(slug));
+    if (section) scrollToSection(section);
+  }
+
+  function scrollToSection(section) {
+    if (!section) return;
+    const t = overlay.querySelector(`.sect[data-slug="${section}"]`);
+    if (t) t.scrollIntoView({
+      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      block: 'start',
+    });
   }
 
   function openOverlay(m) {
@@ -214,6 +234,7 @@ function mountMatchups({ matchups }) {
   function closeOverlay() {
     if (!overlay || overlay.hidden) return;
     unwire?.(); unwire = null;
+    openSlug = null;
     overlay.hidden = true;
     overlay.innerHTML = '';
     document.body.style.overflow = '';

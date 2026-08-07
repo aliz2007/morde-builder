@@ -106,16 +106,16 @@ function writeup(m) {
           ${spineRow('Early', v.ratings.early)}${spineRow('Mid', v.ratings.mid)}
           ${spineRow('Late', v.ratings.late)}${spineRow('Overall', v.ratings.overall)}
         </div>
-        ${sectionList(v.sections)}
+        ${sectionList(v.sections, m.slug)}
       </section>`).join('<hr class="seam">');
   }
   if (!m.hasWriteup) {
     return `<div class="sect sect--early"><p>No writeup for this matchup yet.</p></div>`;
   }
-  return sectionList(m.sections);
+  return sectionList(m.sections, m.slug);
 }
 
-function sectionList(list) {
+function sectionList(list, champSlug) {
   return list.map((s, i) => {
     const meta = sectionMeta(s.heading);
     const paras = (s.items && s.items.length ? s.items : String(s.body || '').split(/\n{2,}/))
@@ -123,7 +123,8 @@ function sectionList(list) {
     const head = s.heading ? `<header class="sect__head">
         <span class="sect__n">${String(i + 1).padStart(2, '0')}</span>
         <h2 class="sect__h t-engraved" id="${meta.slug}">${escapeHtml(s.heading)}</h2>
-        <a class="sect__anchor" href="#${meta.slug}" aria-label="Link to ${escapeHtml(s.heading)}">#</a>
+        <a class="sect__anchor" href="#/vs/${champSlug}/${meta.slug}"
+           aria-label="Link to ${escapeHtml(s.heading)}">#</a>
       </header><hr class="seam seam--tight">` : '';
     return `<section class="sect sect--${meta.variant}" data-slug="${meta.slug}">${head}
       <div class="sect__body">${paras}</div></section>`;
