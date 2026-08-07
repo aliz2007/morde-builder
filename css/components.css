@@ -441,7 +441,7 @@
   padding-left:var(--s-6); color:var(--c-brass-hi);
   font:600 var(--fs-200)/1.4 var(--f-chrome); text-transform:uppercase; letter-spacing:.1em;
 }
-.build__aside::before{ content:none; }
+.build__notes li.build__aside::before{ content:none; }  /* an aside is not a step */
 
 /* Blocks holding two sub-matchups (Udyr: AD and Tank) */
 .variant + .variant{ margin-top:var(--s-7); }
