@@ -96,12 +96,20 @@ function mountMatchups({ matchups }) {
     html += `<p class="search__group">Hardest</p>` +
       hardest.map(m => optionRow(m, `opt-${n++}`, false)).join('');
     html += `<p class="search__group"><a href="#browse">Browse all ${matchups.length}</a></p>`;
-    open(html, true);
+    open(html, false);
   }
 
   function query(v) {
     if (!v.trim()) return preQuery();
     const hits = rank(index, v);
+    const strong = hits.some(h => h.tier <= 4);
+    const aliased = ALIASES[norm(v)];
+    const aliasCovered = aliased && matchups.some(m => norm(m.name) === norm(aliased));
+    if (aliased && !aliasCovered && !strong) {
+      open(`<div class="search__empty"><p><strong>${escapeHtml(aliased)}</strong> — no writeup yet.</p>
+        <p><a href="#browse">Browse all ${matchups.length}</a></p></div>`, false);
+      return;
+    }
     if (hits.length) {
       open(hits.slice(0, 40).map((h, i) =>
         optionRow(h.e.m, `opt-${i}`, false, highlight(h.e, v, h.at))).join(''), true);
