@@ -75,7 +75,7 @@ function runesBlock(m) {
     ${secondary.length ? `<ul class="chips runes__tree">${chips(secondary)}</ul>` : ''}
     ${shards.length ? `<ul class="chips runes__tree runes__tree--shards">${chips(shards)}</ul>` : ''}
     <p class="mono-micro runes__raw">${escapeHtml(raw.replace(/\s*\n\s*/g, ' / '))}</p>
-    <button class="btn btn--ghost" type="button" data-copy="${escapeHtml(raw.replace(/\s*\n\s*/g, ' '))}">Copy rune page</button>
+    <button class="btn btn--ghost" type="button" data-copy="${escapeHtml(raw.replace(/\s*\n\s*/g, ' '))}">Copy runes as text</button>
   </div>`;
 }
 
