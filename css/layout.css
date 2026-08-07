@@ -140,3 +140,10 @@ a:hover{ text-decoration-color: var(--c-corpse); }
 /* ——— GUIDES ——— */
 .guide-part{ padding-block:var(--s-7); }
 .guide-part > .seam{ margin-top:0; }
+
+/* Brand + three nav items do not fit at phone widths; wrap rather than overflow */
+@media (max-width:620px){
+  .mast__in{ flex-wrap:wrap; row-gap:var(--s-3); }
+  .mast__word{ font-size:var(--fs-300); letter-spacing:.08em; }
+  .mast__nav{ margin-left:0; width:100%; gap:var(--s-5); }
+}
