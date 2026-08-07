@@ -92,9 +92,21 @@ function mountRelics() {
   document.body.appendChild(s);
 }
 
-function renderHome({ guides }) {
+function renderHome({ guides, matchups }) {
   const g = guides.intro;
   if (!$('[data-intro-sub]')) return;
+
+  // He should be on his own front page.
+  const morde = matchups.find(m => m.slug === 'mordekaiser');
+  const port = $('[data-morde-portrait]');
+  if (morde && port) {
+    port.src = img(morde.portrait);
+    const wash = $('.banner__wash');
+    if (wash) wash.style.backgroundImage = `url('${img(morde.portrait)}')`;
+  }
+  // A wall of every champion covered, doubling as the route into the matchups.
+  set('[data-roster]', matchups.map(m =>
+    `<img src="${img(m.portrait)}" alt="" width="34" height="34" loading="lazy">`).join(''));
   txt('[data-intro-title]', g.title || 'The Mordekaiser Bible');
   set('[data-intro-sub]', g.subtitleUrl
     ? ext(g.subtitle, g.subtitleUrl) : escapeHtml(g.subtitle));
