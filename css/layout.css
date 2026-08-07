@@ -151,13 +151,9 @@ a:hover{ text-decoration-color: var(--c-glow); }
   .mast__nav{ margin-left:0; width:100%; gap:var(--s-5); }
 }
 
-html, body{
-  cursor:url("../assets/cursor-mace.svg") 2 2,
-         url("../assets/cursor-mace.png") 2 2, auto;
-}
+html, body{ cursor:url("../assets/cursor-mace.png") 6 3, auto; }
 a, button, select, summary, [role="option"], .card, .opt, .runepage, label[for]{
-  cursor:url("../assets/cursor-mace.svg") 2 2,
-         url("../assets/cursor-mace.png") 2 2, pointer;
+  cursor:url("../assets/cursor-mace.png") 6 3, pointer;
 }
 input, textarea{ cursor:text; }
 button:disabled{ cursor:not-allowed; }

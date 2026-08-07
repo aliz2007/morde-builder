@@ -36,7 +36,8 @@ if im.getextrema()[3][0] == 255:
 
 im = im.transpose(Image.FLIP_LEFT_RIGHT)
 
-bbox = im.getbbox()
+alpha = im.getchannel("A")
+bbox = alpha.point(lambda v: 255 if v > 12 else 0).getbbox()
 if bbox:
     im = im.crop(bbox)
 
