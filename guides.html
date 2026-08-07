@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guides — The Mordekaiser Bible</title>
+<meta name="description" content="Itemization by slot, the rune trees, alternate Mordekaiser setups, and the creators worth watching.">
+<meta property="og:title" content="Guides — The Mordekaiser Bible">
+<meta property="og:description" content="Itemization by slot, the rune trees, and alternate Mordekaiser setups.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 40'%3E%3Crect width='64' height='40' fill='%230A0B09'/%3E%3Cpath fill-rule='evenodd' fill='%238FBF3A' d='M2 40 L2 22 L9 30 L14 8 L21 24 L27 2 L32 0 L37 2 L43 24 L50 8 L55 30 L62 22 L62 40 Z M14 31 L50 31 L50 35 L14 35 Z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Barlow+Condensed:wght@500;600;700&family=Libre+Franklin:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/material.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="mast">
+  <div class="mast__in container w-page">
+    <a class="mast__brand" href="index.html">
+      <span data-crown class="crown--mast"></span>
+      <span class="mast__word">The Mordekaiser Bible</span>
+    </a>
+    <nav class="mast__nav" aria-label="Primary">
+      <a class="mast__link" href="index.html">Home</a>
+      <a class="mast__link" href="matchups.html">Matchups</a>
+      <a class="mast__link" href="guides.html" aria-current="page">Guides</a>
+    </nav>
+  </div>
+  <div class="mast__edge sawtooth-strip" aria-hidden="true">
+    <span class="sawtooth"></span><span class="sawtooth sawtooth--deep"></span>
+    <span class="sawtooth sawtooth--fine"></span><span class="sawtooth"></span>
+  </div>
+</header>
+
+<main id="main">
+  <div class="container w-page" style="padding-top:var(--s-8)">
+    <p class="eyebrow">Guides</p>
+    <h1 class="monument t-engraved" style="font-size:var(--fs-900);margin-top:var(--s-3)">Items, runes, setups</h1>
+    <nav class="chips" aria-label="Sections" style="margin-top:var(--s-5)">
+      <a class="chip" href="#items">Itemization</a>
+      <a class="chip" href="#runes">Runes</a>
+      <a class="chip" href="#setups">Alternate setups</a>
+      <a class="chip" href="#creators">Creators</a>
+    </nav>
+    <hr class="seam">
+  </div>
+
+  <section class="guide-part" id="items">
+    <div class="container w-wide">
+      <h2 class="monument--sec t-engraved">Itemization</h2>
+      <p class="prose" style="margin-top:var(--s-4);color:var(--c-ash)">
+        Every item, scored by the slot you would buy it in. Read across the row.
+      </p>
+      <div class="tbl-scroll bracketed" style="margin-top:var(--s-6)" tabindex="0" role="region"
+           aria-label="Itemization table, scrollable">
+        <table class="tbl" data-itemguide></table>
+      </div>
+    </div>
+  </section>
+
+  <section class="guide-part" id="runes">
+    <div class="container w-page">
+      <h2 class="monument--sec t-engraved">Runes</h2>
+      <hr class="seam seam--tight">
+      <div data-runeguide></div>
+    </div>
+  </section>
+
+  <div class="mist" aria-hidden="true"></div>
+
+  <section class="guide-part" id="setups">
+    <div class="container w-page">
+      <h2 class="monument--sec t-engraved">Alternate setups</h2>
+      <p class="prose" style="margin-top:var(--s-4);color:var(--c-ash)">
+        Off-meta builds people actually run, each credited to the player running it.
+      </p>
+      <hr class="seam seam--tight">
+      <dl class="deflist" data-alts></dl>
+    </div>
+  </section>
+
+  <section class="guide-part" id="creators">
+    <div class="container w-page">
+      <h2 class="monument--sec t-engraved">Creators</h2>
+      <hr class="seam seam--tight">
+      <div class="tbl-scroll">
+        <table class="tbl" data-creators></table>
+      </div>
+    </div>
+  </section>
+
+  <div class="container w-page" style="padding-block:var(--s-8)">
+    <p class="epitaph">“Don&rsquo;t go anti-kite items after your third item.”<cite>Meowdekaiser</cite></p>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="foot__edge sawtooth-strip" aria-hidden="true">
+    <span class="sawtooth sawtooth--fine"></span><span class="sawtooth"></span>
+    <span class="sawtooth sawtooth--deep"></span><span class="sawtooth"></span>
+  </div>
+  <div class="foot__in container w-page">
+    <div class="foot__col">
+      <h2>Credits</h2>
+      <ul class="foot__list" data-foot-credits></ul>
+    </div>
+    <div class="foot__col">
+      <h2>Active creators</h2>
+      <ul class="foot__list" data-foot-creators></ul>
+    </div>
+  </div>
+  <div class="foot__meta container w-page">
+    <p class="mono-micro">Written by Meowdekaiser. Rebuilt as a website, <span data-year></span>.</p>
+  </div>
+</footer>
+
+<script type="module" src="js/main.js"></script>
+<script type="module" src="js/pages.js"></script>
+</body>
+</html>

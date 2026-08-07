@@ -1,0 +1,415 @@
+/* ============================================================
+   COMPONENTS — spine, runes, builds, search, writeup, relics.
+   ============================================================ */
+
+/* ——— buttons ——— */
+.btn{
+  display:inline-flex; align-items:center; gap:var(--s-2);
+  font:600 var(--fs-400)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.05em;
+  color:var(--c-bone); background:var(--c-plate); border:1px solid var(--c-iron);
+  border-radius:2px; padding:var(--s-3) var(--s-5); cursor:pointer;
+  transition: transform var(--t-fast) var(--ease),
+              border-color var(--t-base) var(--ease),
+              background-color var(--t-base) var(--ease);
+}
+.btn:hover{ border-color:var(--c-corpse); background:var(--c-plate-hover); }
+.btn:focus-visible{ outline:2px solid var(--c-corpse); outline-offset:2px;
+                    box-shadow:0 0 6px rgba(143,191,58,.30); }
+.btn:active{ transform:translateY(1px); box-shadow:var(--bevel-recessed); }
+.btn:disabled{ color:var(--c-dust); background:var(--c-forge); border-color:#22261F; cursor:not-allowed; }
+.btn--ghost{ background:transparent; }
+.btn.is-done{ color:var(--c-corpse); border-color:var(--c-corpse); }
+
+/* ——— difficulty spine ——— */
+.spine{ display:grid; gap:var(--s-4); }
+.spine__row{ display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:var(--s-3); }
+.spine__label{
+  font:600 var(--fs-200)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.15em;
+  color:var(--c-brass-hi); min-width:3.4em;
+}
+.spine__segs{ display:flex; gap:var(--s-1); }
+.spine__seg{
+  height:9px; flex:1 1 0; background:var(--d-track);
+  border:1px solid rgba(0,0,0,.5); box-shadow:var(--bevel-recessed);
+}
+.spine__seg.is-on{ background:var(--seg, var(--d-3)); box-shadow:none; }
+.spine__val{
+  font-family:var(--f-mono); font-weight:600; font-variant-numeric:tabular-nums;
+  font-size:var(--fs-300); color:var(--c-ash); letter-spacing:-.01em;
+}
+.spine__word{
+  font:600 var(--fs-200)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.12em;
+  color:var(--seg, var(--c-ash));
+}
+@media (prefers-reduced-motion: no-preference){
+  .is-orchestrated .spine__seg.is-on{
+    animation: seg-fill .18s var(--ease) both;
+    animation-delay: calc(var(--i,0) * 40ms);
+  }
+  @keyframes seg-fill{ from{ transform:scaleX(0); transform-origin:left } to{ transform:scaleX(1) } }
+}
+
+/* the one hot numeral — once per page */
+.overall{
+  display:grid; grid-template-columns:auto 1fr; align-items:center; gap:var(--s-5);
+  margin-block:var(--s-6);
+}
+.overall__num{
+  font-family:var(--f-mono); font-weight:600; font-size:var(--fs-1100);
+  line-height:1; letter-spacing:-.02em; color:var(--c-core);
+  font-variant-numeric:tabular-nums; text-align:center;
+}
+.overall__den{ font-size:var(--fs-500); color:var(--c-dust); }
+.overall__word{
+  font-family:var(--f-display); font-weight:700; text-transform:uppercase;
+  font-size:var(--fs-800); letter-spacing:.09em; line-height:1.06; color:var(--c-bone);
+}
+.overall__cap{ margin-top:var(--s-2); }
+
+/* ——— rune block ——— */
+.runes{ display:grid; gap:var(--s-4); }
+.runes__head{ display:flex; align-items:center; gap:var(--s-4); }
+.runes__key{ width:52px; height:52px; border-radius:3px; border:1px solid var(--c-iron); }
+.runes__keyname{
+  font:700 var(--fs-500)/1.15 var(--f-chrome); text-transform:uppercase; letter-spacing:.12em;
+  color:var(--c-bone);
+}
+.runes__tree{ padding-left:var(--s-4); border-left:2px solid var(--c-verdigris); }
+.runes__tree--primary{ border-left-color:var(--c-corpse); }
+.runes__tree--shards{ border-left-color:var(--c-brass); }
+.chips{ display:flex; flex-wrap:wrap; gap:var(--s-2); list-style:none; margin:0; padding:0; }
+.chip{
+  font:400 var(--fs-300)/1.4 var(--f-mono); color:var(--c-bone);
+  background:var(--c-forge); border:1px solid var(--c-iron); border-radius:2px;
+  padding:1px var(--s-2);
+}
+.chip--lead{ color:var(--c-corpse); border-color:var(--c-verdigris); }
+.runes__raw{ word-break:break-word; }
+
+/* ——— build path ——— */
+.builds{ display:grid; gap:var(--s-6); }
+@media (min-width:900px){ .builds--dual{ grid-template-columns:1fr 1fr; } }
+.build__cond{
+  display:inline-block; margin-bottom:var(--s-3);
+  font:600 var(--fs-200)/1.3 var(--f-chrome); text-transform:uppercase; letter-spacing:.15em;
+  color:var(--c-brass-hi); background:var(--c-forge);
+  border:1px solid var(--c-iron); border-radius:2px; padding:var(--s-2) var(--s-3);
+}
+.build__strip{ display:flex; flex-wrap:wrap; align-items:flex-start; gap:var(--s-3); margin-bottom:var(--s-5); }
+.build__slot{ position:relative; width:42px; }
+.build__icon{ width:42px; height:42px; border-radius:3px; border:1px solid var(--c-iron); }
+.build__step{
+  display:block; text-align:center; margin-top:var(--s-1);
+  font-family:var(--f-mono); font-weight:600; font-size:var(--fs-100);
+  color:var(--c-dust); font-variant-numeric:tabular-nums;
+}
+.build__slot--core::after{
+  content:""; position:absolute; top:0; bottom:14px; right:calc(var(--s-3) / -2 - 1px);
+  width:1px; background:var(--c-iron);
+}
+.build__notes{ list-style:none; margin:0; padding:0; counter-reset:bstep; }
+.build__notes li{
+  position:relative; padding-left:var(--s-6); margin-bottom:var(--s-4);
+  font-size:var(--fs-400); line-height:1.6;
+}
+.build__notes li::before{
+  counter-increment:bstep; content:counter(bstep,decimal-leading-zero);
+  position:absolute; left:0; top:.15em;
+  font-family:var(--f-mono); font-weight:600; font-size:var(--fs-100);
+  color:var(--c-verdigris); font-variant-numeric:tabular-nums;
+}
+.build__item{ color:var(--c-bone); font-weight:600; }
+.build__note{ color:var(--c-ash); display:block; }
+.build__pre{ margin-bottom:var(--s-4); }
+
+/* ——— summoners ——— */
+.summs{ display:flex; gap:var(--s-2); }
+.summs img{ width:30px; height:30px; border-radius:3px; border:1px solid var(--c-iron); }
+
+/* ——— stat plate ——— */
+.plate__body{ padding:var(--s-5); }
+.plate__label{
+  display:block; margin-bottom:var(--s-1);
+  font:600 var(--fs-200)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.15em;
+  color:var(--c-brass-hi);
+}
+
+/* ============ WRITEUP ============ */
+.writeup{ max-width:var(--w-prose); }
+.sect{ margin-top:var(--s-7); padding:var(--s-5) var(--s-5) var(--s-5) var(--s-6); }
+.sect:first-of-type{ margin-top:var(--s-5); }
+.sect__head{ position:relative; margin:0 0 var(--s-3); }
+.sect__n{
+  font-family:var(--f-mono); font-weight:400; font-size:var(--fs-100);
+  color:var(--c-dust); letter-spacing:.06em; display:block; margin-bottom:var(--s-1);
+}
+.sect__h{
+  font:700 var(--fs-500)/1.2 var(--f-chrome); text-transform:uppercase; letter-spacing:.12em;
+  color:var(--c-bone); margin:0; display:inline;
+}
+.sect__anchor{
+  margin-left:var(--s-2); color:var(--c-verdigris); text-decoration:none;
+  opacity:0; transition:opacity var(--t-base) var(--ease);
+  font-family:var(--f-mono); font-size:var(--fs-300);
+}
+.sect__head:hover .sect__anchor,.sect__head:focus-within .sect__anchor{ opacity:1; }
+.sect__body p{
+  position:relative; margin:0 0 var(--s-5); font-size:var(--fs-600); line-height:1.66;
+}
+.sect__body p:last-child{ margin-bottom:0; }
+.sect__body p::before{
+  content:""; position:absolute; left:calc(var(--s-5) * -1); top:.72em;
+  width:9px; height:1px; background:var(--c-verdigris);
+}
+/* semantic identity applied to the wrapper — never the author's words */
+.sect--early{ background:var(--c-slag); }
+.sect--trade{ background:var(--c-forge); }
+.sect--watch{ background:var(--c-forge-ember); border-left:2px solid var(--c-ember); }
+.sect--watch .sect__n{ color:var(--c-ember); }
+.sect--tips{
+  background-color:var(--c-plate); border:1px solid var(--c-iron);
+  background-image:var(--rivet),var(--rivet),var(--milled);
+  background-position:7px 7px, calc(100% - 7px) calc(100% - 7px), 0 0;
+  background-repeat:no-repeat,no-repeat,repeat;
+}
+.writeup__foot{ margin-top:var(--s-7); display:flex; gap:var(--s-4); align-items:center; flex-wrap:wrap; }
+
+/* collapsed state — opt-in only, default expanded */
+.is-collapsed .sect__body{ display:none; }
+.is-collapsed .sect{ padding-block:var(--s-3); }
+
+/* ——— TOC scroll-spy ——— */
+.toc__list{ list-style:none; margin:0; padding:0; }
+.toc__list a{
+  display:block; padding:var(--s-2) var(--s-3);
+  font:500 var(--fs-400)/1.3 var(--f-chrome); text-transform:uppercase; letter-spacing:.05em;
+  color:var(--c-ash); text-decoration:none; border-left:2px solid transparent;
+  transition:color var(--t-base) var(--ease), border-color var(--t-base) var(--ease);
+}
+.toc__list a:hover{ color:var(--c-bone); }
+.toc__list a.is-active{ color:var(--c-corpse); border-left-color:var(--c-corpse); }
+@media (max-width:1100px){
+  .toc__list{ display:flex; flex-wrap:wrap; gap:var(--s-2); }
+  .toc__list a{ border-left:0; border:1px solid var(--c-iron); border-radius:2px; }
+  .toc__list a.is-active{ border-color:var(--c-corpse); }
+}
+
+/* ============ SEARCH ============ */
+.search{ position:relative; }
+.search__field{ position:relative; display:flex; align-items:center; }
+.search__input{
+  width:100%; font:400 var(--fs-600)/1.4 var(--f-body);
+  color:var(--c-bone); background:var(--c-forge);
+  border:1px solid var(--c-iron); border-radius:2px;
+  padding:var(--s-4) var(--s-5); padding-right:var(--s-8);
+  box-shadow:var(--bevel-recessed);
+  transition:border-color var(--t-base) var(--ease);
+}
+.search__input::placeholder{ color:var(--c-dust); }
+.search__input:focus{ outline:none; border-color:var(--c-corpse); }
+.search__input:focus-visible{ outline:2px solid var(--c-corpse); outline-offset:2px; }
+.search__hint{
+  position:absolute; right:var(--s-4);
+  font:400 var(--fs-100)/1 var(--f-mono); letter-spacing:.06em; color:var(--c-dust);
+  border:1px solid var(--c-iron); border-radius:2px; padding:var(--s-2); pointer-events:none;
+}
+.search__pop{
+  position:absolute; left:0; right:0; top:calc(100% + var(--s-2)); z-index:40;
+  background:var(--c-forge); border:1px solid var(--c-iron);
+  box-shadow:var(--bevel-raised); max-height:calc(44px * 8); overflow-y:auto;
+}
+.search__pop[hidden]{ display:none; }
+.search__group{
+  padding:var(--s-3) var(--s-4) var(--s-1);
+  font:600 var(--fs-200)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.15em;
+  color:var(--c-brass-hi);
+}
+.opt{
+  display:grid; grid-template-columns:32px 1fr auto; align-items:center; gap:var(--s-3);
+  min-height:44px; padding:var(--s-2) var(--s-4); cursor:pointer;
+  border-left:1px solid transparent; text-decoration:none; color:var(--c-bone);
+  transition:transform var(--t-base) var(--ease), border-color var(--t-base) var(--ease),
+             background-color var(--t-base) var(--ease);
+}
+.opt:hover,.opt.is-active{
+  transform:translateX(3px); border-left:3px solid var(--c-corpse); background:var(--c-plate);
+}
+.opt__img{ width:32px; height:32px; border-radius:3px; border:1px solid var(--c-iron); }
+.opt__name{ font-size:var(--fs-400); }
+.opt__name mark{ background:none; color:var(--c-core); font-weight:600; }
+.opt__pill{ display:flex; align-items:baseline; gap:var(--s-2); }
+.opt__val{
+  font-family:var(--f-mono); font-weight:600; font-size:var(--fs-300);
+  font-variant-numeric:tabular-nums; color:var(--pill,var(--c-ash));
+}
+.opt__word{
+  font:600 var(--fs-200)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.12em;
+  color:var(--c-ash);
+}
+.search__empty{ padding:var(--s-5); max-width:var(--w-narrow); }
+.search__empty p{ margin:0 0 var(--s-3); font-size:var(--fs-400); }
+
+/* ——— grid of all 139 ——— */
+.grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr));
+  gap:var(--s-3); list-style:none; margin:0; padding:0;
+}
+.card{
+  display:grid; grid-template-columns:38px 1fr; align-items:center; gap:var(--s-3);
+  padding:var(--s-3); text-decoration:none; color:var(--c-bone);
+  background:var(--c-forge); border:1px solid var(--c-iron); border-radius:2px;
+  border-left:2px solid var(--card,var(--c-iron));
+  transition:transform var(--t-base) var(--ease), background-color var(--t-base) var(--ease);
+}
+.card:hover,.card:focus-visible{ transform:translateX(3px); background:var(--c-plate); }
+.card__img{ width:38px; height:38px; border-radius:3px; }
+.card__name{ font:500 var(--fs-400)/1.2 var(--f-chrome); text-transform:uppercase; letter-spacing:.04em; }
+.card__val{
+  font-family:var(--f-mono); font-weight:600; font-size:var(--fs-100);
+  color:var(--card,var(--c-ash)); font-variant-numeric:tabular-nums;
+}
+
+/* ============ MATCHUP OVERLAY — the one dramatic moment ============ */
+.overlay{
+  position:fixed; inset:0; z-index:9000; overflow-y:auto;
+  /* Solid, not translucent: at any alpha that still reads as a scrim, 139
+     champion cards ghost through the writeup and make it unreadable. The
+     drama comes from the ring shift and the portrait rise, not the see-through. */
+  background:var(--c-slag);
+  animation:scrim var(--t-slow) var(--ease) both;
+}
+.overlay[hidden]{ display:none; }
+@keyframes scrim{ from{ opacity:0 } to{ opacity:1 } }
+.overlay__panel{ position:relative; padding-block:var(--s-6) var(--s-8); }
+.overlay__close{ position:absolute; top:var(--s-5); right:var(--s-5); z-index:2; }
+@media (prefers-reduced-motion: no-preference){
+  .overlay__portrait{ animation:rise var(--t-slow) var(--ease) both; }
+  @keyframes rise{ from{ transform:translateY(9px) } to{ transform:translateY(0) } }
+}
+
+.hero{ display:grid; grid-template-columns:auto 1fr; gap:var(--s-5); align-items:end; }
+.hero__portrait{ width:96px; height:96px; border:1px solid var(--c-iron); }
+.hero__name{ font-size:var(--fs-1000); }
+@media (max-width:700px){ .hero__name{ font-size:var(--fs-900); } }
+
+/* sticky mini-header — the ONLY backdrop-filter on the site */
+.mini{
+  position:sticky; top:0; z-index:30; height:var(--s-8);
+  display:flex; align-items:center; gap:var(--s-4);
+  background:rgba(18,20,16,.96); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--c-iron);
+  transform:translateY(-100%); opacity:0; pointer-events:none;
+  transition:transform var(--t-base) var(--ease), opacity var(--t-base) var(--ease);
+}
+.mini.is-on{ transform:translateY(0); opacity:1; pointer-events:auto; }
+.mini__img{ width:32px; height:32px; border-radius:3px; }
+.mini__name{ font:600 var(--fs-400)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.05em; }
+.mini__pill{ margin-left:auto; }
+
+/* ============ RELIC (Tenor) ============
+   The duotone wash must live OUTSIDE the filtered element: a CSS filter
+   applies to an element's pseudo-elements too, so a wash nested inside
+   .relic__frame would itself be desaturated and do nothing. */
+.relic{ margin:0 0 var(--s-6); max-width:var(--w-rail); }
+.relic__stage{
+  position:relative; border:1px solid var(--c-iron); box-shadow:var(--bevel-raised);
+  min-height:120px; background:var(--c-forge);
+}
+.relic__frame{
+  overflow:hidden;
+  filter:grayscale(1) contrast(1.12) brightness(.78);
+}
+.relic__frame > *{ display:block; width:100%; }
+.relic__wash{
+  position:absolute; inset:0; pointer-events:none; mix-blend-mode:color;
+  background:linear-gradient(180deg, rgba(143,191,58,.22), rgba(18,49,45,.30));
+}
+.relic__cap{
+  font:400 var(--fs-100)/1.5 var(--f-mono); letter-spacing:.06em;
+  color:var(--c-dust); margin-top:var(--s-2);
+  padding-top:var(--s-2); border-top:1px solid var(--c-iron);
+}
+
+/* ============ TABLES (guides) ============ */
+.tbl{ width:100%; border-collapse:collapse; font-size:var(--fs-400); }
+.tbl caption{
+  text-align:left; padding-bottom:var(--s-3);
+  font:600 var(--fs-200)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.15em;
+  color:var(--c-brass-hi);
+}
+.tbl th{
+  text-align:left; padding:var(--s-3) var(--s-4);
+  font:600 var(--fs-200)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.15em;
+  color:var(--c-brass-hi); border-bottom:1px solid var(--c-iron); vertical-align:bottom;
+}
+.tbl td{
+  padding:var(--s-4); border-bottom:1px solid var(--c-iron);
+  vertical-align:top; color:var(--c-ash); line-height:1.55;
+}
+.tbl tbody tr:nth-child(even) td{ background:var(--c-forge); }
+.tbl__icon{ width:42px; height:42px; border-radius:3px; border:1px solid var(--c-iron); margin-bottom:var(--s-2); }
+.tbl__row-h{ color:var(--c-bone); font-weight:600; }
+.tbl-scroll{ overflow-x:auto; }
+.tbl-scroll:focus-visible{ outline:2px solid var(--c-corpse); }
+
+.deflist{ margin:0; }
+.deflist > div{
+  display:grid; grid-template-columns:var(--w-toc) minmax(0,1fr);
+  gap:var(--s-5); padding-block:var(--s-5); border-bottom:1px solid var(--c-iron);
+}
+.deflist dt{ font:700 var(--fs-500)/1.25 var(--f-chrome); text-transform:uppercase;
+  letter-spacing:.09em; color:var(--c-bone); }
+.deflist dd{ margin:0; color:var(--c-ash); font-size:var(--fs-400); line-height:1.6; }
+@media (max-width:760px){ .deflist > div{ grid-template-columns:1fr; gap:var(--s-3); } }
+
+.stack{ display:grid; gap:var(--s-4); }
+.wrap-pre{ white-space:pre-line; }
+.vh{
+  position:absolute!important; width:1px; height:1px; overflow:hidden;
+  clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important; animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+}
+
+/* ============ fixes found in review ============ */
+
+/* Itemization table: 5 columns of prose need declared widths or the first
+   column eats the row. min-width keeps it scrollable rather than crushed. */
+.tbl--items{ table-layout:fixed; min-width:1180px; }
+.tbl--items col.c-cat{ width:104px; }
+.tbl--items td p{ margin:0 0 var(--s-3); }
+.tbl--items td p:last-child{ margin-bottom:0; }
+
+.rune-card__body p{ margin:0 0 var(--s-3); font-size:var(--fs-400); line-height:1.6; color:var(--c-ash); }
+.rune-card__body p:last-child{ margin-bottom:0; }
+
+/* TL;DR + generic stacks are lists but should not carry browser markers */
+.stack{ list-style:none; margin:0; padding:0; }
+.stack li{ position:relative; padding-left:var(--s-5); font-size:var(--fs-400); line-height:1.6; }
+.stack li::before{
+  content:""; position:absolute; left:0; top:.72em;
+  width:9px; height:1px; background:var(--c-verdigris);
+}
+
+/* Item strip must stay one row at the rail/prose widths we ship */
+.build__strip{ flex-wrap:nowrap; }
+@media (max-width:560px){ .build__strip{ flex-wrap:wrap; } }
+
+/* The deflist term column was colliding with long build names */
+.deflist dt{ overflow-wrap:anywhere; }
+
+/* Guides intro paragraphs inside prose blocks */
+.wrap-pre{ white-space:normal; }
+
+/* Card grid: equal-height rows, names that wrap instead of clipping */
+.grid{ grid-auto-rows:1fr; }
+.grid > li{ display:flex; }
+.card{ width:100%; align-content:center; }
+.card > span{ min-width:0; }
+.card__name{ display:block; overflow-wrap:anywhere; }
+.card__val{ display:block; margin-top:var(--s-1); }

@@ -1,0 +1,106 @@
+/* ============================================================
+   TOKENS — the only file in this project containing hex literals.
+   Direction: FOUNDRY GOTHIC. Blackened iron, one necrotic light.
+   ============================================================ */
+
+:root{
+  /* ——— IRON: the ground. ~88% of all pixels. ——— */
+  --c-slag:      #0A0B09;
+  --c-forge:     #121410;
+  --c-plate:     #1B1E19;
+  --c-iron:      #2B2F29;
+  --c-anvil:     #474C44;
+
+  /* ——— TEXT ——— */
+  --c-bone:      #D9D3C5;
+  --c-ash:       #8E8A80;
+  --c-dust:      #5A574F;   /* decorative only — fails AA by design */
+
+  /* ——— NECROTIC: the one light source. ——— */
+  --c-corpse:    #8FBF3A;
+  --c-core:      #CBE85C;
+  --c-verdigris: #3E5A16;
+
+  /* ——— MIST: lore + secondary data. ——— */
+  --c-teal:      #4A9E8C;
+  --c-mist:      #12312D;
+
+  /* ——— RUST + BRASS: material, not information. ——— */
+  --c-rust:      #7A3B1E;
+  --c-ember:     #C97A3C;
+  --c-brass:     #8A6E3C;
+  --c-brass-hi:  #C4A263;
+
+  /* ——— BLOOD ——— */
+  --c-oxblood:   #5F1D18;
+  --c-wound:     #D2584A;
+
+  --c-scrim:     #0A0B09F7;
+
+  /* ——— DIFFICULTY RAMP — never used alone ——— */
+  --d-1: #8FBF3A;
+  --d-2: #B9B349;
+  --d-3: #C4A263;
+  --d-4: #C97A3C;
+  --d-5: #D2584A;
+  --d-track: #23261F;
+
+  /* ——— warmed / cooled section grounds ——— */
+  --c-forge-ember: #171410;
+  --c-plate-hover: #1F231D;
+
+  /* ============ TYPE ============ */
+  --f-display: 'Cinzel', 'Optima', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', serif;
+  --f-chrome:  'Barlow Condensed', 'Oswald', 'Roboto Condensed', 'Arial Narrow', 'Helvetica Neue', sans-serif;
+  --f-body:    'Libre Franklin', 'Franklin Gothic Medium', 'Franklin Gothic', 'Helvetica Neue', Helvetica, sans-serif;
+  --f-mono:    'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+
+  --fs-100: 0.6875rem;
+  --fs-200: 0.78125rem;
+  --fs-300: 0.84375rem;
+  --fs-400: 0.90625rem;
+  --fs-500: 0.96875rem;
+  --fs-600: 1.0625rem;
+  --fs-700: 1.1875rem;
+  --fs-800: 1.75rem;
+  --fs-900: 2.375rem;
+  --fs-1000: 3.4375rem;
+  --fs-1100: 4.75rem;
+
+  /* ============ SPACE — Fibonacci-derived, no 4px grid ============ */
+  --s-1:  3px;   --s-2:  6px;   --s-3:  9px;   --s-4:  14px;
+  --s-5:  22px;  --s-6:  34px;  --s-7:  55px;  --s-8:  89px;  --s-9: 138px;
+
+  /* ============ CONTAINER WIDTHS — one per role ============ */
+  --w-page:   74.25rem;
+  --w-wide:   87rem;
+  --w-shell:  68.5rem;
+  --w-prose:  41.5rem;
+  --w-rail:   21.5rem;
+  --w-toc:    13.75rem;
+  --w-narrow: 27.5rem;
+
+  /* ============ MOTION — one curve, three durations ============ */
+  --ease:   cubic-bezier(.2,.8,.25,1);
+  --t-fast: .14s;
+  --t-base: .18s;
+  --t-slow: .22s;
+
+  /* ============ MATERIAL PRIMITIVES ============ */
+  --milled: repeating-linear-gradient(96deg, rgba(217,211,197,.014) 0 1px, transparent 1px 3px);
+  --rivet:  radial-gradient(circle 2.5px at 50% 50%, #4A4F47 0 42%, #14170F 55%, transparent 58%);
+
+  --bevel-raised:
+    inset 0 1px 0 rgba(217,211,197,.07),
+    inset 0 -1px 0 rgba(0,0,0,.65),
+    0 2px 0 rgba(0,0,0,.5);
+  --bevel-recessed:
+    inset 0 2px 3px rgba(0,0,0,.8),
+    inset 0 -1px 0 rgba(217,211,197,.05);
+
+  --arch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,100 L0,40 Q50,-10 100,40 L100,100 Z' fill='%23fff'/%3E%3C/svg%3E");
+}
+
+/* ============ TEXT MATERIALS — two, never mixed, never on body copy ============ */
+.t-engraved{ text-shadow: 0 1px 0 rgba(0,0,0,.92), 0 -1px 0 rgba(217,211,197,.09); }
+.t-emitted { text-shadow: 0 0 10px rgba(143,191,58,.28); }

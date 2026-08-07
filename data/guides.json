@@ -1,0 +1,1295 @@
+{
+"intro": {
+"title": "Welcome to The Mordekaiser Bible",
+"subtitle": "If you have any questions, feel free to join my Discord Server and ask around. I am always watching...",
+"toc": [
+"- Matchup Sheet (WIP)",
+"- Itemization Guide",
+"- Rune Guide",
+"- Abilities Guide + Tips and Tricks (WIP)",
+"- Alternate Mordekaiser Setups",
+"- Mordekaiser Content"
+],
+"betaNote": "Hi, this spreadsheet is still in it's beta phase.",
+"todo": "I need to still work on the following:\n- Add enemy cooldown timers for each entry (Matchup Sheet)\n- Work on the TL;DR sections (Matchup Sheet)\n- Make an importable Mordekaiser item set from the league client\nOn hold for now:\n- Ability Guide + Tips and Tricks\n- \"Hall of bones\" Donation / Tips page",
+"wikiLabel": "Latest Mordekaiser Change: Wiki",
+"buglist": "Mordekaiser buglist: Credits to Zicktron",
+"skinNote": "Prestige Money Miser Mordekaiser (April 1st, 2026)",
+"patches": [
+{
+"version": "V26.14",
+"changes": [
+{
+"ability": "Death's Grasp",
+"text": "Base damage increased to 60 / 80 / 100 / 120 / 140 from 60 / 75 / 90 / 105 / 120.\nAP ratio increased to 45% AP from 40% AP."
+},
+{
+"ability": "Realm of Death",
+"text": "Stat steal increased to 13% from 10%."
+}
+]
+},
+{
+"version": "V26.12",
+"changes": [
+{
+"ability": "Realm of Death",
+"text": "Undocumented / New effect: Now has the An icon representing the keyword Heal healing spell tag.\n\nUndocumented / New effect: Now has the An icon representing the keyword Immobilize immobilizing spell tag."
+},
+{
+"ability": "General",
+"text": "Undocumented / Bug fix: Fixed an issue that caused the Recall animation for the\n Prestige Money Miser Mordekaiser skin's Vivid chroma to incorrectly render one \nof its textures as a square."
+}
+]
+},
+{
+"version": "V26.11",
+"changes": [
+{
+"ability": "Realm of Death",
+"text": "Undocumented / Removed: Is no longer considered to be an immobilizing ability."
+}
+]
+}
+]
+},
+"itemguide": [
+{
+"title": "Anti-kite Items",
+"entries": [
+{
+"row": 6,
+"slots": [
+{
+"slot": "First",
+"icon": "image108.png",
+"text": "Hextech Rocketbelt is Mordekaiser's best option \nwhen it comes to getting into range to procc all \nof your abilities.\n\nIt also simultaneously holds itself as an item \nthat can apply different item effects such as \nCosmic Drive or Rylai's to get into range,\n\nOr Riftmaker / Liandry's to start ramping\nup your damage before you reach them.\n\nAnd, it can also obviously help out with applying \ndifferent items such as Experimental Hexplate or \nHextech Gunblade, that require you to get \nan initial amount of range because well- \nyou're using Rocketbelt's dash.\n\nAdditionally, it can also be used as an auto reset.\n\nIt also helps that its build path is one of the best\nbuild paths you can possibly get for Mordekaiser\nspecifically with its cheap item components\nand generally great stats."
+},
+{
+"slot": "Second",
+"icon": "image108.png",
+"text": "This item is viable as a second item."
+},
+{
+"slot": "Third",
+"icon": "image108.png",
+"text": "This item is viable as a third item."
+},
+{
+"slot": "Fourth+",
+"icon": null,
+"text": "Don't go Anti-kite items after your third item.\n\nYou probably should've went them before your fourth item if you're\nhaving issues with catching up with the enemy team."
+}
+]
+},
+{
+"row": 7,
+"slots": [
+{
+"slot": "First",
+"icon": "image25.png",
+"text": "Rylai's with Approach Velocity is the only time\nwhen you should ever run Rylai's as your first\nitem ever.\n\nThis is because the item, by itself, sucks.\n\nNot only is it hard countered by dashes, but it\nalso provides zero combat value in its effect \nwhich is exceptionally dangerous to go \nwithout of in the modern era of league where\neverybody (including a lot of tanks) have some\nsort of threat potential.\n\nThe only reason why I'm including Rylai's with\napproach velocity here is because there are\nsome matchups whose only win condition\nagainst you is running away from you instead \nof fighting you such as Dr. Mundo, Vladimir, \nRyze, etc. where you need the pseudo cosmic \ndrive that comes with approach velocity and \nthe slow to consistently keep up with them.\n\nAnd if you say that you need Rylai's by\nitself to land your skillshots, then: skill issue.\n\nOr get Dusk & Dawn which doesn't even \nrequire you to land your skillshot in the first \nplace.\n\nWe are not in the dark ages anymore where\nour only options are to either go Riftmaker or\nRylai's.\n\n;We can build other items now, and that's a\ngood thing!"
+},
+{
+"slot": "Second",
+"icon": "image149.png",
+"text": "Cosmic drive, as a second item, is a lot\nbetter than it is as a first item.\n\nThis is because it's high amounts of \nability haste serves itself as an enabler\nas opposed to a raw source of output.\n\nNow, the two scenarios where you would\ngo Cosmic Drive in order to consistently\nkeep up with the enemy team comp,\n\n(Note: Cosmic Drive is not a good item\nfor getting into range since it needs you\nto hit the enemy first to apply it; that's\nwhat rocketbelt is for)\n\nIs either: \n\n1. You built rocketbelt because your\nenemy laner was ranged and you need\nextra mobility for their ranged centric\ncomposition\n\nor\n\n2. You built Riftmaker / Dusk & Dawn as\na rush item and, again: need extra \nmobility to keep up with the enemy team\ncomp.\n\nBoth of which are good scenarios for\ncosmic drive because you either straight\nup don't need an additional damage source\nbecause the enemy team comp is far too\nsquishy,\n\nor\n\nYou already have a damage item for \ncosmic drive to play off of.\n\nAnd therefore: you can utilize it's ability\nhaste and movement speed to great\nvalue.\n\nAdditionally: this item synergizes \nexceptionally well with any form of damage\nover time effect that you can get your \nhands on such as Deathfire Touch, \nFated Ashes, or a completed Liandry's\nbecause the 4 seconds of movement\nspeed that you get, is extended for each\nadditional tick of individual magic or\ntrue damage.\n\nAs well as: bramble vest for similar \nreasons since if they just auto attack \nyou once, then you'll get the movement \nspeed effect because the magic damage \nyou deal from bramble vest counts \ntowards cosmic drive.\n\nAlso: this item synergizes quite well with\nrocketbelt because rocketbelt can procc\nthe movement speed effect early via the\nmissiles it creates with it's dash."
+},
+{
+"slot": "Third",
+"icon": "image149.png",
+"text": "This item is viable as a third item."
+},
+{
+"slot": "Fourth+",
+"icon": null,
+"text": "Don't go Anti-kite items after your third item.\n\nYou probably should've went them before your fourth item if you're\nhaving issues with catching up with the enemy team."
+}
+]
+},
+{
+"row": 8,
+"slots": [
+{
+"slot": "First",
+"icon": "image149.png",
+"text": "Cosmic Drive, as a rush item, can be best\ndescribed as:\n\n\"Oh god, I need an item to consistently stay\nin range, but I don't want to sack the damage\nI would be getting from something like shield\nbash as opposed to approach velocity which\ndoesn't provide any damage value at all.\"\n\nNow, as a first item, I generally don't think it's\nthat great against a lot of champions simply\nbecause of my view of it being more-so an\nenabler for damage items like Riftmaker or\nDusk & Dawn via it's an insane amount of\nability haste.\n\nHowever, I do occassionally build as a rush \nitem when I'm going against Aatrox players\nwho specifically rush Maw Of Malmortius or\nAkali / Gragas players where I'd rather \nhave the combat pressure that comes \nwith shield bash as opposed to the anti-kite \ngained from a setup such as Rylai's with \napproach velocity.\n\nI run this setup into Maw Of Malmortius Aatrox\nbecause my gameplan into that specific setup\nrelies on outkiting his abilities via my movement\nspeed and consequently outkiting his Maw of \nMalmortius shield so that I can abuse it's \ncooldown.\n\nHowever, if the Aatrox builds more offensively,\nthen I will also consequently build more\noffensively.\n\nAnd into Akali / Gragas, I want to maintain\ndistance against them without sacrificing shield\nbash due to the fact that they have relatively\nscary all-in power in comparison to a matchup\nlike Dr. Mundo, Vladimir or Singed.\n\nAnd Cosmic Drive, is barely enough movement\nspeed to consistently keep up with them while\ngreeding for a shield bash oriented rune setup."
+},
+{
+"slot": "Second",
+"icon": "image144.png",
+"text": "Rylai's, by itself, is a lot more viable as a\nsecond or third item because it sets up\nabilities,\n\nNow, the most obvious application of this\nis to setup your own abilities, but if you're\ngood enough, you won't need for that.\n\nThe less obvious application of this item\nin your second or third item slot is to setup\nyour teammates' abilities such as Miss \nFortune Ultimate for example.\n\nAdditionally: this item synergizes quite \nwell with rocketbelt because \nrocketbelt can procc the slow effect early \nvia the missiles it creates with it's dash."
+},
+{
+"slot": "Third",
+"icon": "image144.png",
+"text": "This item is viable as a third item."
+},
+{
+"slot": "Fourth+",
+"icon": null,
+"text": "Don't go Anti-kite items after your third item.\n\nYou probably should've went them before your fourth item if you're\nhaving issues with catching up with the enemy team."
+}
+]
+}
+]
+},
+{
+"title": "Mobility-damage adjacent Items",
+"entries": [
+{
+"row": 10,
+"slots": [
+{
+"slot": "First",
+"icon": null,
+"text": "Start at Riftmaker or \nDusk & Dawn\n\nBefore going this item"
+},
+{
+"slot": "Second",
+"icon": "image113.png",
+"text": "If you really hate one person in particular\non the enemy team and require a mix of\nmobility and damage, then Experimental\nHexplate is a really good option.\n\nDo note that this item will run it's course\nas soon as you finish ulting somebody,\n\nSo if you want consistent movement speed\nversus a multitude of enemies, and don't\nmind sacrificing a bit of overall DPS, then\nI'd recommend going Cosmic Drive \ninstead."
+},
+{
+"slot": "Third",
+"icon": "image113.png",
+"text": "This item is viable as a third item."
+},
+{
+"slot": "Fourth+",
+"icon": null,
+"text": "Damage items are always viable throughout the entire game,\nas 3rd+ items, however if you need any form of utility, \n\nBuild that instead."
+}
+]
+},
+{
+"row": 11,
+"slots": [
+{
+"slot": "First",
+"icon": null,
+"text": "Start at Riftmaker or \nDusk & Dawn\n\nBefore going this item"
+},
+{
+"slot": "Second",
+"icon": "image157.png",
+"text": "If you need a burst damage option towards\na multitude of squishier units, as opposed\nto hard focusing against one unit (Like how\nDusk & Dawn works),\n\nThen I'd recommend going Hextech\nGunblade as a second item due to it's \nhigh synergy with Mordekaiser's hybrid \nscalings on his Q.\n\nIt also helps that the slow is pretty nice\nfor anti-kite and consequently for setting\nup your E.\n\nThough, that's mostly just an added bonus.\n\nAdditionally: the added omnivamp is more \nefficient here, if you are building it against\na lot of squishier units, because you're\ndealing a lot of burst damage which\nconsequently heals you a lot more.\n\nIf the enemies are tankier, however, it's\nmore efficient to build an item that is\nbetter at taking down tankier units as the\napplied damage is going to be higher\ndue to your item's anti-tank properties as\nopposed to Hextech Gunblade's burst\noriented properties, even with it's added\nomnivamp healing."
+},
+{
+"slot": "Third",
+"icon": "image157.png",
+"text": "This item is viable as a third item."
+},
+{
+"slot": "Fourth+",
+"icon": null,
+"text": "Damage items are always viable throughout the entire game,\nas 3rd+ items, however if you need any form of utility, \n\nBuild that instead."
+}
+]
+},
+{
+"row": 12,
+"slots": [
+{
+"slot": "First",
+"icon": null,
+"text": "Damage Items"
+}
+]
+},
+{
+"row": 13,
+"slots": [
+{
+"slot": "First",
+"icon": "image134.png",
+"text": "As a damage item, Riftmaker's best use case\nis to combat opponents where the fights are\nguaranteed to be long where you can maximize\nthe amplifcation damage and omnivamp gained\nfrom the item.\n\nI used to go Liandry's rush into tankier \nmatchups, however: ever since the AP nerfs to \nLiandry's, I feel like it's not nearly as viable as \na rush item compared to Riftmaker, just purely \nbecause of how more powerful the stronger \namp and omnivamp is."
+},
+{
+"slot": "Second",
+"icon": "image134.png",
+"text": "This item is viable as a second item."
+},
+{
+"slot": "Third",
+"icon": null,
+"text": "This item is viable as a third item."
+},
+{
+"slot": "Fourth+",
+"icon": null,
+"text": "Damage items are always viable throughout the entire game,\nas 3rd+ items, however if you need any form of utility, \n\nBuild that instead."
+}
+]
+},
+{
+"row": 14,
+"slots": [
+{
+"slot": "First",
+"icon": "image115.png",
+"text": "As a damage item, Dusk & Dawn's best use \ncase is to combat opponents where the fights\nare guaranteed to be relatively short,\n\nNow, this usually comes because the enemy is\neither relatively squishy or they have an \nexceptionally large amount of burst that is \nhard to deal with.\n\nConsequently, when it comes to these specific\nchampions, they also are packaged with an\ninsane amount of close-combat mobility,\nthink: Yasuo, Yone, Irelia, Sylas, Ambessa, etc.\n\nThese champions excel at being directly at\nyour face which makes landing skillshots\ndifficult against them.\n\nLuckily for us, Dusk & Dawn only requires you\nto auto attack them to procc it's item effect \nas it's nature as a sheen item pertains.\n\nAs to why it's so powerful as a burst item tool,\nMordekaiser's passives (yes, there are two of\nthem), both get activated from Dusk &\nDawn with the on-hit passive being a pseudo\nNashor's tooth being applied twice all at once,\nwhich consequently deals a lot of damage,\n\nAnd Mordekaiser's damaging circle (the more\nnoticeable effect) gets it's stacks procc'd\nquicker.\n\nWhich are both exceptionally strong effects."
+},
+{
+"slot": "Second",
+"icon": "image115.png",
+"text": "This item is viable as a second item."
+},
+{
+"slot": "Third",
+"icon": null,
+"text": "This item is viable as a third item."
+},
+{
+"slot": "Fourth+",
+"icon": null,
+"text": "Damage items are always viable throughout the entire game,\nas 3rd+ items, however if you need any form of utility, \n\nBuild that instead."
+}
+]
+},
+{
+"row": 15,
+"slots": [
+{
+"slot": "First",
+"icon": null,
+"text": "Liandry's got nerfed too hard\nto be a viable rush item for Morde\n\nJust go Riftmaker instead."
+},
+{
+"slot": "Second",
+"icon": "image226.png",
+"text": "If you need more anti-tank items, and the\nenemy team composition doesn't have\na ridiculously high amount of magic resist,\n\nThen Liandry's is pretty good."
+},
+{
+"slot": "Third",
+"icon": "image226.png",
+"text": "This item is viable as a third item."
+},
+{
+"slot": "Fourth+",
+"icon": null,
+"text": "Damage items are always viable throughout the entire game,\nas 3rd+ items, however if you need any form of utility, \n\nBuild that instead."
+}
+]
+},
+{
+"row": 16,
+"slots": [
+{
+"slot": "First",
+"icon": "image165.png",
+"text": "Bloodletter's curse as a rush item is only good\nagainst K'sante because he's one of the only\nchampions in the entire game who heavily\nrelies on his tank ratios to further increase his\nridiculous damage output.\n\nIf you're not going against K'sante, don't rush this item."
+},
+{
+"slot": "Second",
+"icon": "image165.png",
+"text": "If you need more anti-tank items, but the\nenemy team composition has a ridiculously \nhigh amount of magic resist,\n\nThen Bloodletter's curse is pretty good."
+},
+{
+"slot": "Third",
+"icon": "image165.png",
+"text": "This item is viable as a third item."
+},
+{
+"slot": "Fourth+",
+"icon": null,
+"text": "Damage items are always viable throughout the entire game,\nas 3rd+ items, however if you need any form of utility, \n\nBuild that instead."
+}
+]
+}
+]
+},
+{
+"title": "Anti-burst Items",
+"entries": [
+{
+"row": 18,
+"slots": [
+{
+"slot": "Second",
+"icon": "image263.png",
+"text": "I personally don't like going Zhonya's \nsecond, unless I'm in one of two scenarios:\n\n1. I'm going against an Olaf top and I'm\nrushing this item to specifically time out\nhis ultimate.\n\nEspecially because phase rush is being \nremoved; this is basically your only way of \ncountering him effectively or:\n\n2. I'm getting jumped by the entire\nenemy team to such a ridiculous agree \nthat I can't even setup my core 1-2 items \n\n(Which should generally either be anti-kite\nor damage items as previously mentioned)"
+},
+{
+"slot": "Third",
+"icon": "image263.png",
+"text": "This is usually my go-to answer to the\nsituation where I'm getting repeatedly\njumped outside of my ultimate,\n\nBecause if they proceed to try that strat\nagainst me when I have this item, I can\nsafely procc my passive before leaving\nmy ultimate and then consequently\nZhonya's -> DPS the enemy team while\nthey wait for me to get out of Zhonya's\nto kill me again.\n\nThis is is assuming no one on your team\ndecides that they want to try and help\nyou during this time, but even then:\nyou should have been able to chunk\nthe enemies relatively hard due to the fact\nthat you got your core 1-2 items.\n\n(Which should generally either be anti-kite\nor damage items).\n\nThere is a caveat to this, which can be\nsolved by building the other items listed\nunder this item for anti-burst:\n\nYou have to actually be able to react to\ntheir damage, because if you can't, then\nyou'll just die without ever having the ability\nto prevent said burst damage, which \nsucks.\n\nAdditionally: Combining this item with\nDeath's dance is exceptional valuable\nsince Death's dance's \"Ignore Pain\" \npassive will deal 0 damage to you \nwhile you're in stasis."
+},
+{
+"slot": "Fourth+",
+"icon": "image263.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+},
+{
+"row": 19,
+"slots": [
+{
+"slot": "Third",
+"icon": "image69.png",
+"text": "If you have to deal with an absolutely \nabsurd amount of magic damage in the\nform of burst,\n\nThen go Kaenic Rookern.\n\nAdditionally: If you have shield bash, this\nitem does indeed procc it for additional\ndopamine hits.\n\nAlso: this item pairs REALLY well\nwith Spirit Visage as it amps up Kaenic\nRookern's shield to prevent an absolutely\nabsurd amount of burst damage."
+},
+{
+"slot": "Fourth+",
+"icon": "image69.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+},
+{
+"row": 20,
+"slots": [
+{
+"slot": "Third",
+"icon": "image46.png",
+"text": "If you're going against a general amount\nof mixed burst damage, and the enemy \nexplicitly doesn't have Serpent's Fang,\n\nThen go Sterak's Gage.\n\nAdditionally: If you have shield bash, this\nitem does indeed procc it for additional\ndopamine hits."
+},
+{
+"slot": "Fourth+",
+"icon": "image46.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+},
+{
+"row": 21,
+"slots": [
+{
+"slot": "Third",
+"icon": "image70.png",
+"text": "If you have to deal with an absolutely \nabsurd amount of physical damage in the\nform of burst,\n\nThen go Death's Dance.\n\nAdditionally: this item isn't susceptible to\nSerpent's Fang, unlike the other two items\nthat are built to counter high amounts of\nburst damage that are hard to react to\nwhich is pretty nice.\n\nAlso: Combining this item with\nZhonya's Hourglass is exceptional \nvaluable since Death's dance's \"Ignore \nPain\" passive will deal 0 damage to you \nwhile you're in stasis."
+},
+{
+"slot": "Fourth+",
+"icon": "image70.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+}
+]
+},
+{
+"title": "Tank Items (That aren't explicitly for anti-burst)",
+"entries": [
+{
+"row": 23,
+"slots": [
+{
+"slot": "Third",
+"icon": "image77.png",
+"text": "Go Randuin's if there's a lot of Crit damage"
+},
+{
+"slot": "Fourth+",
+"icon": "image77.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+},
+{
+"row": 24,
+"slots": [
+{
+"slot": "Third",
+"icon": "image188.png",
+"text": "Spirit Visage is really good if you're not\ntaking too much magic damage \n(whether that be from lots of DOT or burst),\nbut still have to build magic resistance for \nsomebody on the enemy team.\n\nOr: if you have an enchanter on your team\nthat is doing a really good job at keeping\nyou alive.\n\nBecause: not only when you build this item,\nare you amping up your healing from every\nsingle source you currently have,\n\n(Like: Riftmaker or Conqueror healing or,\nas previously mentioned, an enchanter)\n\nBut you are also increasing your potential\noffense with shield bash ( if you have it )\nvia the shield amp.\n\nIt's a bit of a greedy item in my opinion,\nbut oh~ when the situation calls for it, it's\nabsolutely godlike.\n\nAdditionally: this item pairs REALLY well\nwith Kaenic Rookern as it amps up it's\nshield to prevent an absolutely absurd\namount of burst damage."
+},
+{
+"slot": "Fourth+",
+"icon": "image188.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+},
+{
+"row": 25,
+"slots": [
+{
+"slot": "Second",
+"icon": "image73.png",
+"text": "I only go Force Of Nature as a second item\nif I'm specifically going against a lane \nopponent that applies a lot of magic \ndamage over time such as Cassiopeia or\nSinged,\n\nHowever, there is a condition to this and \nthat is if the enemy composition doesn't\nhave any other form of magic damage \ndealer, then I instead tend to opt into\nRiftmaker and deal with the fact that I'm\nnot going to be nearly as strong in the 1v1."
+},
+{
+"slot": "Third",
+"icon": "image73.png",
+"text": "As a third+ item, Force Of Nature is really\ngood if you're taking a lot of magic \ndamage over time, such as if you're going\nagainst a lot of Liandry's users or users\nwho have built-in DOT into their kits,\n\nSuch as Singed, Cassiopeia, Brand, etc."
+},
+{
+"slot": "Fourth+",
+"icon": "image73.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+},
+{
+"row": 26,
+"slots": [
+{
+"slot": "Third",
+"icon": "image64.png",
+"text": "Abyssal Mask is really good if\nyou're both:\n\n- Often surrounded by enemies that deal\nhigh amounts of magic damage,\n\n- And if your team also has a high amounts\nof magic damage"
+},
+{
+"slot": "Fourth+",
+"icon": "image64.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+},
+{
+"row": 27,
+"slots": [
+{
+"slot": "Third",
+"icon": "image109.png",
+"text": "Go Frozen Heart if there's a lot of attack\nspeed oriented champions on the enemy\nteam."
+},
+{
+"slot": "Fourth+",
+"icon": "image109.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+},
+{
+"row": 28,
+"slots": [
+{
+"slot": "Third",
+"icon": "image72.png",
+"text": "Usually, I don't tend to finish Bramble vest\ninto a finished Thornmail, just because if\nthere's a lot of healing on the enemy team,\n\nI'd rather just go Oblivion orb and \nconsequently: Morellonomicon to apply\nanti-healing consistently towards a variety\nof enemies,\n\nBut: If I'm limiting myself to ulting one \nspecific target and they heal via auto \nattacks or some variation of an on-hit\nability, then I'll sometimes finish Thornmail.\n\nAdditionally: If I also have a cosmic drive,\nwhich makes it so that if I apply any form\nof magic damage, I'll be able to get a \nspeed boost, then I'll sometimes opt into\nbuilding Thornmail, purely for that one\nspecific interaction."
+},
+{
+"slot": "Fourth+",
+"icon": "image75.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+},
+{
+"row": 29,
+"slots": [
+{
+"slot": "Third",
+"icon": "image93.png",
+"text": "Only build Jak'sho, if you have:\n\n- A lot of pre-established tank items,\n\n- The ability to live long enough to stack \nJak'sho; don't go Jak'sho vs.a lot of \nburst damage, but rather: if you're going\nagainst a lot of sustained damage.\n\n- And there's a bunch of magic and \nphyiscal damage on the enemy team who\nare both equally threatening"
+},
+{
+"slot": "Fourth+",
+"icon": "image93.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+},
+{
+"row": 30,
+"slots": [
+{
+"slot": "Third",
+"icon": "image82.png",
+"text": "I only build Unending despair if:\n\n- The enemy team, when they jump me \nafter my ultimate, doesn't immediately\none-shot me.\n\n- And if I have some form of amplifcation\ndamage to further increase Unending\nDespair's damaging-healing effect\n\n- And also if they have a good amount of\nphysical damage dealers."
+},
+{
+"slot": "Fourth+",
+"icon": "image82.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+},
+{
+"row": 31,
+"slots": [
+{
+"slot": "Third",
+"icon": "image96.png",
+"text": "Go Deadman's Plate if you're having \ntrouble dealing with a lot of slows on the\nenemy team, even with the anti-kite items\nmentioned up above."
+},
+{
+"slot": "Fourth+",
+"icon": "image96.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+}
+]
+},
+{
+"title": "Dark Seal + Mejai's (Outlier Items)",
+"entries": [
+{
+"row": 33,
+"slots": [
+{
+"slot": "First",
+"icon": "image127.png",
+"text": "Dark seal's almost always a good item pickup\n\nIt's low-cost, it's gold efficient, and it stacks\nreally quickly because of all of your AOE \nabilities in teamfights.\n\nYou can't really go wrong with buying this item\nearly"
+},
+{
+"slot": "Second",
+"icon": "image127.png",
+"text": "This item is viable as a second item."
+},
+{
+"slot": "Third",
+"icon": "image127.png",
+"text": "This item is viable as a third item."
+},
+{
+"slot": "Fourth+",
+"icon": "image127.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+},
+{
+"row": 34,
+"slots": [
+{
+"slot": "Third",
+"icon": "image88.png",
+"text": "Mejai's, is a REALLY risky item to go\ntowards since it can completely throw a\ngame if you play cards incorrectly.\n\nYes, the 10% bonus movement speed is\nstrong, yes the stacking AP is insanely\noverpowered.\n\nBut if you die with it, you're losing so much\ngold value that you could've went with\na different item.\n\nSo, before buying Mejai's you should\nkeep the following principles in mind:\n\n1. Is there someone who's really fed on\nthe enemy team who you both have to\ndeal with, and they have the potential\nto kill you? (If yes, then don't go Mejai's)\n\n2. Do you have flash up and/or Zhonya's \nto maintain your Mejai's stacks? \n(If not, then don't go Mejai's).\n\n3. Are you the main frontliner when it\ncomes to clearing vision and/or do you\nhave no vision control because your team\nis behind? (If yes, then don't go Mejai's or \nplay exceptionally cautiously).\n\nHaving one scenario be present is fine,\nbut I'd generally avoid Mejai's if there are\n2 or more scenarios present in whatever\ngame you find yourself in."
+},
+{
+"slot": "Fourth+",
+"icon": "image88.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+}
+]
+},
+{
+"title": "Situational Items",
+"entries": [
+{
+"row": 36,
+"slots": [
+{
+"slot": "Third",
+"icon": "image146.png",
+"text": "If there's an excessive amount of healing\non the enemy team who aren't specifically\nauto attacking you,\n\nThen go Oblivion Orb (and later: \nMorellonomicon) to cut said healing \ntowards a variety of enemies via your \nAOE abilities."
+},
+{
+"slot": "Fourth+",
+"icon": "image146.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+},
+{
+"row": 37,
+"slots": [
+{
+"slot": "Third",
+"icon": "image105.png",
+"text": "If you are looking to ambush a target in\nthe mid-game with a key skillshot that\nwill halt your approach,\n\nThen Verdant barrier (and later: \nBanshee's Veil), is a viable option.\n\nThe only reason why I don't like building\nthis item earlier is because it delays your\nitem powerspikes and can easily be \nprocc'd in sustained and controlled \nenvironments, such as laning phase."
+},
+{
+"slot": "Fourth+",
+"icon": "image105.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+},
+{
+"row": 38,
+"slots": [
+{
+"slot": "Third",
+"icon": "image104.png",
+"text": "If your only goal in the game you're playing\nin is to stall and specifically annoy one\nenemy player in particular, \n\nThen I'd recommend going Guardian's\nAngel to prolong your time with them in\nthe death realm, even after you die.\n\n(For extra annoying points: combine this\nwith a Zhonya's Hourglass to be even\nmore infuriating!)"
+},
+{
+"slot": "Fourth+",
+"icon": "image104.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+},
+{
+"row": 39,
+"slots": [
+{
+"slot": "Third",
+"icon": "image100.png",
+"text": "If the enemy team has a lot of shields, but\nfor some reason your team doesn't want\nto build Serpent's Fang,\n\nAnd when you explicitly asked them to buy\nit, they refused to.\n\nThen, I GUESS- you can go Serpent's \nFang (even though the lethality is \ncompletely wasted for you).\n\nLike, I know that you're able to apply it\npretty to a large amount of people with \nyour AOE abilities, but seriously?\n\nNobody else on your teams to build it???\nHonestly, I'd report them."
+},
+{
+"slot": "Fourth+",
+"icon": "image100.png",
+"text": "This item is viable as a fourth+ item."
+}
+]
+}
+]
+},
+{
+"title": "Tier 2 boots",
+"entries": [
+{
+"row": 41,
+"slots": [
+{
+"slot": "First",
+"icon": "image63.jpg",
+"text": "Buy this vs. champions with high amounts of \nauto attacking damage."
+},
+{
+"slot": "Second",
+"icon": null,
+"text": "Please don't delay tier 2 boots past your first item,\n\nUnless you can fully buy a dedicated anti-kite item like rocketbelt to make up for it."
+}
+]
+},
+{
+"row": 42,
+"slots": [
+{
+"slot": "First",
+"icon": "image114.jpg",
+"text": "Buy this vs. champions with high amounts of \ncrowd control / roots / stuns."
+}
+]
+},
+{
+"row": 43,
+"slots": [
+{
+"slot": "First",
+"icon": "image280.png",
+"text": "Buy this if you're snowballing and you don't\nneed any of the boots above."
+}
+]
+},
+{
+"row": 44,
+"slots": [
+{
+"slot": "First",
+"icon": "image218.jpg",
+"text": "I personally don't run boots of swiftness that\noften for the sake of opportunity cost,\n\nBut it's pretty good against compositions with\na lot of slows."
+}
+]
+}
+]
+}
+],
+"runeguide": [
+{
+"row": 4,
+"entries": [
+{
+"icon": "image52.png",
+"text": "The idea behind going grasp is to further\nenchance your excessively short trades against\ncertian champions like Riven or Tryndamere.\n\n( Also: credits to Artistic Turtle for discovering\nthis and applying in EUW Grandmasters )"
+},
+{
+"icon": "image34.png",
+"text": ""
+},
+{
+"icon": "image2.png",
+"text": "yo"
+},
+{
+"icon": "image18.png",
+"text": ""
+},
+{
+"icon": "image13.png",
+"text": ""
+},
+{
+"icon": "image30.png",
+"text": "Shield bash AKA: my wife, is the only rune that you should go if you're opting into the resolve tree\n\nIt's great for burst damage via your W or if you buy Sterak's Gage, and: it additionally synergizing with any potential \nenchanters on your team, so that's pretty cool.\n\nAlso: it makes a funny dopamine sound, and that's plenty of a good reason to use it."
+},
+{
+"icon": "image7.png",
+"text": ""
+},
+{
+"icon": "image17.png",
+"text": "This is really good if you're going against a \nmatchup that pokes you a lot."
+},
+{
+"icon": "image27.png",
+"text": "This is really good if you're going against a\nmatchup that has to force itself to all-in you\n\nand has no way of proccing said rune early."
+},
+{
+"icon": "image3.png",
+"text": "This is great for if you're going against \ncompositions that require you to survive an\ninitial burst amount of damage; you can't get\ntoo much value from Conqueror healing\nor Riftmaker healing or multiple W procc's."
+},
+{
+"icon": "image11.png",
+"text": "Generally, I only go this rune if I'm going \nagainst a matchup that is hard to all-in against,\nbut also has the capabilities to break down\nbone plating relatively easily."
+},
+{
+"icon": "image66.png",
+"text": "Personally, I don't tend to go Unflinching that\noften unless I'm going a composition that\nhas CC in every single one of their champion's kits."
+}
+]
+},
+{
+"row": 9,
+"entries": [
+{
+"icon": "image6.png",
+"text": "The idea behind going PTA is to solely rely\non auto attacks and raw burst damage to take\nout any excessively slippery foe such as:\nFiora, Vayne, or Ambessa.\n\nNow: by itself, at least: before your first item,\nthis is relatively poor compared to grasp when\nit comes to situating yourself to exclusively\nshort trades.\n\nHowever, when you do get Dusk & Dawn,\nthat's when this item's burst potential truly \nshines as instead of PTA proccing in three\nauto attacks, it now can procc on two auto\nattacks.\n\nWhich is really nice when your only form of \nconsistent damage against these champions\nare auto attacks.\n\n( Also: credits to Tjake and Artistic Turtle for\ndiscovering this tech and applying said tech\nin EUW Grandmasters )"
+},
+{
+"icon": "image36.png",
+"text": "Conqueror is regarded as Mordekaiser's best\ngeneral rune for good reason, and that is \nbecause: \n\nNot only do you stack it relatively quickly \nand relatively safely within your ultimate,\n\nBut the actual effects; generally increased\ndamage and more importantly: the healing\ngained from said rune is exceptionally \nimportant for Mordekaiser, especially because\nof his wide AOE attacks via his passive, his\nQ, and his E.\n\nIf you're ever giving up this rune for an \nalternative source of damage, utility or mobility, \n\nIt better be for a good reason."
+},
+{
+"icon": "image24.png",
+"text": "This rune got nerfed too hard to be good in any\nsetup when it comes to the precision tree."
+},
+{
+"icon": "image1.png",
+"text": "This rune just takes way too long to stack up and it's\nrewards for when you do stack it up are canceled out\nby Mordekaiser's long channel animations.\n\nI know Federals123 likes to run this rune into Irelia to\nsolely focus on auto attacks while also not limiting \nhimself to Dusk & Dawn, but personally:\n\nI think limiting yourself to Rylai's with approach velocity\nis an even worse approach simply due to the fact that\nRylai's, as an item, doesn't provide any actual combat\nstats and is instead: a setup tool for whatever ability\nyou need your teammates to land.\n\nAnd it's not like Irelia is a pushover where you can\nalmost never win a 1v1; the Irelia has plenty of ways\nof outplaying you, \n\nWhich is why I personally prefer going alternative setups \nthat focus more-so on damage without suffering from \nthe opportunity cost of not going PTA for amplification \ndamage or Conqueror for healing, because again:\nLethal tempo takes way too long to stack and is\ncontradictory to Mordekaiser's relatively long \nability channel animations."
+},
+{
+"icon": "image31.png",
+"text": "I know some Mordekaiser players like to run\nabsorb life into more voltaile lanes,\n\nBut ever since the nerfs they did to the rune,\nI just feel like the scaling from Triumph is way\ntoo valuable to give up."
+},
+{
+"icon": "image15.png",
+"text": "This is easily one of Mordekaiser's best \nminor runes purely because of how easy\nit is to procc the 2.5% of your maximum health \n(+ 5% of your missing health) healing on \ntakedown from your AOE abilities."
+},
+{
+"icon": "image9.png",
+"text": ""
+},
+{
+"icon": "image28.png",
+"text": "If you know it's pretty hard to consistently hit\nskillshots against the enemy team comp;\nif there are a lot of squishier fighters / \nskirmishers on the enemy team,\n\nThen Legend: Alacrity is pretty good."
+},
+{
+"icon": "image19.png",
+"text": "If you know you're able to consistently hit\nskillshots against the enemy tank; if the enemy\ntank has a lot of beefy tanks, \n\nThen Legend: Haste is pretty good."
+},
+{
+"icon": "image37.png",
+"text": ""
+},
+{
+"icon": "image35.png",
+"text": "If the enemy has an mechanic that makes them\nextremely dangerous when they are at low HP,\n\nThen I'd recommend going Coup de Grace."
+},
+{
+"icon": "image23.png",
+"text": "If the enemy laner has an execute, I'd \nrecommend going Cut Down."
+},
+{
+"icon": "image40.png",
+"text": "For the precision tree, assuming the enemy \ndoesn't have an explicit mechanic for if they\nare low hp that is exceptionally dangerous,\n\nOr if the enemy doesn't have an execute,\n\nThen this is your best rune when it comes down \nto raw DPS."
+}
+]
+},
+{
+"row": 14,
+"entries": [
+{
+"icon": "image41.png",
+"text": "Great for poke, but....\nGo Deathfire Touch instead."
+},
+{
+"icon": "image43.png",
+"text": "This rune is really reliant on the enemy NOT\nexplictly dodging your arcane comet by\nmoving away slowly; it's just not worth going.\n\nGo Deathfire Touch instead."
+},
+{
+"icon": "image124.png",
+"text": "This is Phase Rush's replacement, now:\n\nMy personal theory behind this rune is that if\nyou're able to initially get in range of a ranged\nunit (in which you can easily procc the 25% \nmaximum health requirement because of how\nsquishy they are), but struggle consistently \nmaintaining range, \n\nI think this is Mordekaiser's best rune choice \nfor that specific scenario.\n\n(Examples: Twisted Fate, Smolder, Quinn, etc.)"
+},
+{
+"icon": "image45.png",
+"text": "This rune is Mordekaiser's best choice when\nit comes down to raw poke damage.\n\nEspecially when you consider the fact that\nit actually outdamages Conqueror during the earlier \nstages and later stages of a game\n\n( You can see the math below this entry )\n\nIn the mid-game: Conqueror still deals more damage,\nbut do consider the fact that Conqueror has healing\nattached to it, so I still think Conqueror is better in\ncertain scenarios like if you're going against a tank\nor something.\n\nBut again: in matchups where your main goal is to\nsolely poke out the enemy, this is your best option."
+},
+{
+"icon": "image20.png",
+"text": "This rune is only really good for reducing\nyour ult cooldown, but to be honest: the \nmovement speed that you get from nimbus \ncloak is too good for if you're running this tree.\n\n;Go Nimbus Cloak instead."
+},
+{
+"icon": "image29.png",
+"text": ""
+},
+{
+"icon": "image33.png",
+"text": "ZOOMIES"
+},
+{
+"icon": null,
+"text": "Math:\n\nCredits to: (@/noi101) who tested out Deathfire Torch \nvs. Conqueror damage with damage amp items:\n--\n\nDF 75 L1 AA / All 94 D-Ring\n\nDF 174 L7 AA / All 260 D-Ring\n\nDF M 352 L11 / All 606 Liandry’s + D-Ring (10+ min)\n\nDF M 438 L18 / All 700–760 Liandry’s, Riftmaker, Blood Curse, Spirit Visage, Jak’Sho (20+ min)\n\nCQ 80–82 L1 AA / All 97 D-Ring\n\nCQ 171 L7 AA / All 270–300 Liandry’s + D-Ring\n\nCQ 315 L11 / All 600–630 Liandry’s, Riftmaker, Blood Curse + D-Ring (Runes maxed)\n\nCQ 380 L18 / All 700–730 Liandry’s, Riftmaker, Blood Curse, Spirit Visage, Jak’Sho (Runes maxed)\n\nDF early game in all-ins is a little weaker, but in poke it’s way stronger.\n\nDF mid game is a little weaker than CQ.\n\nDF late game is stronger than CQ."
+},
+{
+"icon": "image39.png",
+"text": "This is (in my opinion), Mordekaiser's best\nminor rune when it comes to the sorcery tree,\n\nNot only are you getting more CDR to apply\nyour abilities onto enemies through levels 5\nand 8,\n\nBut: at level 11: you get an additional effect\nwhere your abilities refund 20% of their current\ncooldown assuming you get a takedown,\nwhich is extremely good on Mordekaiser \nbecause of how easy it is to apply AOE effects \nonto individuals in a teamfight via your passive,\nyour Q, or your E.\n\nIn other words: if you're not planning on hard\nfocusing on poke and getting a lead through\nthat specific game-plan:\n\nThis is your one of your best options when it\ncomes to raw scaling, especially since it isn't\nreliant on game time like how Absolute Focus is."
+},
+{
+"icon": "image44.png",
+"text": "I'd imagine this only good if you're\nsynergistically applying with Stormraider's \nSurge or waterwalking if you want to hard\nfocus on roaming.\n\nGenerally though, I'd prefer either \nTranscendence or Absolute Focus for scaling\nor poke. ( Especially because Phase Rush is\ngone right now )"
+},
+{
+"icon": "image42.png",
+"text": "If you want to hard focus onto raw poke damage,\nfor a specific matchup, this is not that bad of an\noption in my opinion.\n\nAlthough: Generally, I'd prefer going \nTranscendance purely because of its \npotential as a kill-resetting (and consequently) \ngame-breaking effects.\n\n(See the entry on Transcendance for more info)"
+},
+{
+"icon": "image67.png",
+"text": "I really like this rune for dealing additional\npoke damage in the laning phase.\n\n;If you're going to play more proactive,\ngo scorch."
+},
+{
+"icon": "image59.png",
+"text": "I can only imagine this rune only being good for\nmid lane Mordekaiser where you're more\nfocused on roaming around the map.\n\nBut, I wouldn't know; I've never run it before."
+},
+{
+"icon": "image51.png",
+"text": "This is great for if you're going against a \nmatchup that you are forced to scale into \nbecause they neutralize your game-plan.\n\n\n;If you're going to play less proactive, go \ngathering storm."
+}
+]
+},
+{
+"row": 19,
+"entries": [
+{
+"icon": "image50.png",
+"text": ""
+},
+{
+"icon": "image61.png",
+"text": "This was originally Little Mewtwo's \n(Challenger EUNE player) answer to ranged \ntop laners as you could go Teleport and Ghost\nfor the laning phase, while also having things \nsuch as cleanse or flash for the later stages \nof the game.\n\nAnd now that phase rush is out of the game,\nI'd imagine this rune will have a resurgance\nagainst ranged top laners where it's difficult to\nget into range to procc anything to begin with\nsuch as artillery units like Xerath, Vel'koz, or\nZiggs.\n\nIn which case, you can either use Ghost or\ncleanse or whatever other ability to assist with\ngetting into range."
+},
+{
+"icon": "image49.png",
+"text": ""
+},
+{
+"icon": "image48.png",
+"text": ""
+},
+{
+"icon": "image209.png",
+"text": "This item is great for solely focusing on\nmovement speed an anti-kite, this would\nprobably be my usual go-to if you're running\nUnsealed Spellbook along with this setup\n\nBut: between this and cash-back, I think it's\njust personal preference generally."
+},
+{
+"icon": "image56.png",
+"text": "This is a great rune for if you're focusing on \nhard snowballing certain matchups.\n\nThough, I'd imagine that if you're running \ninspiration tree to begin with: you're realistically\nnot going to get too ahead.\n\nWhether that's because you're running unsealed\nspellbook and playing safe against a ranged top\nlaner until you reach your rocketbelt powerspike\n\nOr if you're going this along with Approach \nVelocity which takes a while to really kick in \n\n(at least compared to the strong early game \npower of shield bash)"
+},
+{
+"icon": "image62.png",
+"text": "This is pretty good assuming you're forced to \nrun it with Unsealed Spellbook because it \nprovides strong powerspikes during certain \nmoments of the game."
+},
+{
+"icon": "image119.png",
+"text": ""
+},
+{
+"icon": "image53.png",
+"text": "This rune got nerfed too hard to be good in any\nsetup when it comes to the inspiration tree."
+},
+{
+"icon": "image80.png",
+"text": ""
+},
+{
+"icon": "image87.png",
+"text": "This rune is probably the primary reason why\nanybody will go inspiration tree on Mordekaiser\never, solely because of it's synergy with Rylai's.\n\nNow: Personally, I only run Rylai's with \napproach velocity against matchups that I both\nstruggle getting into range of, and matchups \nthat I know that I can 100% win against such \nas Singed or Dr. Mundo.\n\n(Credits to Federals123 for discovering this)"
+},
+{
+"icon": "image76.png",
+"text": "I've actually seen a player called artistic turtle\nrun this rune with Hextech Gunblade + Spirit\nVisage in Grandmasters,\n\nSo if you're not running Rylai's + Approach \nVelocity and don't mind limiting yourself to\na specific build path, this rune can be pretty\nnice for adding additional stats."
+}
+]
+},
+{
+"row": 24,
+"entries": [
+{
+"icon": null,
+"text": "Add mini runes here"
+},
+{
+"icon": null,
+"text": "Add mini runes here"
+},
+{
+"icon": null,
+"text": "Add mini runes here"
+},
+{
+"icon": null,
+"text": "Add mini runes here"
+},
+{
+"icon": null,
+"text": "Add mini runes here"
+},
+{
+"icon": null,
+"text": "Add mini runes here"
+},
+{
+"icon": null,
+"text": "Add mini runes here"
+},
+{
+"icon": null,
+"text": "Add mini runes here"
+},
+{
+"icon": null,
+"text": "Add mini runes here"
+}
+]
+}
+],
+"alts": [
+{
+"group": "Modern Anomylous",
+"name": "Hail Of Blades\nMordekaiser",
+"runes": "Hail Of Blades -> Taste Of Blood ->\nGrisly Mementos -> Ultimate Hunter\n\nBone Plating -> Revitalize\n\nDouble Adaptive -> Flat Health",
+"items": "Hextech Gunblade\n( To play off of HOB's mixed\ndamage scaling)\n\nGluttonous Greaves\n( For mid lane quest )\n\nRiftmaker\n( Extra Omnivamp )",
+"example": "Person who's running it: HahBuhDuh #YEP",
+"comments": ""
+},
+{
+"group": "Modern Anomylous",
+"name": "Eclipse Mordekaiser",
+"runes": "Conqueror -> Triumph -> Haste -> Last Stand -> \n\nShield Bash + Revitalize\n\nAttack Speed + Adaptive Force + Scaling Health",
+"items": "Eclipse\n( Flat% Burst damage )\n\nRiftmaker\n( Extra Damage )",
+"example": "Person who's running it: Cindy #Yep",
+"comments": ""
+},
+{
+"group": "Modern Anomylous",
+"name": "Jack of all Trades +\nDoran's Helm \nMordekaiser",
+"runes": "Conqueror -> Absorb Life -> Haste -> \nLast Stand -> \n\nCash Back + Jack of all Trades\n\nAbility Haste + Adaptive Force + \nFlat Health",
+"items": "Doran's Helm start\n( Jack of all Trades )\n\nHextech Rocketbelt\n( Ability haste )\n\nHextech Gunblade\n( Jack of all Trades )\n\nCosmic Drive\n( Ability Haste )",
+"example": "Person who's running it: MinNhut ne hehe #Eclip",
+"comments": ""
+},
+{
+"group": "Legacy",
+"name": "PTA Mordekaiser",
+"runes": "Press the attack -> Triumph -> \nAlacrity -> Last Stand -> \n\nShield Bash + Second Wind\n\nAttack Speed + Adaptive Force\n+ Flat Health",
+"items": "Dusk & Dawn\n( Max Burst Damage^ )\n\nRiftmaker\n( Damage Item )",
+"example": "Person who's running it: come to brazil71#TURTL",
+"comments": ""
+},
+{
+"group": "Legacy",
+"name": "Grasp Mordekaiser",
+"runes": "Grasp Of The Undying -> Shield Bash\n-> Bone Plating -> Revitalize\n\nAlacrity -> Cut Down\n\nDouble Adaptive + Flat Health",
+"items": "Dusk & Dawn\n( Damage Item^ )\n\nRiftmaker\n( Maximum Burst^ )",
+"example": "Person who's running it: come to brazil71#TURTL",
+"comments": ""
+},
+{
+"group": "Legacy",
+"name": "Approach Velocity\nMordekaiser",
+"runes": "Conqueror -> Triumph -> Haste->\nLast Stand ->\n\nMagical Footwear -> Approach Velocity\n\nAdaptive Force + Movement Speed\n+ Scaling Health",
+"items": "Rylai's\n( To procc Approach Velocity )\n\nRiftmaker / Liandry's / Hextech\nRocketbelt",
+"example": "Person who's running it: Federals1",
+"comments": ""
+},
+{
+"group": "Legacy",
+"name": "Mordekaiser \nMid Lane",
+"runes": "Conqueror -> Triumph -> Alacrity ->\nLast Stand ->\n\nNimbus Cloak -> Transcendence\n\nDouble Adaptive + Flat Health\n\nNote: This was his last altered version\nof the Mordekaiser Mid lane build \nbefore he left, here was his build for\nthe majority of his career.\n--\n[ Pre-altered setups ]\n--\n[Melee]\n\nConqueror -> Triumph -> Alarcity ->\nLast Stand ->\n\nShield Bash -> Second Wind\n\nDouble Adaptive + Flat Health\n\n[Ranged]\n\nPhase Rush -> Nimbus Cloak ->\nTranscendance -> Scorch ->\n\nShield Bash -> Second Wind\n\nFor further details about \nhis overall career:\nhere's LOL Dobby's video",
+"items": "Rocketbelt ( If Ranged) /\nRylai's ( If Melee )\n\n[ Build whatever you didn't\nbuild first, second ]\n\nZhonya's / Kaenic / Abyssal /\nMisc.",
+"example": "Person who's running \nit: 花田错ii",
+"comments": ""
+},
+{
+"group": "Legacy",
+"name": "CDR\nMordekaiser",
+"runes": "Conqueror -> Triumph -> Haste->\nLast Stand ->\n\nNimbus Cloak -> Transcendence\n\nAbility Haste + Adaptive Force\n+ Flat Health",
+"items": "Rocketbelt \n(Gap close + CDR)\n\nIonian Boots of Lucidiy\n\nRiftmaker\n(Damage + CDR)\n\nCosmic Drive / \nBloodletter's Curse / \nAny ability haste item\n\nZhonya's (If you need it)",
+"example": "Person who's running it: Twísted Fate#Titan",
+"comments": ""
+},
+{
+"group": "Legacy",
+"name": "AP Burst Damage\nOriented Mordekaiser",
+"runes": "Conqueror -> Triumph -> Alacrity ->\nCoup de Grace ->\n\nNimbus Cloak -> Absolute Focus\n\nDouble Adaptive + Flat Health",
+"items": "Cosmic Drive\nBoots Of Swiftness\nLich Bane\n\nFor third+ items:\n\nZhonya's / Rabadons / \nShadowflame",
+"example": "Person who was running it: \npff1c#pff",
+"comments": ""
+},
+{
+"group": "Legacy",
+"name": "Unsealed Spellbook\nMordekaiser",
+"runes": "Unsealed Spellbook -> Cash Back\n-> Triple Tonic -> Jack Of All Trades ->\n\nNimbus Cloak -> Transcendance\n\nDouble Adaptive + Scaling Health",
+"items": "Rocketbelt\n\nRylai's\n\nShadowflame\n\nZhonya's / Banshee's Veil,\nSpirit Visage, honestly\nit just looks like random flex\npost third item",
+"example": "Person who was running it: \nkaizermorde",
+"comments": ""
+}
+],
+"creators": [
+{
+"region": "EUW",
+"name": "tjakelol",
+"peak": "Challenger",
+"twitter": "tjake",
+"youtube": "tjakelol",
+"twitch": "tjakelol",
+"alt": "---",
+"opgg": "TJake#0000"
+},
+{
+"region": "CN / KR",
+"name": "花田错铁男",
+"peak": "Challenger",
+"twitter": "---",
+"youtube": "---",
+"twitch": "---",
+"alt": "花田错铁男",
+"opgg": "(Idk where to find it)"
+},
+{
+"region": "EUNE / EUW",
+"name": "Federals1",
+"peak": "Challenger",
+"twitter": "---",
+"youtube": "Federals1",
+"twitch": "federals123",
+"alt": "---",
+"opgg": "Federals123"
+},
+{
+"region": "LAN",
+"name": "M0NZT3R",
+"peak": "Challenger",
+"twitter": "---",
+"youtube": "M0NZT3R",
+"twitch": "",
+"alt": "---",
+"opgg": "M0NZT3R#777"
+},
+{
+"region": "NA / VN",
+"name": "Meowdekaiser",
+"peak": "Grandmaster",
+"twitter": "Meowdekaiser",
+"youtube": "Meowdekaiser",
+"twitch": "Meowdekaiser",
+"alt": "---",
+"opgg": "Meowdekaiser#VN100"
+},
+{
+"region": "VN",
+"name": "Awaken Morde",
+"peak": "Grandmaster",
+"twitter": "---",
+"youtube": "Awaken Morde",
+"twitch": "---",
+"alt": "---",
+"opgg": "Awaken Morde#Nhqm"
+},
+{
+"region": "EUW",
+"name": "Dreadknight",
+"peak": "Master",
+"twitter": "Dreadknight",
+"youtube": "Dreadknight",
+"twitch": "Dreaknight_lol",
+"alt": "",
+"opgg": ""
+},
+{
+"region": "BR",
+"name": "Muck Fordekaiser",
+"peak": "Master",
+"twitter": "---",
+"youtube": "Muck Fordekaiser",
+"twitch": "---",
+"alt": "---",
+"opgg": "---"
+},
+{
+"region": "KR",
+"name": "Zephyrusk",
+"peak": "Master",
+"twitter": "---",
+"youtube": "ZephyrusK",
+"twitch": "---",
+"alt": "ZephyrusK",
+"opgg": "---"
+},
+{
+"region": "KR",
+"name": "가날이",
+"peak": "Master",
+"twitter": "---",
+"youtube": "가날이",
+"twitch": "---",
+"alt": "---",
+"opgg": "나리나리가날이#KR1"
+},
+{
+"region": "KR",
+"name": "오데",
+"peak": "Master",
+"twitter": "---",
+"youtube": "오데",
+"twitch": "---",
+"alt": "오데",
+"opgg": "우리팀개모데#KR1"
+},
+{
+"region": "KR",
+"name": "나정우",
+"peak": "Master",
+"twitter": "---",
+"youtube": "나정우",
+"twitch": "---",
+"alt": "---",
+"opgg": "나는정말우울해요#KR1"
+},
+{
+"region": "KR",
+"name": "아바유",
+"peak": "Master",
+"twitter": "---",
+"youtube": "아바유",
+"twitch": "---",
+"alt": "---",
+"opgg": "駒沢乃依#onyx"
+},
+{
+"region": "KR",
+"name": "MordeLand",
+"peak": "Master",
+"twitter": "---",
+"youtube": "MordeLand",
+"twitch": "---",
+"alt": "---",
+"opgg": "MordeLand#MDLD"
+},
+{
+"region": "NA",
+"name": "cowlick",
+"peak": "Emerald",
+"twitter": "---",
+"youtube": "cowlick is cool",
+"twitch": "cowlick is cool",
+"alt": "---",
+"opgg": "The cowlick"
+},
+{
+"region": "Region",
+"name": "Name",
+"peak": "Peak Rank",
+"twitter": "Twitter",
+"youtube": "YouTube",
+"twitch": "Twitch",
+"alt": "Alt.",
+"opgg": "Deeplol / opgg"
+},
+{
+"region": "EUNE",
+"name": "Little Mewtwo",
+"peak": "Challenger",
+"twitter": "---",
+"youtube": "Little Mewtwo1",
+"twitch": "Little Mewtwo143",
+"alt": "---",
+"opgg": "Little Mewtwo#Lia"
+},
+{
+"region": "NA",
+"name": "Kaizer Morde",
+"peak": "Challenger",
+"twitter": "---",
+"youtube": "Kaizer Morde",
+"twitch": "kaizermordelol",
+"alt": "---",
+"opgg": "Kaizer Morde#Death"
+},
+{
+"region": "KR",
+"name": "페이즈킬러",
+"peak": "Master",
+"twitter": "---",
+"youtube": "페이즈킬러",
+"twitch": "summitphase",
+"alt": "---",
+"opgg": "PhasedKiller#KR1"
+},
+{
+"region": "Region",
+"name": "Name",
+"peak": "Peak Rank",
+"twitter": "Title + Link",
+"youtube": "",
+"twitch": "",
+"alt": "Date Posted",
+"opgg": ""
+},
+{
+"region": "EUNE / EUW",
+"name": "Federals1",
+"peak": "Challenger",
+"twitter": "Mordekaiser Matchups (Spreadsheet)",
+"youtube": "",
+"twitch": "",
+"alt": "November 1st, 2024",
+"opgg": ""
+},
+{
+"region": "EUNE / EUW",
+"name": "Federals1",
+"peak": "Challenger",
+"twitter": "Season 15 Challenger Mordekaiser Guide (Video)",
+"youtube": "",
+"twitch": "",
+"alt": "April 26th, 2025",
+"opgg": ""
+},
+{
+"region": "EUW",
+"name": "Coach Chippy's",
+"peak": "Challenger",
+"twitter": "How To Carry With Mordekaiser (Video)",
+"youtube": "",
+"twitch": "",
+"alt": "February 3rd, 2024",
+"opgg": ""
+},
+{
+"region": "EUNE",
+"name": "Little Mewtwo",
+"peak": "Challenger",
+"twitter": "[14.24] Challenger OTP Mordekaiser Guide (Mobafire)",
+"youtube": "",
+"twitch": "",
+"alt": "December 29, 2024",
+"opgg": ""
+},
+{
+"region": "NA / VN",
+"name": "Meowdekaiser",
+"peak": "Grandmaster",
+"twitter": "(Part 1 version) Original Mordekaiser Spreadsheet",
+"youtube": "",
+"twitch": "",
+"alt": "April 30th, 2025",
+"opgg": ""
+},
+{
+"region": "EUW",
+"name": "Dreadknight",
+"peak": "Master",
+"twitter": "Mordekaiser Matchups (Spreadsheet)",
+"youtube": "",
+"twitch": "",
+"alt": "March 29th, 2026",
+"opgg": ""
+}
+],
+"credits": [
+{
+"name": "Meowdekaiser",
+"role": "Creator"
+}
+]
+}

@@ -1,0 +1,142 @@
+/* ============================================================
+   LAYOUT — reset, base type, containers, grids, chrome.
+   ============================================================ */
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+
+body{
+  margin:0;
+  background: var(--c-slag);
+  color: var(--c-bone);
+  font: 400 var(--fs-600)/1.66 var(--f-body);
+  overflow-x:hidden;
+}
+img,svg,video{ display:block; max-width:100%; }
+img{ height:auto; }
+
+a{ color: var(--c-corpse); text-decoration-color: var(--c-verdigris); text-underline-offset:3px; }
+a:hover{ text-decoration-color: var(--c-corpse); }
+:focus-visible{ outline:2px solid var(--c-corpse); outline-offset:2px; }
+
+::selection{ background: var(--c-verdigris); color: var(--c-bone); }
+
+.skip{
+  position:absolute; left:var(--s-5); top:calc(var(--s-9) * -1); z-index:10000;
+  background:var(--c-plate); color:var(--c-bone); border:1px solid var(--c-corpse);
+  padding:var(--s-3) var(--s-5); font:500 var(--fs-400)/1 var(--f-chrome);
+  text-transform:uppercase; letter-spacing:.05em;
+}
+.skip:focus{ top:var(--s-5); }
+
+/* ——— type roles ——— */
+.monument{
+  font-family:var(--f-display); font-weight:900; text-transform:uppercase;
+  letter-spacing:.07em; line-height:1.02; margin:0;
+}
+.monument--sec{
+  font-family:var(--f-display); font-weight:700; text-transform:uppercase;
+  font-size:var(--fs-800); letter-spacing:.09em; line-height:1.06; margin:0;
+}
+.eyebrow{
+  font:600 var(--fs-200)/1 var(--f-chrome); text-transform:uppercase;
+  letter-spacing:.15em; color:var(--c-brass-hi); margin:0;
+}
+.mono-micro{
+  font:400 var(--fs-100)/1.5 var(--f-mono); letter-spacing:.06em; color:var(--c-dust);
+}
+.num{ font-family:var(--f-mono); font-weight:600; font-variant-numeric:tabular-nums;
+      font-feature-settings:'tnum' 1; letter-spacing:-.01em; }
+
+.prose{ max-width:var(--w-prose); }
+.prose p{ margin:0 0 var(--s-5); }
+.prose p:last-child{ margin-bottom:0; }
+
+.epitaph{
+  max-width:var(--w-narrow); margin-inline:auto; text-align:center;
+  font:italic 400 var(--fs-700)/1.55 var(--f-body); color:var(--c-teal);
+}
+.epitaph cite{
+  display:block; margin-top:var(--s-3); font-style:normal;
+  font:400 var(--fs-100)/1.5 var(--f-mono); letter-spacing:.06em; color:var(--c-dust);
+}
+
+/* ——— containers, one per role ——— */
+.container{ margin-inline:auto; padding-inline:var(--s-5); }
+.w-page  { max-width:var(--w-page); }
+.w-wide  { max-width:var(--w-wide); }
+.w-shell { max-width:var(--w-shell); }
+.w-prose { max-width:calc(var(--w-prose) + var(--s-5) * 2); }
+
+/* ——— masthead ——— */
+.mast{
+  position:relative; z-index:20;
+  background:var(--c-forge);
+  border-bottom:1px solid var(--c-iron);
+}
+.mast__in{
+  display:flex; align-items:center; gap:var(--s-5);
+  padding-block:var(--s-4);
+}
+.mast__brand{
+  display:flex; align-items:center; gap:var(--s-3);
+  text-decoration:none; color:var(--c-bone);
+}
+.mast__word{
+  font-family:var(--f-display); font-weight:900; text-transform:uppercase;
+  font-size:var(--fs-400); letter-spacing:.11em; line-height:1;
+}
+.mast__nav{ margin-left:auto; display:flex; gap:var(--s-5); align-items:center; }
+.mast__link{
+  font:500 var(--fs-400)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.05em;
+  color:var(--c-ash); text-decoration:none; padding:var(--s-2) 0;
+  border-bottom:2px solid transparent;
+  transition:color var(--t-base) var(--ease), border-color var(--t-base) var(--ease);
+}
+.mast__link:hover{ color:var(--c-bone); border-bottom-color:var(--c-iron); }
+.mast__link[aria-current="page"]{ color:var(--c-corpse); border-bottom-color:var(--c-corpse); }
+.mast__edge{ position:absolute; left:0; right:0; bottom:-14px; }
+
+/* ——— footer: two columns only ——— */
+.foot{ position:relative; margin-top:var(--s-8); background:var(--c-forge); }
+.foot__edge{ position:absolute; left:0; right:0; top:-14px; transform:scaleY(-1); }
+.foot__in{
+  display:grid; grid-template-columns:minmax(0,1fr) var(--w-rail);
+  gap:var(--s-7); padding-block:var(--s-7) var(--s-6);
+}
+.foot__col h2{ font:600 var(--fs-200)/1 var(--f-chrome); text-transform:uppercase;
+  letter-spacing:.15em; color:var(--c-brass-hi); margin:0 0 var(--s-4); }
+.foot__list{ list-style:none; margin:0; padding:0; }
+.foot__list li{ margin-bottom:var(--s-2); font-size:var(--fs-300); color:var(--c-ash); }
+.foot__meta{ padding-bottom:var(--s-6); }
+
+@media (max-width:820px){
+  .foot__in{ grid-template-columns:1fr; gap:var(--s-6); }
+}
+
+/* ——— HOME: asymmetric, no centred hero ——— */
+.home-grid{
+  display:grid; grid-template-columns:minmax(0,var(--w-prose)) var(--w-rail);
+  column-gap:var(--s-7); align-items:start;
+}
+@media (max-width:980px){ .home-grid{ grid-template-columns:1fr; row-gap:var(--s-6); } }
+
+/* ——— MATCHUP detail: three panes ——— */
+.matchup{
+  display:grid;
+  grid-template-columns: var(--w-rail) minmax(0,1fr) var(--w-toc);
+  column-gap: var(--s-7); align-items:start;
+}
+.rail{ position:sticky; top:calc(var(--s-8) + var(--s-2)); }
+.toc { position:sticky; top:calc(var(--s-8) + var(--s-2)); }
+
+@media (max-width:1100px){
+  .matchup{ grid-template-columns:1fr; row-gap:var(--s-6); }
+  .rail,.toc{ position:static; }
+  .toc{ order:2; } .writeup{ order:3; }
+}
+
+/* ——— GUIDES ——— */
+.guide-part{ padding-block:var(--s-7); }
+.guide-part > .seam{ margin-top:0; }

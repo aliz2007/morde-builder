@@ -1,0 +1,163 @@
+/* ============================================================
+   MATERIAL — grain, patina, plate, seam, arch, ring, sawtooth.
+   Zero binary assets. Stacking order is load-bearing:
+   grain must sit above every large gradient or dark panels band.
+   ============================================================ */
+
+/* ——— 4.1 Film grain (z 9999) ——— */
+.grain{
+  position:fixed; inset:0; z-index:9999; pointer-events:none;
+  opacity:.045; mix-blend-mode:overlay;
+  background-size:300px 300px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ——— 4.8 Vignette, green-biased + teal floor fog (z 9998) ——— */
+.vignette{
+  position:fixed; inset:0; z-index:9998; pointer-events:none;
+  background:
+    radial-gradient(ellipse 140% 110% at 50% 42%, transparent 58%, rgba(10,11,9,.82) 100%),
+    linear-gradient(to top, rgba(18,49,45,.16), transparent 22%);
+}
+
+/* ——— 4.9 Realm Ring (z 9997). If it reads as a "ring graphic" it is 3x too strong ——— */
+.realm-ring{
+  position:fixed; inset:0; z-index:9997; pointer-events:none;
+  transition: opacity var(--t-slow) var(--ease);
+  background:
+    radial-gradient(60vmax 60vmax at 50% 62%, transparent 0 40%,
+                    rgba(143,191,58,.018) 41% 43.5%, transparent 44%),
+    radial-gradient(70vmax 70vmax at 50% 62%, rgba(74,158,140,.022), transparent 65%);
+}
+@media (prefers-reduced-motion: no-preference){
+  .realm-ring{ animation: breathe 6s ease-in-out infinite; }
+  @keyframes breathe{ 0%,100%{ opacity:.9 } 50%{ opacity:1.15 } }
+}
+/* §8 — the one dramatic moment. Nowhere else does the ring change. */
+.realm-ring.is-open{
+  animation:none;
+  background:
+    radial-gradient(58vmax 58vmax at 50% 60%, transparent 0 26%,
+                    rgba(143,191,58,.030) 34% 40%, transparent 52%),
+    radial-gradient(76vmax 76vmax at 50% 60%, rgba(74,158,140,.028), transparent 66%);
+}
+
+/* ——— 4.2 Patina cloud (z 0, scrolls with content) ——— */
+.patina{
+  position:absolute; inset:0; z-index:0; pointer-events:none;
+  opacity:.10; mix-blend-mode:soft-light;
+  background-size:900px 900px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.014' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0.6 0 0 0 0.30  0.3 0 0 0 0.14  0.1 0 0 0 0.06  0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+}
+
+/* ——— 4.3 Milled plate + rivets ——— */
+.plate{
+  position:relative;
+  background-color: var(--c-plate);
+  background-image: var(--rivet), var(--rivet), var(--rivet), var(--rivet), var(--milled);
+  background-position:
+     7px 7px, calc(100% - 7px) 7px,
+     7px calc(100% - 7px), calc(100% - 7px) calc(100% - 7px), 0 0;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat;
+  border: 1px solid var(--c-iron);
+  border-radius: 0;
+  box-shadow: var(--bevel-raised);
+}
+.plate--sunken{
+  background-color: var(--c-forge);
+  background-image: var(--milled);
+  border:1px solid var(--c-iron);
+  box-shadow: var(--bevel-recessed);
+}
+
+/* ——— 4.7 Rust bloom. At most two panels per page. ——— */
+.plate--aged::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  mix-blend-mode: soft-light; filter: url(#corrode);
+  background:
+    radial-gradient(90px 60px at -8% 108%, rgba(122,59,30,.50), transparent 70%),
+    radial-gradient(120px 70px at 104% -6%, rgba(122,59,30,.38), transparent 72%);
+}
+
+/* ——— 4.5 Weld seam — replaces every <hr> ——— */
+.seam{
+  position:relative; height:2px; border:0; margin: var(--s-6) 0;
+  background: linear-gradient(90deg, transparent, var(--c-iron) 12%, var(--c-iron) 88%, transparent);
+}
+.seam::after{
+  content:""; position:absolute; left:0; right:0; top:0;
+  transform: translateY(1px); height:1px; filter: blur(.5px);
+  background: linear-gradient(90deg, transparent 20%, rgba(143,191,58,.35) 50%, transparent 80%);
+}
+.seam--tight{ margin: var(--s-3) 0; }
+
+/* ——— 4.12 Necrotic emission — three layers, never one ——— */
+.emit{
+  position:relative;
+  border-left:2px solid var(--c-corpse);
+  border-right:1px solid var(--c-verdigris);
+  box-shadow: 0 0 6px rgba(143,191,58,.30);
+}
+.emit::after{
+  content:""; position:absolute; inset:-140%; pointer-events:none; z-index:-1;
+  background: radial-gradient(closest-side, rgba(143,191,58,.10), transparent);
+}
+
+/* ——— 4.10 Lancet arch mask ——— */
+.arch{
+  -webkit-mask-image:var(--arch); mask-image:var(--arch);
+  -webkit-mask-size:100% 100%; mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+}
+
+/* ——— 4.11 Pauldron sawtooth. Uneven teeth: forged, not extruded. ——— */
+.sawtooth{
+  height:14px; filter:url(#corrode); pointer-events:none;
+  background: repeating-conic-gradient(from -45deg at 50% 0,
+              var(--c-plate) 0 25%, transparent 0 50%) 0 0/24px 14px;
+}
+.sawtooth--deep{ background-size:31px 14px; }
+.sawtooth--fine{ background-size:19px 14px; }
+.sawtooth-strip{ display:flex; }
+.sawtooth-strip > *{ flex:1 1 auto; }
+
+/* ——— 4.15 Black Mist band ——— */
+.mist{
+  position:relative; height:200px; overflow:hidden; pointer-events:none;
+  margin-top: calc(var(--s-7) * -1);
+}
+.mist::before,.mist::after{
+  content:""; position:absolute; inset:-40% -20%;
+  filter: blur(60px);
+}
+.mist::before{ background: radial-gradient(900px 300px at 30% 60%, rgba(74,158,140,.04), transparent 70%); }
+.mist::after { background: radial-gradient(900px 300px at 70% 40%, rgba(122,59,30,.03), transparent 70%); }
+@media (prefers-reduced-motion: no-preference){
+  .mist::before{ animation: drift-a 90s linear infinite alternate; }
+  .mist::after { animation: drift-b 140s linear infinite alternate; }
+  @keyframes drift-a{ from{ transform:translateX(-6%) } to{ transform:translateX(6%) } }
+  @keyframes drift-b{ from{ transform:translateX(5%) }  to{ transform:translateX(-5%) } }
+}
+
+/* ——— 4.14 Corner brackets — one framed region per viewport ——— */
+.bracketed{ position:relative; }
+.bracketed::before,.bracketed::after{
+  content:""; position:absolute; width:18px; height:18px; pointer-events:none;
+}
+.bracketed::before{
+  top:calc(var(--s-4) * -1); left:calc(var(--s-4) * -1);
+  border-top:1px solid var(--c-brass); border-left:1px solid var(--c-brass);
+}
+.bracketed::after{
+  bottom:calc(var(--s-4) * -1); right:calc(var(--s-4) * -1);
+  border-bottom:1px solid var(--c-brass); border-right:1px solid var(--c-brass);
+}
+
+/* ——— 4.13 Iron Crown ——— */
+.crown{ display:block; fill:currentColor; }
+.crown--mast{ width:40px; height:25px; color:var(--c-bone); }
+.crown--ghost{
+  position:absolute; width:900px; height:563px; color:var(--c-iron); opacity:.03;
+  top:calc(var(--s-7) * -1); left:50%; transform:translateX(-50%);
+  pointer-events:none; z-index:0;
+}
