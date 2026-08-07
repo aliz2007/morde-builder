@@ -10,6 +10,7 @@
   --c-plate:     #1B1E19;
   --c-iron:      #2B2F29;
   --c-anvil:     #474C44;
+  --c-iron-dim:  #22261F;   /* disabled edges — one step under --c-iron */
 
   /* ——— TEXT ——— */
   --c-bone:      #D9D3C5;

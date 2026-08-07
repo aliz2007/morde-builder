@@ -16,7 +16,7 @@
 .btn:focus-visible{ outline:2px solid var(--c-corpse); outline-offset:2px;
                     box-shadow:0 0 6px rgba(143,191,58,.30); }
 .btn:active{ transform:translateY(1px); box-shadow:var(--bevel-recessed); }
-.btn:disabled{ color:var(--c-dust); background:var(--c-forge); border-color:#22261F; cursor:not-allowed; }
+.btn:disabled{ color:var(--c-dust); background:var(--c-forge); border-color:var(--c-iron-dim); cursor:not-allowed; }
 .btn--ghost{ background:transparent; }
 .btn.is-done{ color:var(--c-corpse); border-color:var(--c-corpse); }
 
