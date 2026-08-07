@@ -172,10 +172,13 @@ export function renderDetail(m) {
           <ul class="stack">${m.tldr.map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul>` : ''}
       </div>
 
-      <div class="writeup bracketed">
+      <div class="loadout">
         <p class="eyebrow">Items</p>
         <div class="builds${m.builds.length > 1 ? ' builds--dual' : ''}">${builds}</div>
         <hr class="seam">
+      </div>
+
+      <div class="writeup bracketed">
         <p class="eyebrow">The writeup</p>
         ${writeup(m)}
         <div class="writeup__foot">

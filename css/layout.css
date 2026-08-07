@@ -122,19 +122,30 @@ a:hover{ text-decoration-color: var(--c-corpse); }
 }
 @media (max-width:980px){ .home-grid{ grid-template-columns:1fr; row-gap:var(--s-6); } }
 
-/* ——— MATCHUP detail: three panes ——— */
+/* ——— MATCHUP detail: three panes ———
+   Items and prose are separate grid children so the phone can order them
+   loadout -> items -> jump chips -> prose. On desktop both sit in column 2. */
 .matchup{
   display:grid;
   grid-template-columns: var(--w-rail) minmax(0,1fr) var(--w-toc);
+  grid-template-areas:
+    "rail loadout toc"
+    "rail writeup toc";
+  grid-template-rows:auto 1fr;
   column-gap: var(--s-7); align-items:start;
 }
-.rail{ position:sticky; top:calc(var(--s-8) + var(--s-2)); }
-.toc { position:sticky; top:calc(var(--s-8) + var(--s-2)); }
+.rail   { grid-area:rail;    position:sticky; top:calc(var(--s-8) + var(--s-2)); }
+.loadout{ grid-area:loadout; min-width:0; }
+.writeup{ grid-area:writeup; min-width:0; }
+.toc    { grid-area:toc;     position:sticky; top:calc(var(--s-8) + var(--s-2)); }
 
 @media (max-width:1100px){
-  .matchup{ grid-template-columns:1fr; row-gap:var(--s-6); }
+  .matchup{
+    grid-template-columns:1fr; grid-template-rows:none;
+    grid-template-areas:"rail" "loadout" "toc" "writeup";
+    row-gap:var(--s-6);
+  }
   .rail,.toc{ position:static; }
-  .toc{ order:2; } .writeup{ order:3; }
 }
 
 /* ——— GUIDES ——— */
