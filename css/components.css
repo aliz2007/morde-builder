@@ -132,7 +132,12 @@
 
 /* ============ WRITEUP ============ */
 .writeup{ max-width:var(--w-prose); }
-.sect{ margin-top:var(--s-7); padding:var(--s-5) var(--s-5) var(--s-5) var(--s-6); }
+.sect{
+  margin-top:var(--s-7); padding:var(--s-5) var(--s-5) var(--s-5) var(--s-6);
+  /* clears the 89px sticky mini-header when scrolled to via TOC, jump select
+     or a #/vs/<champ>/<section> deep link */
+  scroll-margin-top:calc(var(--s-8) + var(--s-5));
+}
 .sect:first-of-type{ margin-top:var(--s-5); }
 .sect__head{ position:relative; margin:0 0 var(--s-3); }
 .sect__n{
@@ -305,10 +310,11 @@
   display:flex; align-items:center; gap:var(--s-4);
   background:rgba(18,20,16,.96); backdrop-filter:blur(8px);
   border-bottom:1px solid var(--c-iron);
-  transform:translateY(-100%); opacity:0; pointer-events:none;
-  transition:transform var(--t-base) var(--ease), opacity var(--t-base) var(--ease);
+  transform:translateY(-100%); opacity:0; pointer-events:none; visibility:hidden;
+  transition:transform var(--t-base) var(--ease), opacity var(--t-base) var(--ease),
+             visibility var(--t-base) var(--ease);
 }
-.mini.is-on{ transform:translateY(0); opacity:1; pointer-events:auto; }
+.mini.is-on{ transform:translateY(0); opacity:1; pointer-events:auto; visibility:visible; }
 .mini__img{ width:32px; height:32px; border-radius:3px; }
 .mini__name{ font:600 var(--fs-400)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.05em; }
 .mini__pill{ margin-left:auto; }
@@ -439,6 +445,7 @@
 
 /* Blocks holding two sub-matchups (Udyr: AD and Tank) */
 .variant + .variant{ margin-top:var(--s-7); }
+.variant{ scroll-margin-top:calc(var(--s-8) + var(--s-5)); }
 .variant__h{ font-size:var(--fs-800); }
 .variant__spine{ margin:var(--s-4) 0 var(--s-5); max-width:26rem; }
 

@@ -290,7 +290,9 @@ export function wireDetail(root, scroller) {
   const mini = root.querySelector('[data-mini]');
   const onScroll = () => {
     const y = scroller ? scroller.scrollTop : window.scrollY;
-    mini?.classList.toggle('is-on', y > 220);
+    const on = y > 220;
+    mini?.classList.toggle('is-on', on);
+    if (mini) mini.setAttribute('aria-hidden', String(!on));
     queueSpy();
   };
   (scroller || window).addEventListener('scroll', onScroll, { passive: true });
