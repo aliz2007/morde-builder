@@ -1,8 +1,3 @@
-/* ============================================================
-   COMPONENTS — spine, runes, builds, search, writeup, relics.
-   ============================================================ */
-
-/* ——— buttons ——— */
 .btn{
   display:inline-flex; align-items:center; gap:var(--s-2); text-decoration:none;
   font:600 var(--fs-400)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.05em;
@@ -20,7 +15,6 @@
 .btn--ghost{ background:transparent; }
 .btn.is-done{ color:var(--c-glow); border-color:var(--c-glow); }
 
-/* ——— difficulty spine ——— */
 .spine{ display:grid; gap:var(--s-4); }
 .spine__row{ display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:var(--s-3); }
 .spine__label{
@@ -45,7 +39,6 @@
   @keyframes seg-fill{ from{ transform:scaleX(0); transform-origin:left } to{ transform:scaleX(1) } }
 }
 
-/* the one hot numeral — once per page */
 .overall{
   display:grid; grid-template-columns:auto 1fr; align-items:center; gap:var(--s-5);
   margin-block:var(--s-6);
@@ -62,7 +55,6 @@
 }
 .overall__cap{ margin-top:var(--s-2); }
 
-/* ——— rune block ——— */
 .runes{ display:grid; gap:var(--s-4); }
 .runes__head{ display:flex; align-items:center; gap:var(--s-4); }
 .runepage{
@@ -92,7 +84,6 @@
 .chip--lead{ color:var(--c-glow); border-color:var(--c-glow-deep); }
 .runes__raw{ word-break:break-word; }
 
-/* ——— build path ——— */
 .builds{ display:grid; gap:var(--s-6); }
 @media (min-width:900px){ .builds--dual{ grid-template-columns:1fr 1fr; } }
 .build__cond{
@@ -128,11 +119,9 @@
 .build__note{ color:var(--c-ash); display:block; }
 .build__pre{ margin-bottom:var(--s-4); }
 
-/* ——— summoners ——— */
 .summs{ display:flex; gap:var(--s-2); }
 .summs img{ width:30px; height:30px; border-radius:3px; border:1px solid var(--c-iron); }
 
-/* ——— stat plate ——— */
 .plate__body{ padding:var(--s-5); }
 .plate__label{
   display:block; margin-bottom:var(--s-1);
@@ -140,12 +129,10 @@
   color:var(--c-brass-hi);
 }
 
-/* ============ WRITEUP ============ */
 .writeup{ max-width:var(--w-prose); }
 .sect{
   margin-top:var(--s-7); padding:var(--s-5) var(--s-5) var(--s-5) var(--s-6);
-  /* clears the 89px sticky mini-header when scrolled to via TOC, jump select
-     or a #/vs/<champ>/<section> deep link */
+
   scroll-margin-top:calc(var(--s-8) + var(--s-5));
 }
 .sect:first-of-type{ margin-top:var(--s-5); }
@@ -172,15 +159,15 @@
   content:""; position:absolute; left:calc(var(--s-5) * -1); top:.72em;
   width:9px; height:1px; background:var(--c-glow-deep);
 }
-/* semantic identity applied to the wrapper — never the author's words */
+
 .sect--early{ background:var(--c-slag); }
-.sect--trade{                      /* §4.12 necrotic emission: three layers, never one */
+.sect--trade{
   position:relative;
   background:var(--c-forge);
-  border-left:2px solid var(--c-glow);   /* (1) hard core */
-  box-shadow:0 0 6px rgba(52,224,206,.30); /* (2) tight bloom */
+  border-left:2px solid var(--c-glow);
+  box-shadow:0 0 6px rgba(52,224,206,.30);
 }
-.sect--trade::after{                       /* (3) wide field */
+.sect--trade::after{
   content:""; position:absolute; left:0; top:0; bottom:0; width:180px;
   pointer-events:none; z-index:0;
   background:linear-gradient(90deg, rgba(52,224,206,.07), transparent);
@@ -196,11 +183,9 @@
 }
 .writeup__foot{ margin-top:var(--s-7); display:flex; gap:var(--s-4); align-items:center; flex-wrap:wrap; }
 
-/* collapsed state — opt-in only, default expanded */
 .is-collapsed .sect__body{ display:none; }
 .is-collapsed .sect{ padding-block:var(--s-3); }
 
-/* ——— TOC scroll-spy ——— */
 .toc__list{ list-style:none; margin:0; padding:0; }
 .toc__list a{
   display:block; padding:var(--s-2) var(--s-3);
@@ -216,7 +201,6 @@
   .toc__list a.is-active{ border-color:var(--c-glow); }
 }
 
-/* ============ SEARCH ============ */
 .search{ position:relative; }
 .search__field{ position:relative; display:flex; align-items:center; }
 .search__input{
@@ -271,7 +255,6 @@
 .search__empty{ padding:var(--s-5); max-width:var(--w-narrow); }
 .search__empty p{ margin:0 0 var(--s-3); font-size:var(--fs-400); }
 
-/* ——— grid of all 139 ——— */
 .grid{
   display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr));
   gap:var(--s-3); list-style:none; margin:0; padding:0;
@@ -291,12 +274,9 @@
   color:var(--card,var(--c-ash)); font-variant-numeric:tabular-nums;
 }
 
-/* ============ MATCHUP OVERLAY — the one dramatic moment ============ */
 .overlay{
   position:fixed; inset:0; z-index:9000; overflow-y:auto;
-  /* Solid, not translucent: at any alpha that still reads as a scrim, 139
-     champion cards ghost through the writeup and make it unreadable. The
-     drama comes from the ring shift and the portrait rise, not the see-through. */
+
   background:
     radial-gradient(120% 60% at 50% 0%, rgba(52,224,206,.11), transparent 60%),
     radial-gradient(80% 50% at 88% 6%, rgba(15,107,98,.18), transparent 62%),
@@ -316,7 +296,7 @@
   position:relative; display:grid; grid-template-columns:auto 1fr;
   gap:var(--s-5); align-items:end; padding:var(--s-5) 0 var(--s-6);
 }
-.hero__wash{            /* the champion, blown up and blurred into the ground */
+.hero__wash{
   position:absolute; left:-6%; right:-6%; top:-40%; bottom:-30%; z-index:0;
   pointer-events:none; opacity:.30;
   background-position:12% 38%; background-size:cover; background-repeat:no-repeat;
@@ -324,9 +304,7 @@
   -webkit-mask-image:linear-gradient(100deg, #000 0%, rgba(0,0,0,.55) 45%, transparent 78%);
   mask-image:linear-gradient(100deg, #000 0%, rgba(0,0,0,.55) 45%, transparent 78%);
 }
-/* Only the real content is lifted. A blanket `.hero > *` also re-positions the
-   decorative wash and crown, turning both into in-flow grid items — the crown
-   is 900x563 and was claiming a whole row. */
+
 .hero > :not(.hero__wash):not(.crown--ghost){ position:relative; z-index:1; }
 .hero__portrait{
   width:132px; height:132px; border:1px solid var(--c-iron);
@@ -336,7 +314,6 @@
 .hero__name{ font-size:var(--fs-1000); }
 @media (max-width:700px){ .hero__name{ font-size:var(--fs-900); } }
 
-/* sticky mini-header — the ONLY backdrop-filter on the site */
 .mini{
   position:sticky; top:0; z-index:30; height:var(--s-8);
   display:flex; align-items:center; gap:var(--s-4);
@@ -351,14 +328,13 @@
 .mini__name{ font:600 var(--fs-400)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.05em; }
 .mini__pill{ margin-left:auto; }
 
-/* ============ RELIC (Tenor) ============ */
 .relic{ margin:0 0 var(--s-6); max-width:var(--w-rail); }
 .relic__stage{
   position:relative; min-height:120px; background:var(--c-forge);
   border:1px solid var(--c-iron);
   box-shadow: var(--bevel-raised), 0 0 24px rgba(52,224,206,.12);
 }
-.relic__stage::after{           /* a teal edge-light, not a colour wash over the clip */
+.relic__stage::after{
   content:""; position:absolute; inset:0; pointer-events:none;
   box-shadow: inset 0 0 18px rgba(52,224,206,.14);
 }
@@ -369,7 +345,6 @@
   padding-top:var(--s-2); border-top:1px solid var(--c-iron);
 }
 
-/* ============ TABLES (guides) ============ */
 .tbl{ width:100%; border-collapse:collapse; font-size:var(--fs-400); }
 .tbl caption{
   text-align:left; padding-bottom:var(--s-3);
@@ -415,15 +390,10 @@
   }
 }
 
-/* ============ fixes found in review ============ */
-
-/* Itemization table: 5 columns of prose need declared widths or the first
-   column eats the row. min-width keeps it scrollable rather than crushed. */
 .tbl--items{ table-layout:fixed; min-width:1120px; }
 .tbl--items td p{ margin:0 0 var(--s-3); }
 .tbl--items td p:last-child{ margin-bottom:0; }
 
-/* Rune guide: hairline-separated rows, not a grid of near-identical cards */
 .runes-tree{ margin-bottom:var(--s-7); }
 .runes-tree__h{ font-size:var(--fs-800); margin-bottom:var(--s-4); }
 .runerows{ list-style:none; margin:0; padding:0; border-top:1px solid var(--c-iron); }
@@ -436,7 +406,6 @@
 .runerow__body p:last-child{ margin-bottom:0; }
 @media (max-width:620px){ .runerow{ grid-template-columns:1fr; gap:var(--s-3); } }
 
-/* TL;DR + generic stacks are lists but should not carry browser markers */
 .stack{ list-style:none; margin:0; padding:0; }
 .stack li{ position:relative; padding-left:var(--s-5); font-size:var(--fs-400); line-height:1.6; }
 .stack li::before{
@@ -444,17 +413,13 @@
   width:9px; height:1px; background:var(--c-glow-deep);
 }
 
-/* Item strip must stay one row at the rail/prose widths we ship */
 .build__strip{ flex-wrap:nowrap; }
 @media (max-width:560px){ .build__strip{ flex-wrap:wrap; } }
 
-/* The deflist term column was colliding with long build names */
 .deflist dt{ overflow-wrap:anywhere; }
 
-/* Guides intro paragraphs inside prose blocks */
 .wrap-pre{ white-space:normal; }
 
-/* Card grid: equal-height rows, names that wrap instead of clipping */
 .grid{ grid-auto-rows:1fr; }
 .grid > li{ display:flex; }
 .card{ width:100%; align-content:center; }
@@ -462,20 +427,17 @@
 .card__name{ display:block; overflow-wrap:anywhere; }
 .card__val{ display:block; margin-top:var(--s-1); }
 
-/* Asides the author bracketed mid-build, kept where they were written */
 .build__aside{
   padding-left:var(--s-6); color:var(--c-brass-hi);
   font:600 var(--fs-200)/1.4 var(--f-chrome); text-transform:uppercase; letter-spacing:.1em;
 }
-.build__notes li.build__aside::before{ content:none; }  /* an aside is not a step */
+.build__notes li.build__aside::before{ content:none; }
 
-/* Blocks holding two sub-matchups (Udyr: AD and Tank) */
 .variant + .variant{ margin-top:var(--s-7); }
 .variant{ scroll-margin-top:calc(var(--s-8) + var(--s-5)); }
 .variant__h{ font-size:var(--fs-800); }
 .variant__spine{ margin:var(--s-4) 0 var(--s-5); max-width:26rem; }
 
-/* Sticky mini-header: jump control + the sawtooth bottom edge */
 .mini{ overflow:visible; }
 .mini__in{ display:flex; align-items:center; gap:var(--s-4); width:100%; }
 .mini__edge{ position:absolute; left:0; right:0; bottom:-14px; }
@@ -491,8 +453,6 @@
   .mini__jump{ margin-left:auto; max-width:11rem; }
 }
 
-/* Phone: a 352px dropdown under a second-screen champ-select timer is not
-   usable. The popup becomes a sheet from the input to the bottom edge. */
 @media (max-width:620px){
   .search.is-open .search__pop{
     position:fixed; left:0; right:0; top:var(--pop-top,180px); bottom:0;
@@ -503,11 +463,9 @@
   .search.is-open .search__group{ position:sticky; top:0; background:var(--c-forge); z-index:1; }
 }
 
-/* Runes with no writeup yet: one compact strip, not a row of blanks each */
 .runestrip{ display:flex; flex-wrap:wrap; gap:var(--s-2); list-style:none; margin:var(--s-3) 0 0; padding:0; }
 .runestrip img{ border-radius:3px; border:1px solid var(--c-iron); }
 
-/* Artwork for entities named in free text (alternate setups) */
 .iconstrip{ display:flex; flex-wrap:wrap; gap:var(--s-2); list-style:none; margin:0 0 var(--s-4); padding:0; }
 .iconstrip img{
   width:40px; height:40px; border-radius:3px; border:1px solid var(--c-iron);
@@ -515,7 +473,6 @@
 }
 .iconstrip li:first-child img{ border-color:var(--c-glow-dim); box-shadow:0 0 16px rgba(52,224,206,.26); }
 
-/* ============ HOME BANNER ============ */
 .banner{ position:relative; overflow:hidden; padding-block:var(--s-8) 0; margin-bottom:var(--s-7); }
 .banner__wash{
   position:absolute; left:-10%; right:-10%; top:-60%; height:220%; z-index:0;
@@ -545,7 +502,6 @@
 }
 .btn--lit:hover{ background:var(--c-glow-hot); border-color:var(--c-glow-hot); }
 
-/* every champion covered, as a band of art */
 a.banner__roster{ text-decoration:none; }
 a.banner__roster:hover img{ opacity:.8; }
 .banner__roster{

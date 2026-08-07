@@ -1,15 +1,6 @@
-/* ============================================================
-   PAGES — renders HOME and GUIDES from guides.json, plus the
-   shared footer. Listens for the ready event fired by main.js.
-   ============================================================ */
-
 import { img } from './data.js';
 import { escapeHtml, norm } from './search.js';
 
-/* Build a name -> icon index out of the matchup data so the alternate setups,
-   which the workbook stores as plain text, can show the same artwork the
-   matchup pages use. Keystones map from their rune-page image; items from the
-   icons whose identity the Itemization Guide confirmed. */
 let ICONS = null;
 function buildIconIndex(matchups) {
   const m2 = new Map();
@@ -28,10 +19,6 @@ function buildIconIndex(matchups) {
   ICONS = m2;
 }
 
-/* Pull every recognised entity out of a free-text rune or item string.
-   Keystones are excluded: the workbook stores a full rune-page screenshot for
-   them, which is unreadable at 40px and belongs to a different rune setup
-   anyway. Item art is the same object in both places, so it transfers. */
 function iconsFor(text, kind) {
   if (!ICONS) return [];
   const seen = new Set(), out = [];
@@ -57,22 +44,14 @@ const $$ = s => [...document.querySelectorAll(s)];
 const set = (sel, html) => { const el = $(sel); if (el) el.innerHTML = html; };
 const txt = (sel, s) => { const el = $(sel); if (el) el.textContent = s || ''; };
 
-/* Newlines inside a spreadsheet cell are column-width wrapping, not authored
-   line breaks — only blank lines are a real paragraph boundary. Rendering every
-   \n as <br> shreds the prose into ragged fragments. */
 const prose = t => String(t || '').split(/\n\s*\n/).map(p => p.replace(/\s*\n\s*/g, ' ').trim())
   .filter(Boolean).map(p => `<p>${escapeHtml(p)}</p>`).join('');
 const oneline = t => String(t || '').replace(/\s*\n\s*/g, ' ').trim();
 
-/* The workbook carries 76 hyperlinks — the Discord invite, every creator
-   profile, the wiki and the linked guides. Dropping them loses real content. */
 const ext = (label, url, cls) => url
   ? `<a${cls ? ` class="${cls}"` : ''} href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`
   : escapeHtml(label);
 
-/* Tenor: the official embed script is the only reliable way to resolve a post id.
-   The GIF is shown in full colour — masking and desaturating it was cropping the
-   clip and draining it, which read as broken rather than styled. */
 function mountRelics() {
   const relics = $$('[data-relic]');
   if (!relics.length) return;
@@ -96,7 +75,6 @@ function renderHome({ guides, matchups }) {
   const g = guides.intro;
   if (!$('[data-intro-sub]')) return;
 
-  // He should be on his own front page.
   const morde = matchups.find(m => m.slug === 'mordekaiser');
   const port = $('[data-morde-portrait]');
   if (morde && port) {
@@ -104,7 +82,7 @@ function renderHome({ guides, matchups }) {
     const wash = $('.banner__wash');
     if (wash) wash.style.backgroundImage = `url('${img(morde.portrait)}')`;
   }
-  // A wall of every champion covered, doubling as the route into the matchups.
+
   set('[data-roster]', matchups.map(m =>
     `<img src="${img(m.portrait)}" alt="" width="34" height="34" loading="lazy">`).join(''));
   txt('[data-intro-title]', g.title || 'The Mordekaiser Bible');
@@ -124,7 +102,7 @@ function renderHome({ guides, matchups }) {
     'Rune Guide': 'guides.html#runes', 'Alternate Mordekaiser Setups': 'guides.html#setups',
     'Mordekaiser Content': 'guides.html#creators',
   };
-  // The only status the author states is "(WIP)". Anything else would be invented.
+
   set('[data-toc]', (g.toc || []).map(t => {
     const label = String(t.label || t).replace(/^-\s*/, '');
     const bare = label.replace(/\s*\(WIP\)\s*$/, '').trim();
@@ -167,8 +145,7 @@ function renderGuides({ guides }) {
                 style="padding-top:var(--s-5)">${escapeHtml(sec.title)}</th></tr>`;
       for (const entry of sec.entries) {
         const by = Object.fromEntries(entry.slots.map(s => [s.slot, s]));
-        // Each cell is its own item — row 7 is Rylai's as a first item and
-        // Cosmic Drive as a second — so the icon belongs to the cell, not the row.
+
         html += `<tr>` +
           COLS.map(c => {
             const cellData = by[c];
@@ -192,9 +169,7 @@ function renderGuides({ guides }) {
         <h3 class="runes-tree__h monument--sec t-engraved">${escapeHtml(TREE[i] || 'Tree ' + (i + 1))}</h3>
         ${(() => {
           const noted = grp.entries.filter(e => e.text);
-          // Runes the author has not written up yet keep their icon but do not
-          // each get an empty row — that is what turned this into a wall of
-          // blank cards. They collapse into one strip instead.
+
           const bare = grp.entries.filter(e => e.icon && !e.text);
           return `${noted.length ? `<ul class="runerows">${noted.map(e => `
               <li class="runerow">

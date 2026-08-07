@@ -1,21 +1,13 @@
-/* ============================================================
-   SEARCH — 139 records, client-side, synchronous.
-   No debounce, no spinner, no async, no Fuse.js.
-   ============================================================ */
-
 import { DIFF_WORD, diffVar, img } from './data.js';
 
-/* ——— 6.1 normalisation. U+2019 is the one that matters. ——— */
 const RE_MARKS = /[̀-ͯ]/g;
 const RE_STRIP = /['’ʼ`´.\-\s&]/g;
 export const norm = s => String(s).toLowerCase().normalize('NFD')
   .replace(RE_MARKS, '').replace(RE_STRIP, '');
 
-/* Single-match variants: `.test()` on a /g regex is stateful, so never reuse the above. */
 const RE_MARK_ONE  = /[̀-ͯ]/;
 const RE_STRIP_ONE = /['’ʼ`´.\-\s&]/;
 
-/** Normalise while recording, for each output char, its index in the ORIGINAL string. */
 function normMap(s) {
   const str = String(s);
   let out = '';
@@ -32,7 +24,6 @@ function normMap(s) {
   return { out, map };
 }
 
-/* ——— 6.3 alias table ——— */
 export const ALIASES = {
   'j4':'Jarvan IV', 'jarvan4':'Jarvan IV', 'jarvaniv':'Jarvan IV', 'jarvan':'Jarvan IV',
   'tf':'Twisted Fate', 'asol':'Aurelion Sol', 'mundo':'Dr. Mundo', 'yi':'Master Yi',
@@ -49,8 +40,6 @@ export const ALIASES = {
   'mumu':'Amumu', 'ez':'Ezreal', 'akshan':'Akshan', 'mao':'Maokai', 'yorick':'Yorick',
 };
 
-/* Champions that exist in League but have no entry in the Bible — used to tell
-   "you typed a real champion we haven't covered" apart from "that isn't a champion". */
 const ROSTER_EXTRA = ['Alistar','Amumu','Aphelios','Ashe','Bard','Blitzcrank','Braum','Caitlyn',
   'Ezreal','Gragas','Gwen','Janna','Jinx','Karma','Kayn','Kha\'Zix','Kindred','Leona','Lillia',
   'Lucian','Lulu','Milio','Miss Fortune','Nami','Nilah','Nunu & Willump','Orianna','Pyke','Rakan',
@@ -90,7 +79,6 @@ function damLev(a, b, cap) {
   return d[al][bl];
 }
 
-/** 6.4 seven tiers. Tier 7 evaluated only when 1–6 come back empty. */
 export function rank(index, query) {
   const q = norm(query);
   if (!q) return [];
@@ -126,10 +114,6 @@ export function rank(index, query) {
   return hits;
 }
 
-/** Map a normalised match span back onto the original string for highlighting.
- *  Only literal substring matches are highlighted. An alias, initialism or
- *  subsequence hit ("mundo" -> Dr. Mundo, "mf" -> Miss Fortune) has no literal
- *  span at `at`, and marking one anyway bolds the wrong characters. */
 export function highlight(entry, query, at) {
   const q = norm(query);
   const name = entry.m.name;
@@ -148,7 +132,6 @@ export function highlight(entry, query, at) {
 export const escapeHtml = s => String(s).replace(/[&<>"']/g, c =>
   ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 
-/** Distinguish "not a champion" from "real champion, no writeup yet". */
 export function knownChampion(query, matchups) {
   const q = norm(query);
   const covered = new Set(matchups.map(m => norm(m.name)));
@@ -170,7 +153,6 @@ export function closest(index, query, n = 3) {
     .slice(0, n).map(x => x.e.m);
 }
 
-/* ——— recents ——— */
 const RK = 'morde.recents';
 export const recents = () => { try { return JSON.parse(localStorage.getItem(RK)) || []; } catch { return []; } };
 export function pushRecent(slug) {
@@ -178,10 +160,9 @@ export function pushRecent(slug) {
     const list = recents().filter(s => s !== slug);
     list.unshift(slug);
     localStorage.setItem(RK, JSON.stringify(list.slice(0, 4)));
-  } catch { /* private mode — recents are a convenience, not a requirement */ }
+  } catch {  }
 }
 
-/* ——— row markup ——— */
 export function optionRow(m, id, active, inner) {
   const d = m.overall;
   return `<a class="opt${active ? ' is-active' : ''}" id="${id}" role="option" tabindex="-1"

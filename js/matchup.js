@@ -1,13 +1,6 @@
-/* ============================================================
-   MATCHUP — detail render, scroll-spy TOC, entity chips.
-   The writeup is rendered byte-identical. Every intervention
-   is structural: never edit the author's sentences.
-   ============================================================ */
-
 import { DIFF_WORD, diffVar, sectionMeta, img } from './data.js';
 import { escapeHtml } from './search.js';
 
-/* ——— entity chips: first mention per paragraph, max three ——— */
 let ENTITY_RE = null;
 export function buildEntityMatcher(matchups) {
   const names = new Set();
@@ -39,7 +32,7 @@ function chipify(text) {
     if (seen.has(key)) continue;
     seen.add(key);
     spans.push([mm.index, mm.index + mm[0].length]);
-    if (spans.length > 3) return escapeHtml(text); // too dense — chip none of it
+    if (spans.length > 3) return escapeHtml(text);
   }
   if (!spans.length) return escapeHtml(text);
   let out = '', cur = 0;
@@ -51,10 +44,8 @@ function chipify(text) {
   return out + escapeHtml(text.slice(cur));
 }
 
-/* ——— pieces ——— */
 const spineRow = (label, v) => {
-  // Mordekaiser's early rating is blank in the workbook. Rendering that as 0/5
-  // would invent a rating the author never gave.
+
   const rated = typeof v === 'number' && v > 0;
   const n = rated ? v : 0;
   const segs = Array.from({ length: 5 }, (_, i) =>
@@ -70,9 +61,7 @@ function runesBlock(m) {
   const { primary = [], secondary = [], shards = [], raw = '' } = m.runes || {};
   const chips = (arr, lead) => arr.map((r, i) =>
     `<li class="chip${lead && i === 0 ? ' chip--lead' : ''}">${escapeHtml(r)}</li>`).join('');
-  // The workbook stores a full 602x555 rune-page screenshot from the client,
-  // not a keystone icon. Showing it at 52px threw away the most useful image
-  // in the dataset; it gets full width here.
+
   return `<div class="runes">
     ${m.keystoneIcon ? `<a class="runepage" href="${img(m.keystoneIcon)}" target="_blank"
         rel="noopener noreferrer" aria-label="Open the full rune page image">
@@ -142,7 +131,6 @@ function sectionList(list, champSlug) {
   }).join('');
 }
 
-/* ——— public render ——— */
 export function renderDetail(m) {
   const builds = m.builds.map(buildBlock).join('');
   const toc = (m.variants && m.variants.length > 1 ? [] : m.sections)
@@ -237,11 +225,8 @@ export function renderDetail(m) {
   </div>`;
 }
 
-/* ——— behaviour ——— */
 export function wireDetail(root, scroller) {
-  // #overlay is a persistent element whose innerHTML is swapped, so listeners
-  // bound to it survive a close and accumulate on every reopen. One
-  // AbortController removes all of them in the teardown.
+
   const ac = new AbortController();
   const { signal } = ac;
   const spy = root.querySelectorAll('[data-spy]');
@@ -255,10 +240,7 @@ export function wireDetail(root, scroller) {
     });
   };
   sel?.addEventListener('change', () => goTo(sel.value), { signal });
-  // Scroll-driven rather than IntersectionObserver-driven: an intersection band
-  // narrow enough to pick a single section also leaves gaps where no section is
-  // inside it, so the TOC blanks out over long sections. Choosing the last
-  // heading at or above a threshold line always yields exactly one active entry.
+
   let spyRaf = 0;
   const syncSpy = () => {
     spyRaf = 0;
@@ -271,8 +253,7 @@ export function wireDetail(root, scroller) {
       if (sec.getBoundingClientRect().top <= line) current = sec.dataset.slug;
       else break;
     }
-    // At the end of the scroll the final headings can never cross the threshold
-    // line, so they would never activate. Snap to the last one at the bottom.
+
     const el = scroller || document.scrollingElement;
     if (el && el.scrollTop + el.clientHeight >= el.scrollHeight - 8) {
       current = sections[sections.length - 1].dataset.slug;
@@ -292,7 +273,7 @@ export function wireDetail(root, scroller) {
         copy.textContent = 'Copied';
         copy.classList.add('is-done');
         setTimeout(() => { copy.textContent = was; copy.classList.remove('is-done'); }, 1400);
-      }).catch(() => { /* clipboard blocked — the raw string is on screen already */ });
+      }).catch(() => {  });
       return;
     }
     const col = e.target.closest('[data-collapse]');
@@ -301,7 +282,7 @@ export function wireDetail(root, scroller) {
       const on = w.classList.toggle('is-collapsed');
       col.setAttribute('aria-pressed', String(on));
       col.textContent = on ? 'Expand all' : 'Collapse all';
-      try { localStorage.setItem('morde.collapsed', on ? '1' : '0'); } catch { /* private mode */ }
+      try { localStorage.setItem('morde.collapsed', on ? '1' : '0'); } catch {  }
     }
   }, { signal });
 

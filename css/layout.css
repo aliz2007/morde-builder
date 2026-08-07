@@ -1,7 +1,3 @@
-/* ============================================================
-   LAYOUT — reset, base type, containers, grids, chrome.
-   ============================================================ */
-
 *,*::before,*::after{ box-sizing:border-box; }
 html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
 @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
@@ -32,7 +28,6 @@ a:hover{ text-decoration-color: var(--c-glow); }
 
 #main{ position:relative; }
 
-/* ——— type roles ——— */
 .monument{
   font-family:var(--f-display); font-weight:900; text-transform:uppercase;
   letter-spacing:.07em; line-height:1.02; margin:0;
@@ -64,14 +59,12 @@ a:hover{ text-decoration-color: var(--c-glow); }
   font:400 var(--fs-100)/1.5 var(--f-mono); letter-spacing:.06em; color:var(--c-dust);
 }
 
-/* ——— containers, one per role ——— */
 .container{ margin-inline:auto; padding-inline:var(--s-5); }
 .w-page  { max-width:var(--w-page); }
 .w-wide  { max-width:var(--w-wide); }
 .w-shell { max-width:var(--w-shell); }
 .w-prose { max-width:calc(var(--w-prose) + var(--s-5) * 2); }
 
-/* ——— masthead ——— */
 .mast{
   position:relative; z-index:20;
   background:linear-gradient(180deg, #16201F 0%, var(--c-forge) 100%);
@@ -104,7 +97,6 @@ a:hover{ text-decoration-color: var(--c-glow); }
 }
 .mast__edge{ position:absolute; left:0; right:0; bottom:-14px; }
 
-/* ——— footer: two columns only ——— */
 .foot{ position:relative; margin-top:var(--s-8); background:var(--c-forge); }
 .foot__edge{ position:absolute; left:0; right:0; top:-14px; transform:scaleY(-1); }
 .foot__in{
@@ -121,16 +113,12 @@ a:hover{ text-decoration-color: var(--c-glow); }
   .foot__in{ grid-template-columns:1fr; gap:var(--s-6); }
 }
 
-/* ——— HOME: asymmetric, no centred hero ——— */
 .home-grid{
   display:grid; grid-template-columns:minmax(0,var(--w-prose)) var(--w-rail);
   column-gap:var(--s-7); align-items:start;
 }
 @media (max-width:980px){ .home-grid{ grid-template-columns:1fr; row-gap:var(--s-6); } }
 
-/* ——— MATCHUP detail: three panes ———
-   Items and prose are separate grid children so the phone can order them
-   loadout -> items -> jump chips -> prose. On desktop both sit in column 2. */
 .matchup{
   display:grid;
   grid-template-columns: var(--w-rail) minmax(0,1fr) var(--w-toc);
@@ -154,24 +142,15 @@ a:hover{ text-decoration-color: var(--c-glow); }
   .rail,.toc{ position:static; }
 }
 
-/* ——— GUIDES ——— */
 .guide-part{ padding-block:var(--s-7); }
 .guide-part > .seam{ margin-top:0; }
 
-/* Brand + three nav items do not fit at phone widths; wrap rather than overflow */
 @media (max-width:620px){
   .mast__in{ flex-wrap:wrap; row-gap:var(--s-3); }
   .mast__word{ font-size:var(--fs-300); letter-spacing:.08em; }
   .mast__nav{ margin-left:0; width:100%; gap:var(--s-5); }
 }
 
-/* ============================================================
-   CURSOR — his mace, mirrored so the head leads. Hotspot on the tip.
-   ============================================================ */
-/* url() in CSS resolves against the STYLESHEET, not the document — from css/
-   this needs ../assets, or it 404s and silently falls back to the system arrow.
-   32x32 because Firefox ignores larger cursor images outright. PNG is listed
-   after the SVG for Safari, which does not accept SVG cursors. */
 html, body{
   cursor:url("../assets/cursor-mace.svg") 2 2,
          url("../assets/cursor-mace.png") 2 2, auto;
@@ -183,11 +162,6 @@ a, button, select, summary, [role="option"], .card, .opt, .runepage, label[for]{
 input, textarea{ cursor:text; }
 button:disabled{ cursor:not-allowed; }
 
-/* ============================================================
-   ATMOSPHERE — the page was a spec sheet on a black wall. These are the
-   layers that give it depth: a teal horizon behind the masthead, a
-   breathing glow on the page ground, and light on the accents.
-   ============================================================ */
 body::before{
   content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
   background:
@@ -206,12 +180,9 @@ body::after{
   @keyframes tide{ 0%,100%{ opacity:.75 } 50%{ opacity:1.25 } }
 }
 
-/* Headings stay solid — a gradient fill hollows them out under .t-engraved,
-   and gradient headline text is the loudest AI-template tell there is. */
 .monument, .monument--sec{ color:var(--c-bone); }
 .eyebrow{ text-shadow:0 0 14px rgba(52,224,206,.22); }
 
-/* the weld seam actually glows now */
 .seam::after{
   background:linear-gradient(90deg, transparent 14%, rgba(52,224,206,.55) 50%, transparent 86%);
   filter:blur(1px);

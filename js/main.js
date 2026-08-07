@@ -1,7 +1,3 @@
-/* ============================================================
-   MAIN — page chrome on every page; search + routing on MATCHUPS.
-   ============================================================ */
-
 import { load, bySlug, DIFF_WORD, diffVar, img } from './data.js';
 import {
   buildIndex, rank, highlight, norm, ALIASES, knownChampion, closest,
@@ -11,7 +7,6 @@ import { renderDetail, wireDetail, buildEntityMatcher } from './matchup.js';
 
 const CROWN = `<svg class="crown" viewBox="0 0 64 40" aria-hidden="true"><path fill-rule="evenodd" d="M2 40 L2 22 L9 30 L14 8 L21 24 L27 2 L32 0 L37 2 L43 24 L50 8 L55 30 L62 22 L62 40 Z M14 31 L50 31 L50 35 L14 35 Z"/></svg>`;
 
-/* ——— chrome mounted on every page ——— */
 function mountChrome() {
   const frag = document.createElement('div');
   frag.innerHTML =
@@ -33,9 +28,6 @@ function mountChrome() {
   document.querySelectorAll('[data-year]').forEach(el => { el.textContent = new Date().getFullYear(); });
 }
 
-/* ============================================================
-   MATCHUPS page
-   ============================================================ */
 function mountMatchups({ matchups }) {
   const input   = document.getElementById('q');
   const pop     = document.getElementById('results');
@@ -49,16 +41,14 @@ function mountMatchups({ matchups }) {
   const index = buildIndex(matchups);
   const slugs = new Map(matchups.map(m => [m.slug, m]));
   let active = -1, rows = [], unwire = null, lastFocus = null;
-  let hasResults = false;   // Enter only auto-navigates over real matches
+  let hasResults = false;
 
-  /* ——— browse grid ——— */
   gridEl.innerHTML = matchups.map(m =>
     `<li><a class="card" href="#/vs/${m.slug}" style="--card:${diffVar(m.overall)}">
       <img class="card__img" src="${img(m.portrait)}" alt="" width="38" height="38" loading="lazy">
       <span><span class="card__name">${escapeHtml(m.name)}</span>
       <span class="card__val">${m.overall}/5 ${DIFF_WORD[m.overall]}</span></span></a></li>`).join('');
 
-  /* ——— dropdown ——— */
   function setActive(i) {
     active = i;
     rows.forEach((r, k) => {
@@ -79,8 +69,7 @@ function mountMatchups({ matchups }) {
     pop.innerHTML = html;
     pop.hidden = false;
     input.setAttribute('aria-expanded', 'true');
-    // On phones the popup is a sheet running to the bottom of the viewport, not
-    // a 352px dropdown; its top edge follows the input.
+
     searchEl?.classList.add('is-open');
     pop.style.setProperty('--pop-top', Math.round(input.getBoundingClientRect().bottom + 6) + 'px');
     rows = [...pop.querySelectorAll('.opt')];
@@ -158,8 +147,7 @@ function mountMatchups({ matchups }) {
       case 'PageDown':  if (max >= 0) { e.preventDefault(); setActive(Math.min(max, active + 5)); } break;
       case 'PageUp':    if (max >= 0) { e.preventDefault(); setActive(Math.max(0, active - 5)); } break;
       case 'Enter': {
-        // With no active option, Enter takes the top-ranked match — but never a
-        // "Did you mean" suggestion, which the user did not ask for.
+
         const target = active >= 0 ? rows[active] : (hasResults ? rows[0] : null);
         if (target) { e.preventDefault(); location.hash = target.getAttribute('href').slice(1); close(); }
         break;
@@ -178,7 +166,7 @@ function mountMatchups({ matchups }) {
   document.addEventListener('keydown', e => {
     if (overlay && !overlay.hidden) {
       if (e.key === 'Escape') { history.pushState('', '', '#browse'); route(); }
-      return;   // "/" and Cmd/Ctrl+K must not reach the search behind the overlay
+      return;
     }
     const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || '');
     if ((e.key === '/' && !typing) || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) {
@@ -186,7 +174,6 @@ function mountMatchups({ matchups }) {
     }
   });
 
-  /* ——— routing ——— */
   function resolveSlug(raw) {
     if (slugs.has(raw)) return raw;
     const n = norm(raw);
@@ -204,15 +191,11 @@ function mountMatchups({ matchups }) {
 
   function route() {
     const h = location.hash.replace(/^#/, '');
-    // #/vs/<champion> and #/vs/<champion>/<section> — the section form makes the
-    // per-heading anchors real deep links instead of bare fragments, which the
-    // router would otherwise read as "not a matchup" and close the overlay.
+
     const mm = h.match(/^\/vs\/([^/]+)(?:\/([^/]+))?$/);
     if (!mm) { openSlug = null; return closeOverlay(); }
     let raw;
-    // A hand-edited or truncated percent-escape ("#/vs/%E0%A4%A") makes
-    // decodeURIComponent throw; unguarded it escaped mountMatchups and the
-    // page-level catch replaced the whole grid with a load error.
+
     try { raw = decodeURIComponent(mm[1]); } catch { raw = mm[1]; }
     const slug = resolveSlug(raw);
     if (!slug) { openSlug = null; return closeOverlay(); }
@@ -220,7 +203,7 @@ function mountMatchups({ matchups }) {
     if (slug !== raw) {
       history.replaceState(null, '', `#/vs/${slug}${section ? '/' + section : ''}`);
     }
-    if (openSlug === slug) return scrollToSection(section);   // already open: just move
+    if (openSlug === slug) return scrollToSection(section);
     openSlug = slug;
     openOverlay(slugs.get(slug));
     if (section) scrollToSection(section);
@@ -247,7 +230,7 @@ function mountMatchups({ matchups }) {
       if (localStorage.getItem('morde.collapsed') === '1') {
         overlay.querySelector('[data-collapse]')?.click();
       }
-    } catch { /* private mode */ }
+    } catch {  }
     pushRecent(m.slug);
     close();
     overlay.scrollTop = 0;
@@ -265,7 +248,7 @@ function mountMatchups({ matchups }) {
     ring?.classList.remove('is-open');
     document.title = 'Matchups — The Mordekaiser Bible';
     input.focus({ preventScroll: true });
-    close();   // focus() fires the focus handler, which would re-open the panel
+    close();
   }
 
   overlay?.addEventListener('click', e => {
@@ -274,7 +257,6 @@ function mountMatchups({ matchups }) {
     }
   });
 
-  /* focus trap while the overlay is open */
   document.addEventListener('keydown', e => {
     if (e.key !== 'Tab' || !overlay || overlay.hidden) return;
     const f = overlay.querySelectorAll('a[href],button,input,[tabindex]:not([tabindex="-1"])');
@@ -288,7 +270,6 @@ function mountMatchups({ matchups }) {
   route();
 }
 
-/* ——— boot ——— */
 mountChrome();
 load().then(data => {
   mountMatchups(data);

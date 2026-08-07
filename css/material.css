@@ -1,10 +1,3 @@
-/* ============================================================
-   MATERIAL — grain, patina, plate, seam, arch, ring, sawtooth.
-   Zero binary assets. Stacking order is load-bearing:
-   grain must sit above every large gradient or dark panels band.
-   ============================================================ */
-
-/* ——— 4.1 Film grain (z 9999) ——— */
 .grain{
   position:fixed; inset:0; z-index:9999; pointer-events:none;
   opacity:.045; mix-blend-mode:overlay;
@@ -12,7 +5,6 @@
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ——— 4.8 Vignette, green-biased + teal floor fog (z 9998) ——— */
 .vignette{
   position:fixed; inset:0; z-index:9998; pointer-events:none;
   background:
@@ -20,7 +12,6 @@
     linear-gradient(to top, rgba(18,49,45,.16), transparent 22%);
 }
 
-/* ——— 4.9 Realm Ring (z 9997). If it reads as a "ring graphic" it is 3x too strong ——— */
 .realm-ring{
   position:fixed; inset:0; z-index:9997; pointer-events:none;
   transition: opacity var(--t-slow) var(--ease);
@@ -33,7 +24,7 @@
   .realm-ring{ animation: breathe 6s ease-in-out infinite; }
   @keyframes breathe{ 0%,100%{ opacity:.9 } 50%{ opacity:1.15 } }
 }
-/* §8 — the one dramatic moment. Nowhere else does the ring change. */
+
 .realm-ring.is-open{
   animation:none;
   background:
@@ -42,7 +33,6 @@
     radial-gradient(76vmax 76vmax at 50% 60%, rgba(74,158,140,.028), transparent 66%);
 }
 
-/* ——— 4.2 Patina cloud (z 0, scrolls with content) ——— */
 .patina{
   position:absolute; inset:0; z-index:0; pointer-events:none;
   opacity:.10; mix-blend-mode:soft-light;
@@ -50,7 +40,6 @@
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.014' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0.6 0 0 0 0.30  0.3 0 0 0 0.14  0.1 0 0 0 0.06  0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
 }
 
-/* ——— 4.3 Milled plate + rivets ——— */
 .plate{
   position:relative;
   background-color: var(--c-plate);
@@ -64,7 +53,6 @@
   box-shadow: var(--bevel-raised);
 }
 
-/* ——— 4.7 Rust bloom. At most two panels per page. ——— */
 .plate--aged::before{
   content:""; position:absolute; inset:0; pointer-events:none;
   mix-blend-mode: soft-light; filter: url(#corrode);
@@ -73,7 +61,6 @@
     radial-gradient(120px 70px at 104% -6%, rgba(122,59,30,.38), transparent 72%);
 }
 
-/* ——— 4.5 Weld seam — replaces every <hr> ——— */
 .seam{
   position:relative; height:2px; border:0; margin: var(--s-6) 0;
   background: linear-gradient(90deg, transparent, var(--c-iron) 12%, var(--c-iron) 88%, transparent);
@@ -85,7 +72,6 @@
 }
 .seam--tight{ margin: var(--s-3) 0; }
 
-/* ——— 4.12 Necrotic emission — three layers, never one ——— */
 .emit{
   position:relative;
   border-left:2px solid var(--c-glow);
@@ -97,14 +83,12 @@
   background: radial-gradient(closest-side, rgba(52,224,206,.10), transparent);
 }
 
-/* ——— 4.10 Lancet arch mask ——— */
 .arch{
   -webkit-mask-image:var(--arch); mask-image:var(--arch);
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
 }
 
-/* ——— 4.11 Pauldron sawtooth. Uneven teeth: forged, not extruded. ——— */
 .sawtooth{
   height:14px; filter:url(#corrode); pointer-events:none;
   background: repeating-conic-gradient(from -45deg at 50% 0,
@@ -115,7 +99,6 @@
 .sawtooth-strip{ display:flex; }
 .sawtooth-strip > *{ flex:1 1 auto; }
 
-/* ——— 4.15 Black Mist band ——— */
 .mist{
   position:relative; height:200px; overflow:hidden; pointer-events:none;
   margin-top: calc(var(--s-7) * -1);
@@ -133,7 +116,6 @@
   @keyframes drift-b{ from{ transform:translateX(5%) }  to{ transform:translateX(-5%) } }
 }
 
-/* ——— 4.14 Corner brackets — one framed region per viewport ——— */
 .bracketed{ position:relative; }
 .bracketed::before,.bracketed::after{
   content:""; position:absolute; width:18px; height:18px; pointer-events:none;
@@ -147,7 +129,6 @@
   border-bottom:1px solid var(--c-brass); border-right:1px solid var(--c-brass);
 }
 
-/* ——— 4.13 Iron Crown ——— */
 .crown{ display:block; fill:currentColor; }
 .crown--mast{ width:40px; height:25px; color:var(--c-bone); }
 .crown--ghost{

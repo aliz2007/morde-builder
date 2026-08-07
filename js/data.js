@@ -1,8 +1,3 @@
-/* ============================================================
-   DATA — load and normalise. matchups.json is rendered
-   byte-identical; normalisation touches metadata only.
-   ============================================================ */
-
 const KEYSTONE_CANON = {
   'conqueror': 'Conqueror',
   'stormraidersurge': "Stormraider's Surge",
@@ -24,7 +19,6 @@ function canonKeystone(raw) {
   return KEYSTONE_CANON[flatten(first)] || first;
 }
 
-/** Section slug + semantic variant, driven by the four stable headings. */
 const SECT_META = {
   'early game':            { slug:'early-game',            variant:'early' },
   'how to trade':          { slug:'how-to-trade',          variant:'trade' },
@@ -47,8 +41,7 @@ export async function load() {
     m.keystone = canonKeystone(m.keystone);
     m.overall = m.ratings.overall || 3;
     m.overallWord = DIFF_WORD[m.overall];
-    // A TL;DR exists on exactly one champion and its content is a placeholder.
-    // Render only when it is real prose.
+
     m.tldr = (m.tldr || []).filter(t => t && !/^tl;?dr section$/i.test(t.trim()));
     m.sections = (m.sections || []).filter(s => (s.items && s.items.length) || (s.body || '').trim());
     m.variants = m.variants || [];
