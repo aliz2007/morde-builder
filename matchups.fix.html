@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matchups — The Mordekaiser Bible</title>
+<meta name="description" content="Type a champion. Get the runes, the build and the writeup. 139 matchups, one writeup each.">
+<meta property="og:title" content="Matchups — The Mordekaiser Bible">
+<meta property="og:description" content="Type a champion. Get the runes, the build and the writeup.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 40'%3E%3Crect width='64' height='40' fill='%230A0B09'/%3E%3Cpath fill-rule='evenodd' fill='%238FBF3A' d='M2 40 L2 22 L9 30 L14 8 L21 24 L27 2 L32 0 L37 2 L43 24 L50 8 L55 30 L62 22 L62 40 Z M14 31 L50 31 L50 35 L14 35 Z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Barlow+Condensed:wght@500;600;700&family=Libre+Franklin:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/material.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="mast">
+  <div class="mast__in container w-page">
+    <a class="mast__brand" href="index.html">
+      <span data-crown class="crown--mast"></span>
+      <span class="mast__word">The Mordekaiser Bible</span>
+    </a>
+    <nav class="mast__nav" aria-label="Primary">
+      <a class="mast__link" href="index.html">Home</a>
+      <a class="mast__link" href="matchups.html" aria-current="page">Matchups</a>
+      <a class="mast__link" href="guides.html">Guides</a>
+    </nav>
+  </div>
+  <div class="mast__edge sawtooth-strip" aria-hidden="true">
+    <span class="sawtooth"></span><span class="sawtooth sawtooth--deep"></span>
+    <span class="sawtooth sawtooth--fine"></span><span class="sawtooth"></span>
+  </div>
+</header>
+
+<main id="main">
+  <div class="container w-shell" style="padding-top:var(--s-8)">
+    <p class="eyebrow">Matchups</p>
+    <h1 class="monument t-engraved" style="font-size:var(--fs-900);margin-top:var(--s-3)">Who are you against</h1>
+    <p class="prose" style="margin-top:var(--s-5);color:var(--c-ash)">
+      139 matchups, one writeup each. Type a name, or scroll the list.
+    </p>
+
+    <div class="search" style="margin-top:var(--s-6)">
+      <label class="vh" for="q">Search champions</label>
+      <div class="search__field">
+        <input class="search__input" id="q" type="text" role="combobox"
+               aria-expanded="false" aria-controls="results" aria-autocomplete="list"
+               aria-haspopup="listbox" placeholder="Aatrox, Kai&rsquo;Sa, j4, tf&hellip;"
+               inputmode="search" enterkeyhint="go" autocapitalize="off"
+               autocorrect="off" autocomplete="off" spellcheck="false">
+        <span class="search__hint" aria-hidden="true">/</span>
+      </div>
+      <div class="search__pop" id="results" role="listbox" aria-label="Champion results" hidden></div>
+      <p class="vh" role="status" aria-live="polite" data-status></p>
+    </div>
+    <hr class="seam">
+  </div>
+
+  <div class="container w-page" id="browse">
+    <p class="eyebrow" style="margin-bottom:var(--s-4)">All champions</p>
+    <ul class="grid" id="grid"></ul>
+  </div>
+
+  <div class="mist" aria-hidden="true"></div>
+
+  <div class="container w-page" style="padding-bottom:var(--s-8)">
+    <p class="epitaph">“Don&rsquo;t die level 1”<cite>Meowdekaiser, on Aatrox</cite></p>
+  </div>
+</main>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Matchup detail" hidden></div>
+
+<footer class="foot">
+  <div class="foot__edge sawtooth-strip" aria-hidden="true">
+    <span class="sawtooth sawtooth--fine"></span><span class="sawtooth"></span>
+    <span class="sawtooth sawtooth--deep"></span><span class="sawtooth"></span>
+  </div>
+  <div class="foot__in container w-page">
+    <div class="foot__col">
+      <h2>Credits</h2>
+      <ul class="foot__list" data-foot-credits></ul>
+    </div>
+    <div class="foot__col">
+      <h2>Active creators</h2>
+      <ul class="foot__list" data-foot-creators></ul>
+    </div>
+  </div>
+  <div class="foot__meta container w-page">
+    <p class="mono-micro">Written by Meowdekaiser. Rebuilt as a website, <span data-year></span>.</p>
+  </div>
+</footer>
+
+<script type="module" src="js/main.fix.js"></script>
+<script type="module" src="js/pages.js"></script>
+</body>
+</html>

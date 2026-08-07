@@ -53,13 +53,17 @@ function chipify(text) {
 
 /* ——— pieces ——— */
 const spineRow = (label, v) => {
-  const n = v || 0;
+  // Mordekaiser's early rating is blank in the workbook. Rendering that as 0/5
+  // would invent a rating the author never gave.
+  const rated = typeof v === 'number' && v > 0;
+  const n = rated ? v : 0;
   const segs = Array.from({ length: 5 }, (_, i) =>
     `<span class="spine__seg${i < n ? ' is-on' : ''}" style="--i:${i}"></span>`).join('');
-  return `<div class="spine__row" style="--seg:${diffVar(n)}">
+  return `<div class="spine__row" style="--seg:${rated ? diffVar(n) : 'var(--c-dust)'}">
     <span class="spine__label">${label}</span>
-    <span class="spine__segs" role="img" aria-label="${label} ${n} out of 5, ${DIFF_WORD[n] || 'unrated'}">${segs}</span>
-    <span class="spine__val">${n}/5</span></div>`;
+    <span class="spine__segs" role="img" aria-label="${label} ${
+      rated ? `${n} out of 5, ${DIFF_WORD[n]}` : 'not rated'}">${segs}</span>
+    <span class="spine__val">${rated ? `${n}/5` : '—'}</span></div>`;
 };
 
 function runesBlock(m) {

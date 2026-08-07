@@ -176,10 +176,7 @@ function mountMatchups({ matchups }) {
   });
 
   document.addEventListener('keydown', e => {
-    if (overlay && !overlay.hidden) {
-      if (e.key === 'Escape') { history.pushState('', '', '#browse'); route(); }
-      return;   // "/" and Cmd/Ctrl+K must not reach the search behind the overlay
-    }
+    if (overlay && !overlay.hidden && e.key === 'Escape') { history.pushState('', '', '#browse'); route(); return; }
     const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || '');
     if ((e.key === '/' && !typing) || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) {
       e.preventDefault(); input.focus(); input.select();
@@ -209,7 +206,8 @@ function mountMatchups({ matchups }) {
     // router would otherwise read as "not a matchup" and close the overlay.
     const mm = h.match(/^\/vs\/([^/]+)(?:\/([^/]+))?$/);
     if (!mm) { openSlug = null; return closeOverlay(); }
-    const slug = resolveSlug(decodeURIComponent(mm[1]));
+    let raw; try { raw = decodeURIComponent(mm[1]); } catch { raw = mm[1]; }
+    const slug = resolveSlug(raw);
     if (!slug) { openSlug = null; return closeOverlay(); }
     const section = mm[2] || '';
     if (slug !== mm[1]) {
@@ -259,8 +257,7 @@ function mountMatchups({ matchups }) {
     document.body.style.overflow = '';
     ring?.classList.remove('is-open');
     document.title = 'Matchups — The Mordekaiser Bible';
-    input.focus({ preventScroll: true });
-    close();   // focus() fires the focus handler, which would re-open the panel
+    (lastFocus === input ? input : input).focus({ preventScroll: true });
   }
 
   overlay?.addEventListener('click', e => {
