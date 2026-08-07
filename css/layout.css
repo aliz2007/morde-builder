@@ -168,9 +168,17 @@ a:hover{ text-decoration-color: var(--c-glow); }
 /* ============================================================
    CURSOR — his mace, mirrored so the head leads. Hotspot on the tip.
    ============================================================ */
-html, body{ cursor:url("assets/cursor-mace.svg") 3 3, auto; }
+/* url() in CSS resolves against the STYLESHEET, not the document — from css/
+   this needs ../assets, or it 404s and silently falls back to the system arrow.
+   32x32 because Firefox ignores larger cursor images outright. PNG is listed
+   after the SVG for Safari, which does not accept SVG cursors. */
+html, body{
+  cursor:url("../assets/cursor-mace.svg") 2 2,
+         url("../assets/cursor-mace.png") 2 2, auto;
+}
 a, button, select, summary, [role="option"], .card, .opt, .runepage, label[for]{
-  cursor:url("assets/cursor-mace.svg") 3 3, pointer;
+  cursor:url("../assets/cursor-mace.svg") 2 2,
+         url("../assets/cursor-mace.png") 2 2, pointer;
 }
 input, textarea{ cursor:text; }
 button:disabled{ cursor:not-allowed; }
