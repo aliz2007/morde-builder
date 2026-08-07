@@ -209,10 +209,15 @@ function mountMatchups({ matchups }) {
     // router would otherwise read as "not a matchup" and close the overlay.
     const mm = h.match(/^\/vs\/([^/]+)(?:\/([^/]+))?$/);
     if (!mm) { openSlug = null; return closeOverlay(); }
-    const slug = resolveSlug(decodeURIComponent(mm[1]));
+    let raw;
+    // A hand-edited or truncated percent-escape ("#/vs/%E0%A4%A") makes
+    // decodeURIComponent throw; unguarded it escaped mountMatchups and the
+    // page-level catch replaced the whole grid with a load error.
+    try { raw = decodeURIComponent(mm[1]); } catch { raw = mm[1]; }
+    const slug = resolveSlug(raw);
     if (!slug) { openSlug = null; return closeOverlay(); }
     const section = mm[2] || '';
-    if (slug !== mm[1]) {
+    if (slug !== raw) {
       history.replaceState(null, '', `#/vs/${slug}${section ? '/' + section : ''}`);
     }
     if (openSlug === slug) return scrollToSection(section);   // already open: just move

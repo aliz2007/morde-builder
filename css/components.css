@@ -476,3 +476,7 @@
   .search.is-open .opt{ min-height:52px; }
   .search.is-open .search__group{ position:sticky; top:0; background:var(--c-forge); z-index:1; }
 }
+
+/* Runes with no writeup yet: one compact strip, not a row of blanks each */
+.runestrip{ display:flex; flex-wrap:wrap; gap:var(--s-2); list-style:none; margin:var(--s-3) 0 0; padding:0; }
+.runestrip img{ border-radius:3px; border:1px solid var(--c-iron); }

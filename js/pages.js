@@ -132,14 +132,22 @@ function renderGuides({ guides }) {
     rg.innerHTML = guides.runeguide.map((grp, i) => `
       <section class="runes-tree">
         <h3 class="runes-tree__h monument--sec t-engraved">${escapeHtml(TREE[i] || 'Tree ' + (i + 1))}</h3>
-        <ul class="runerows">
-          ${grp.entries.filter(e => e.text || e.icon).map(e => `
-            <li class="runerow">
-              <span class="runerow__icon">${e.icon
-                ? `<img src="${img(e.icon)}" alt="" width="42" height="42" loading="lazy">` : ''}</span>
-              <div class="runerow__body">${prose(e.text)}</div>
-            </li>`).join('')}
-        </ul>
+        ${(() => {
+          const noted = grp.entries.filter(e => e.text);
+          // Runes the author has not written up yet keep their icon but do not
+          // each get an empty row — that is what turned this into a wall of
+          // blank cards. They collapse into one strip instead.
+          const bare = grp.entries.filter(e => e.icon && !e.text);
+          return `${noted.length ? `<ul class="runerows">${noted.map(e => `
+              <li class="runerow">
+                <span class="runerow__icon">${e.icon
+                  ? `<img src="${img(e.icon)}" alt="" width="42" height="42" loading="lazy">` : ''}</span>
+                <div class="runerow__body">${prose(e.text)}</div>
+              </li>`).join('')}</ul>` : ''}
+            ${bare.length ? `<p class="plate__label" style="margin-top:var(--s-5)">No note yet</p>
+              <ul class="runestrip">${bare.map(e =>
+                `<li><img src="${img(e.icon)}" alt="" width="42" height="42" loading="lazy"></li>`).join('')}</ul>` : ''}`;
+        })()}
       </section>`).join('');
   }
 
