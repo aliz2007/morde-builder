@@ -139,14 +139,25 @@ export function renderDetail(m) {
       return `<li><a href="#${meta.slug}" data-spy="${meta.slug}">${escapeHtml(s.heading)}</a></li>`;
     }).join('');
 
+  const jumpable = (m.variants && m.variants.length > 1 ? [] : m.sections).filter(s => s.heading);
+  const jump = jumpable.length ? `<label class="vh" for="jump">Jump to section</label>
+      <select class="mini__jump" id="jump" data-jump>
+        ${jumpable.map(s => `<option value="${sectionMeta(s.heading).slug}">${escapeHtml(s.heading)}</option>`).join('')}
+      </select>` : '';
+
   return `
   <div class="mini" data-mini>
-    <div class="container w-wide" style="display:flex;align-items:center;gap:var(--s-4);width:100%">
+    <div class="container w-wide mini__in">
       <img class="mini__img" src="${img(m.portrait)}" alt="" width="32" height="32">
       <span class="mini__name">${escapeHtml(m.name)}</span>
       <span class="mini__pill opt__pill" style="--pill:${diffVar(m.overall)}">
         <span class="opt__val" style="color:${diffVar(m.overall)}">${m.overall}/5</span>
         <span class="opt__word">${m.overallWord}</span></span>
+      ${jump}
+    </div>
+    <div class="mini__edge sawtooth-strip" aria-hidden="true">
+      <span class="sawtooth"></span><span class="sawtooth sawtooth--fine"></span>
+      <span class="sawtooth sawtooth--deep"></span><span class="sawtooth"></span>
     </div>
   </div>
 
@@ -216,6 +227,15 @@ export function renderDetail(m) {
 export function wireDetail(root, scroller) {
   const spy = root.querySelectorAll('[data-spy]');
   const sections = root.querySelectorAll('.sect[data-slug]');
+  const sel = root.querySelector('[data-jump]');
+  const goTo = slug => {
+    const t = root.querySelector(`.sect[data-slug="${slug}"]`);
+    if (t) t.scrollIntoView({
+      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      block: 'start',
+    });
+  };
+  sel?.addEventListener('change', () => goTo(sel.value));
   let io;
   if (spy.length && sections.length && 'IntersectionObserver' in window) {
     io = new IntersectionObserver(entries => {
@@ -223,6 +243,7 @@ export function wireDetail(root, scroller) {
         if (!en.isIntersecting) continue;
         const slug = en.target.dataset.slug;
         spy.forEach(a => a.classList.toggle('is-active', a.dataset.spy === slug));
+        if (sel && sel.value !== slug) sel.value = slug;
       }
     }, { root: scroller || null, rootMargin: '-30% 0px -60% 0px' });
     sections.forEach(s => io.observe(s));
@@ -230,15 +251,7 @@ export function wireDetail(root, scroller) {
 
   root.addEventListener('click', e => {
     const jump = e.target.closest('[data-spy]');
-    if (jump) {
-      e.preventDefault();
-      const t = root.querySelector(`.sect[data-slug="${jump.dataset.spy}"]`);
-      if (t) t.scrollIntoView({
-        behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-        block: 'start',
-      });
-      return;
-    }
+    if (jump) { e.preventDefault(); goTo(jump.dataset.spy); return; }
     const copy = e.target.closest('[data-copy]');
     if (copy) {
       navigator.clipboard?.writeText(copy.dataset.copy).then(() => {

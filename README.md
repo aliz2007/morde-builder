@@ -50,11 +50,20 @@ rune string four rows down. Slot 1 of the item strip is the starting item — Br
 
 ### Icon identification
 
-Item icons carry no names in the workbook. Roughly 33 were resolved exactly by pairing each
-icon in the Itemization Guide with the prose beside it, which names the item; the rest were
-cross-checked against the build text. **Icons whose identity is not certain get a generic
-`alt` rather than a guessed name** — the icon and the author's own build text are always
-shown, so nothing depends on the inference being right.
+Item icons carry no names in the workbook. A name is asserted **only where the workbook's own
+text confirms it** — each Itemization Guide icon paired with the prose beside it, which names
+the item, plus Doran's Helm, which the build text names on the two matchups that use it. That
+covers about 33 icons. Everything else renders as `Item 1`…`Item 6`.
+
+Visual identification alone is not treated as evidence, because it was wrong once: an earlier
+version labelled the slot-1 icon "Bramble Vest" on 126 of 139 pages. It isn't. Slot 1 holds a
+start item the author never names — across the 127 builds sharing that icon, the author's own
+step 1 reads *Rocketbelt*, *Dusk & Dawn*, *Plated Steelcaps*, so the text list begins at slot 2.
+The real Bramble Vest is a different icon, named directly in the Itemization Guide, and it sits
+at slot 2 on Darius — whose step 1 is "Bramble Vest".
+
+The icon and the author's own build text are always shown together, so nothing a reader relies
+on depends on the naming being complete.
 
 ## Regenerating the data
 

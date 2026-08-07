@@ -441,3 +441,19 @@
 .variant + .variant{ margin-top:var(--s-7); }
 .variant__h{ font-size:var(--fs-800); }
 .variant__spine{ margin:var(--s-4) 0 var(--s-5); max-width:26rem; }
+
+/* Sticky mini-header: jump control + the sawtooth bottom edge */
+.mini{ overflow:visible; }
+.mini__in{ display:flex; align-items:center; gap:var(--s-4); width:100%; }
+.mini__edge{ position:absolute; left:0; right:0; bottom:-14px; }
+.mini__jump{
+  margin-left:var(--s-4);
+  font:500 var(--fs-400)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.05em;
+  color:var(--c-bone); background:var(--c-plate);
+  border:1px solid var(--c-iron); border-radius:2px; padding:var(--s-2) var(--s-3);
+}
+.mini__jump:hover{ border-color:var(--c-corpse); }
+@media (max-width:620px){
+  .mini__pill{ display:none; }
+  .mini__jump{ margin-left:auto; max-width:11rem; }
+}

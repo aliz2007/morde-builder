@@ -87,13 +87,20 @@ ALIAS = {"Gangplank": ["gp", "ganglank"], "Cho'Gath": ["chogath", "cho"],
          "Tahm Kench": ["tahm", "kench"], "Lee Sin": ["lee"], "Mordekaiser": ["morde"],
          "Tryndamere": ["trynd", "tryn"], "Wukong": ["monkeyking"]}
 
-# Icon identities resolved exactly by pairing each Itemization Guide icon with
-# the prose beside it (which names the item), plus the four start items which are
-# fixed by slot-1 position. Anything not listed here renders with a generic alt
-# rather than a guessed name.
+# Icon identities are asserted ONLY where the workbook's own text confirms them:
+# each Itemization Guide icon paired with the prose beside it (which names the
+# item), plus Doran's Helm, which the build text names on the two matchups that
+# use it. Everything else renders with a generic "Item n" alt.
+#
+# Slot 1 is deliberately absent. It holds a start item the author never names —
+# across the 127 builds that share one icon, the author's own step 1 reads
+# Rocketbelt, Dusk & Dawn, Plated Steelcaps, Riftmaker and so on, i.e. the text
+# list begins at slot 2. An earlier version guessed "Bramble Vest" here and was
+# wrong: Bramble Vest is image72, which the Itemization Guide names directly and
+# which sits at slot 2 on Darius, whose step 1 is "Bramble Vest".
 ITEM_NAMES = {
-    "image97.jpg": "Bramble Vest", "image116.jpg": "Doran's Helm",
-    "image91.jpg": "Doran's Shield", "image237.jpg": "Doran's Ring",
+    "image116.jpg": "Doran's Helm",
+    "image72.png": "Bramble Vest",
     "image108.png": "Hextech Rocketbelt", "image25.png": "Rylai's Crystal Scepter",
     "image149.png": "Cosmic Drive", "image144.png": "Rylai's Crystal Scepter",
     "image113.png": "Experimental Hexplate", "image134.png": "Riftmaker",
