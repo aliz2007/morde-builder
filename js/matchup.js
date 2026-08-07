@@ -237,18 +237,32 @@ export function wireDetail(root, scroller) {
     });
   };
   sel?.addEventListener('change', () => goTo(sel.value));
-  let io;
-  if (spy.length && sections.length && 'IntersectionObserver' in window) {
-    io = new IntersectionObserver(entries => {
-      for (const en of entries) {
-        if (!en.isIntersecting) continue;
-        const slug = en.target.dataset.slug;
-        spy.forEach(a => a.classList.toggle('is-active', a.dataset.spy === slug));
-        if (sel && sel.value !== slug) sel.value = slug;
-      }
-    }, { root: scroller || null, rootMargin: '-30% 0px -60% 0px' });
-    sections.forEach(s => io.observe(s));
-  }
+  // Scroll-driven rather than IntersectionObserver-driven: an intersection band
+  // narrow enough to pick a single section also leaves gaps where no section is
+  // inside it, so the TOC blanks out over long sections. Choosing the last
+  // heading at or above a threshold line always yields exactly one active entry.
+  let spyRaf = 0;
+  const syncSpy = () => {
+    spyRaf = 0;
+    if (!spy.length || !sections.length) return;
+    const box = scroller ? scroller.getBoundingClientRect()
+                         : { top: 0, height: innerHeight };
+    const line = box.top + box.height * 0.3;
+    let current = sections[0].dataset.slug;
+    for (const sec of sections) {
+      if (sec.getBoundingClientRect().top <= line) current = sec.dataset.slug;
+      else break;
+    }
+    // At the end of the scroll the final headings can never cross the threshold
+    // line, so they would never activate. Snap to the last one at the bottom.
+    const el = scroller || document.scrollingElement;
+    if (el && el.scrollTop + el.clientHeight >= el.scrollHeight - 8) {
+      current = sections[sections.length - 1].dataset.slug;
+    }
+    spy.forEach(a => a.classList.toggle('is-active', a.dataset.spy === current));
+    if (sel && sel.value !== current) sel.value = current;
+  };
+  const queueSpy = () => { if (!spyRaf) spyRaf = requestAnimationFrame(syncSpy); };
 
   root.addEventListener('click', e => {
     const jump = e.target.closest('[data-spy]');
@@ -277,9 +291,13 @@ export function wireDetail(root, scroller) {
   const onScroll = () => {
     const y = scroller ? scroller.scrollTop : window.scrollY;
     mini?.classList.toggle('is-on', y > 220);
+    queueSpy();
   };
   (scroller || window).addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  return () => { io?.disconnect(); (scroller || window).removeEventListener('scroll', onScroll); };
+  return () => {
+    if (spyRaf) cancelAnimationFrame(spyRaf);
+    (scroller || window).removeEventListener('scroll', onScroll);
+  };
 }

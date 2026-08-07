@@ -42,6 +42,7 @@ function mountMatchups({ matchups }) {
   const gridEl  = document.getElementById('grid');
   const overlay = document.getElementById('overlay');
   const ring    = document.querySelector('[data-ring]');
+  const status  = document.querySelector('[data-status]');
   if (!input) return;
 
   buildEntityMatcher(matchups);
@@ -68,6 +69,8 @@ function mountMatchups({ matchups }) {
     });
     if (i < 0) input.removeAttribute('aria-activedescendant');
   }
+
+  function announce(msg) { if (status) status.textContent = msg; }
 
   function open(html, real) {
     hasResults = !!real;
@@ -108,17 +111,22 @@ function mountMatchups({ matchups }) {
     if (aliased && !aliasCovered && !strong) {
       open(`<div class="search__empty"><p><strong>${escapeHtml(aliased)}</strong> — no writeup yet.</p>
         <p><a href="#browse">Browse all ${matchups.length}</a></p></div>`, false);
+      announce(`${aliased} has no writeup yet.`);
       return;
     }
     if (hits.length) {
-      open(hits.slice(0, 40).map((h, i) =>
+      const shown = hits.slice(0, 40);
+      open(shown.map((h, i) =>
         optionRow(h.e.m, `opt-${i}`, false, highlight(h.e, v, h.at))).join(''), true);
+      announce(`${hits.length} ${hits.length === 1 ? 'match' : 'matches'}. ` +
+               `Top result ${shown[0].e.m.name}.`);
       return;
     }
     const real = knownChampion(v, matchups);
     if (real) {
       open(`<div class="search__empty"><p><strong>${escapeHtml(real)}</strong> — no writeup yet.</p>
         <p><a href="#browse">Browse all ${matchups.length}</a></p></div>`, false);
+      announce(`${real} has no writeup yet.`);
       return;
     }
     const near = closest(index, v, 3);
@@ -127,6 +135,7 @@ function mountMatchups({ matchups }) {
       <p class="search__group" style="padding-left:0">Did you mean</p>
       ${near.map((m, i) => optionRow(m, `opt-${i}`, false)).join('')}
       <p style="margin-top:var(--s-3)"><a href="#browse">Browse all ${matchups.length}</a></p></div>`, false);
+    announce(`No champion matches ${v}. ${near.length} suggestions.`);
   }
 
   input.addEventListener('input', () => query(input.value));

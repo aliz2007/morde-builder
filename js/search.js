@@ -184,7 +184,7 @@ export function pushRecent(slug) {
 /* ——— row markup ——— */
 export function optionRow(m, id, active, inner) {
   const d = m.overall;
-  return `<a class="opt${active ? ' is-active' : ''}" id="${id}" role="option"
+  return `<a class="opt${active ? ' is-active' : ''}" id="${id}" role="option" tabindex="-1"
      aria-selected="${active}" href="#/vs/${m.slug}" style="--pill:${diffVar(d)}">
     <img class="opt__img" src="${img(m.portrait)}" alt="" width="32" height="32" loading="lazy">
     <span class="opt__name">${inner || escapeHtml(m.name)}</span>
