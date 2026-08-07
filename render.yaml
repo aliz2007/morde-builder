@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: mordekaiser-bible
+    runtime: static
+    # Nothing to build — the site is plain HTML, CSS and ES modules served as-is.
+    buildCommand: echo "static site, no build step"
+    staticPublishPath: .
+    pullRequestPreviewsEnabled: false
+    headers:
+      # Icons and data are content-hashed by the extractor run, not by filename,
+      # so keep them revalidating rather than pinned for a year.
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=86400
+      - path: /data/*
+        name: Cache-Control
+        value: public, max-age=3600
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
