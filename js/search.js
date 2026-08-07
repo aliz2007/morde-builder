@@ -124,13 +124,19 @@ export function rank(index, query) {
   return hits;
 }
 
-/** Map a normalised match span back onto the original string for highlighting. */
+/** Map a normalised match span back onto the original string for highlighting.
+ *  Only literal substring matches are highlighted. An alias, initialism or
+ *  subsequence hit ("mundo" -> Dr. Mundo, "mf" -> Miss Fortune) has no literal
+ *  span at `at`, and marking one anyway bolds the wrong characters. */
 export function highlight(entry, query, at) {
   const q = norm(query);
   const name = entry.m.name;
-  if (!q || at < 0 || !q.length) return escapeHtml(name);
-  const from = entry.map[at];
-  const toIdx = entry.map[at + q.length - 1];
+  if (!q) return escapeHtml(name);
+  let start = at;
+  if (start < 0 || entry.n.slice(start, start + q.length) !== q) start = entry.n.indexOf(q);
+  if (start < 0) return escapeHtml(name);
+  const from = entry.map[start];
+  const toIdx = entry.map[start + q.length - 1];
   if (from == null || toIdx == null) return escapeHtml(name);
   const to = toIdx + 1;
   return escapeHtml(name.slice(0, from)) + '<mark>' + escapeHtml(name.slice(from, to)) +

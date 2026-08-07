@@ -63,12 +63,6 @@
   border-radius: 0;
   box-shadow: var(--bevel-raised);
 }
-.plate--sunken{
-  background-color: var(--c-forge);
-  background-image: var(--milled);
-  border:1px solid var(--c-iron);
-  box-shadow: var(--bevel-recessed);
-}
 
 /* ——— 4.7 Rust bloom. At most two panels per page. ——— */
 .plate--aged::before{

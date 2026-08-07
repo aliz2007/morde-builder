@@ -37,10 +37,6 @@
   font-family:var(--f-mono); font-weight:600; font-variant-numeric:tabular-nums;
   font-size:var(--fs-300); color:var(--c-ash); letter-spacing:-.01em;
 }
-.spine__word{
-  font:600 var(--fs-200)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.12em;
-  color:var(--seg, var(--c-ash));
-}
 @media (prefers-reduced-motion: no-preference){
   .is-orchestrated .spine__seg.is-on{
     animation: seg-fill .18s var(--ease) both;
@@ -163,7 +159,18 @@
 }
 /* semantic identity applied to the wrapper — never the author's words */
 .sect--early{ background:var(--c-slag); }
-.sect--trade{ background:var(--c-forge); }
+.sect--trade{                      /* §4.12 necrotic emission: three layers, never one */
+  position:relative;
+  background:var(--c-forge);
+  border-left:2px solid var(--c-corpse);   /* (1) hard core */
+  box-shadow:0 0 6px rgba(143,191,58,.30); /* (2) tight bloom */
+}
+.sect--trade::after{                       /* (3) wide field */
+  content:""; position:absolute; left:0; top:0; bottom:0; width:180px;
+  pointer-events:none; z-index:0;
+  background:linear-gradient(90deg, rgba(143,191,58,.07), transparent);
+}
+.sect--trade > *{ position:relative; z-index:1; }
 .sect--watch{ background:var(--c-forge-ember); border-left:2px solid var(--c-ember); }
 .sect--watch .sect__n{ color:var(--c-ember); }
 .sect--tips{

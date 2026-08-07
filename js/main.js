@@ -23,6 +23,12 @@ function mountChrome() {
        <feDisplacementMap in="SourceGraphic" in2="t" scale="7" xChannelSelector="R" yChannelSelector="G"/>
      </filter></svg>`;
   while (frag.firstChild) document.body.appendChild(frag.firstChild);
+  const main = document.getElementById('main');
+  if (main) {
+    const pat = document.createElement('div');
+    pat.className = 'patina'; pat.setAttribute('aria-hidden', 'true');
+    main.prepend(pat);
+  }
   document.querySelectorAll('[data-crown]').forEach(el => { el.innerHTML = CROWN; });
   document.querySelectorAll('[data-year]').forEach(el => { el.textContent = new Date().getFullYear(); });
 }

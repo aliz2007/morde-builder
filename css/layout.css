@@ -30,6 +30,8 @@ a:hover{ text-decoration-color: var(--c-corpse); }
 }
 .skip:focus{ top:var(--s-5); }
 
+#main{ position:relative; }
+
 /* ——— type roles ——— */
 .monument{
   font-family:var(--f-display); font-weight:900; text-transform:uppercase;

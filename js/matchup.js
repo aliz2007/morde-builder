@@ -138,7 +138,8 @@ export function renderDetail(m) {
   <div class="container w-wide overlay__panel">
     <button class="btn overlay__close" type="button" data-close>Close</button>
 
-    <header class="hero">
+    <header class="hero" style="position:relative">
+      <svg class="crown crown--ghost" viewBox="0 0 64 40" aria-hidden="true"><path fill-rule="evenodd" d="M2 40 L2 22 L9 30 L14 8 L21 24 L27 2 L32 0 L37 2 L43 24 L50 8 L55 30 L62 22 L62 40 Z M14 31 L50 31 L50 35 L14 35 Z"/></svg>
       <img class="hero__portrait arch overlay__portrait" src="${img(m.portrait)}" alt=""
            width="96" height="96">
       <div>
