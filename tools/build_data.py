@@ -163,17 +163,27 @@ def split_sections(txt):
     return out
 
 
+# A line the author started as a list item: "- x", "1. x", "2) x".
+LIST_START = re.compile(r'^(?:-\s|\d+[.)]\s)')
+
+
 def bullets(body):
-    """Group the body into paragraphs on the author's own blank lines and
-    leading dashes. Soft line wrapping inside a cell is joined; nothing is
-    split, merged across a blank line, or reworded."""
+    """Group the body into paragraphs on the author's own blank lines and list
+    markers. Soft line wrapping inside a cell is joined; nothing is split,
+    merged across a blank line, or reworded.
+
+    Numbered items matter: several writeups (Sylas, Vladimir) use "1. / 2. / 3."
+    on adjacent lines with no blank between, and joining those collapses a real
+    list into one long paragraph."""
     items, buf = [], []
     for ln in body.split("\n"):
         s = ln.strip()
-        if s.startswith("- "):
+        if LIST_START.match(s):
             if buf:
                 items.append(" ".join(buf).strip())
-            buf = [s[2:]]
+            # Drop the author's "- " dash (the layout draws its own marker) but
+            # keep "1." / "2)" — those numbers carry meaning in the prose.
+            buf = [s[2:] if s.startswith("- ") else s]
         elif not s:
             if buf:
                 items.append(" ".join(buf).strip())
