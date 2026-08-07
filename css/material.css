@@ -26,7 +26,7 @@
   transition: opacity var(--t-slow) var(--ease);
   background:
     radial-gradient(60vmax 60vmax at 50% 62%, transparent 0 40%,
-                    rgba(143,191,58,.018) 41% 43.5%, transparent 44%),
+                    rgba(52,224,206,.018) 41% 43.5%, transparent 44%),
     radial-gradient(70vmax 70vmax at 50% 62%, rgba(74,158,140,.022), transparent 65%);
 }
 @media (prefers-reduced-motion: no-preference){
@@ -38,7 +38,7 @@
   animation:none;
   background:
     radial-gradient(58vmax 58vmax at 50% 60%, transparent 0 26%,
-                    rgba(143,191,58,.030) 34% 40%, transparent 52%),
+                    rgba(52,224,206,.030) 34% 40%, transparent 52%),
     radial-gradient(76vmax 76vmax at 50% 60%, rgba(74,158,140,.028), transparent 66%);
 }
 
@@ -81,20 +81,20 @@
 .seam::after{
   content:""; position:absolute; left:0; right:0; top:0;
   transform: translateY(1px); height:1px; filter: blur(.5px);
-  background: linear-gradient(90deg, transparent 20%, rgba(143,191,58,.35) 50%, transparent 80%);
+  background: linear-gradient(90deg, transparent 20%, rgba(52,224,206,.35) 50%, transparent 80%);
 }
 .seam--tight{ margin: var(--s-3) 0; }
 
 /* ——— 4.12 Necrotic emission — three layers, never one ——— */
 .emit{
   position:relative;
-  border-left:2px solid var(--c-corpse);
-  border-right:1px solid var(--c-verdigris);
-  box-shadow: 0 0 6px rgba(143,191,58,.30);
+  border-left:2px solid var(--c-glow);
+  border-right:1px solid var(--c-glow-deep);
+  box-shadow: 0 0 6px rgba(52,224,206,.30);
 }
 .emit::after{
   content:""; position:absolute; inset:-140%; pointer-events:none; z-index:-1;
-  background: radial-gradient(closest-side, rgba(143,191,58,.10), transparent);
+  background: radial-gradient(closest-side, rgba(52,224,206,.10), transparent);
 }
 
 /* ——— 4.10 Lancet arch mask ——— */

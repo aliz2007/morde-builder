@@ -4,7 +4,53 @@
    ============================================================ */
 
 import { img } from './data.js';
-import { escapeHtml } from './search.js';
+import { escapeHtml, norm } from './search.js';
+
+/* Build a name -> icon index out of the matchup data so the alternate setups,
+   which the workbook stores as plain text, can show the same artwork the
+   matchup pages use. Keystones map from their rune-page image; items from the
+   icons whose identity the Itemization Guide confirmed. */
+let ICONS = null;
+function buildIconIndex(matchups) {
+  const m2 = new Map();
+  for (const m of matchups) {
+    if (m.keystone && m.keystoneIcon && !m2.has(norm(m.keystone))) {
+      m2.set(norm(m.keystone), { file: m.keystoneIcon, kind: 'rune', name: m.keystone });
+    }
+    for (const b of m.builds) {
+      for (const ic of b.icons) {
+        if (ic.name && !m2.has(norm(ic.name))) {
+          m2.set(norm(ic.name), { file: ic.file, kind: 'item', name: ic.name });
+        }
+      }
+    }
+  }
+  ICONS = m2;
+}
+
+/* Pull every recognised entity out of a free-text rune or item string.
+   Keystones are excluded: the workbook stores a full rune-page screenshot for
+   them, which is unreadable at 40px and belongs to a different rune setup
+   anyway. Item art is the same object in both places, so it transfers. */
+function iconsFor(text, kind) {
+  if (!ICONS) return [];
+  const seen = new Set(), out = [];
+  for (const part of String(text || '').split(/[\n\/+,]|->|→/)) {
+    const key = norm(part.replace(/\(.*?\)/g, ''));
+    if (!key || seen.has(key)) continue;
+    const hit = ICONS.get(key);
+    if (hit && (!kind || hit.kind === kind)) { seen.add(key); out.push(hit); }
+  }
+  return out;
+}
+const iconStrip = text => {
+  const list = iconsFor(text, 'item');
+  return list.length
+    ? `<ul class="iconstrip">${list.map(i =>
+        `<li><img src="${img(i.file)}" alt="${escapeHtml(i.name)}" title="" width="40" height="40" loading="lazy">
+         <span class="vh">${escapeHtml(i.name)}</span></li>`).join('')}</ul>`
+    : '';
+};
 
 const $  = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -25,7 +71,8 @@ const ext = (label, url, cls) => url
   : escapeHtml(label);
 
 /* Tenor: the official embed script is the only reliable way to resolve a post id.
-   We keep its chrome out of sight by arch-masking and desaturating the frame. */
+   The GIF is shown in full colour — masking and desaturating it was cropping the
+   clip and draining it, which read as broken rather than styled. */
 function mountRelics() {
   const relics = $$('[data-relic]');
   if (!relics.length) return;
@@ -33,11 +80,10 @@ function mountRelics() {
     const id = fig.dataset.relic;
     fig.innerHTML =
       `<div class="relic__stage">
-         <div class="relic__frame arch">
+         <div class="relic__frame">
            <div class="tenor-gif-embed" data-postid="${escapeHtml(id)}"
                 data-share-method="host" data-aspect-ratio="1" data-width="100%"></div>
          </div>
-         <span class="relic__wash" aria-hidden="true"></span>
        </div>
        <figcaption class="relic__cap">${escapeHtml(fig.dataset.cap || '')}</figcaption>`;
   }
@@ -160,6 +206,7 @@ function renderGuides({ guides }) {
           <p class="plate__label">Runes</p>
           <p style="margin:0 0 var(--s-4)">${escapeHtml(oneline(a.runes).replace(/\s*->\s*/g, ' \u2192 '))}</p>
           <p class="plate__label">Items</p>
+          ${iconStrip(a.items)}
           ${prose(a.items)}
           ${a.example ? `<p class="mono-micro">${ext(oneline(a.example), a.exampleUrl)}</p>` : ''}
           ${a.comments ? `<p class="mono-micro">${escapeHtml(oneline(a.comments))}</p>` : ''}
@@ -209,7 +256,7 @@ function renderFooter({ guides }) {
 }
 
 document.addEventListener('bible:ready', e => {
-  try { renderHome(e.detail); renderGuides(e.detail); renderFooter(e.detail); }
+  try { buildIconIndex(e.detail.matchups); renderHome(e.detail); renderGuides(e.detail); renderFooter(e.detail); }
   catch (err) { console.error(err); }
   mountRelics();
 });

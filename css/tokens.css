@@ -5,26 +5,27 @@
 
 :root{
   /* ——— IRON: the ground. ~88% of all pixels. ——— */
-  --c-slag:      #0A0B09;
-  --c-forge:     #121410;
-  --c-plate:     #1B1E19;
-  --c-iron:      #2B2F29;
-  --c-anvil:     #474C44;
-  --c-iron-dim:  #22261F;   /* disabled edges — one step under --c-iron */
+  --c-slag:      #080B0B;
+  --c-forge:     #101615;
+  --c-plate:     #18201F;
+  --c-iron:      #28322F;
+  --c-anvil:     #46534F;
+  --c-iron-dim:  #202826;   /* disabled edges — one step under --c-iron */
 
   /* ——— TEXT ——— */
-  --c-bone:      #D9D3C5;
-  --c-ash:       #8E8A80;
-  --c-dust:      #5A574F;   /* decorative only — fails AA by design */
+  --c-bone:      #DCDAD2;
+  --c-ash:       #92948E;
+  --c-dust:      #5D625E;   /* decorative only — fails AA by design */
 
-  /* ——— NECROTIC: the one light source. ——— */
-  --c-corpse:    #8FBF3A;
-  --c-core:      #CBE85C;
-  --c-verdigris: #3E5A16;
+  /* ——— NECROTIC TEAL: the one light source, taken off his weapon. ——— */
+  --c-glow:      #34E0CE;   /* primary accent — bright, cold, alive */
+  --c-glow-hot:  #A8FFF4;   /* incandescent centre of an emission */
+  --c-glow-deep: #0F6B62;   /* the face turned away from the light */
+  --c-glow-dim:  #1B8C80;   /* mid tone: rules, markers, inactive edges */
 
   /* ——— MIST: lore + secondary data. ——— */
-  --c-teal:      #4A9E8C;
-  --c-mist:      #12312D;
+  --c-teal:      #6FD8CC;
+  --c-mist:      #0C2B2A;
 
   /* ——— RUST + BRASS: material, not information. ——— */
   --c-rust:      #7A3B1E;
@@ -38,16 +39,16 @@
 
 
   /* ——— DIFFICULTY RAMP — never used alone ——— */
-  --d-1: #8FBF3A;
-  --d-2: #B9B349;
+  --d-1: #34E0CE;
+  --d-2: #86D9A0;
   --d-3: #C4A263;
   --d-4: #D08A50;
   --d-5: #E0736A;
-  --d-track: #23261F;
+  --d-track: #1F2927;
 
   /* ——— warmed / cooled section grounds ——— */
   --c-forge-ember: #171410;
-  --c-plate-hover: #1F231D;
+  --c-plate-hover: #1E2827;
 
   /* ============ TYPE ============ */
   --f-display: 'Cinzel', 'Optima', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', serif;
@@ -103,4 +104,4 @@
 
 /* ============ TEXT MATERIALS — two, never mixed, never on body copy ============ */
 .t-engraved{ text-shadow: 0 1px 0 rgba(0,0,0,.92), 0 -1px 0 rgba(217,211,197,.09); }
-.t-emitted { text-shadow: 0 0 10px rgba(143,191,58,.28); }
+.t-emitted { text-shadow: 0 0 10px rgba(52,224,206,.28); }

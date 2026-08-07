@@ -16,15 +16,15 @@ body{
 img,svg,video{ display:block; max-width:100%; }
 img{ height:auto; }
 
-a{ color: var(--c-corpse); text-decoration-color: var(--c-verdigris); text-underline-offset:3px; }
-a:hover{ text-decoration-color: var(--c-corpse); }
-:focus-visible{ outline:2px solid var(--c-corpse); outline-offset:2px; }
+a{ color: var(--c-glow); text-decoration-color: var(--c-glow-deep); text-underline-offset:3px; }
+a:hover{ text-decoration-color: var(--c-glow); }
+:focus-visible{ outline:2px solid var(--c-glow); outline-offset:2px; }
 
-::selection{ background: var(--c-verdigris); color: var(--c-bone); }
+::selection{ background: var(--c-glow-deep); color: var(--c-bone); }
 
 .skip{
   position:absolute; left:var(--s-5); top:calc(var(--s-9) * -1); z-index:10000;
-  background:var(--c-plate); color:var(--c-bone); border:1px solid var(--c-corpse);
+  background:var(--c-plate); color:var(--c-bone); border:1px solid var(--c-glow);
   padding:var(--s-3) var(--s-5); font:500 var(--fs-400)/1 var(--f-chrome);
   text-transform:uppercase; letter-spacing:.05em;
 }
@@ -74,8 +74,9 @@ a:hover{ text-decoration-color: var(--c-corpse); }
 /* ——— masthead ——— */
 .mast{
   position:relative; z-index:20;
-  background:var(--c-forge);
+  background:linear-gradient(180deg, #16201F 0%, var(--c-forge) 100%);
   border-bottom:1px solid var(--c-iron);
+  box-shadow:0 1px 0 rgba(52,224,206,.14), 0 12px 34px rgba(0,0,0,.6);
 }
 .mast__in{
   display:flex; align-items:center; gap:var(--s-5);
@@ -97,7 +98,10 @@ a:hover{ text-decoration-color: var(--c-corpse); }
   transition:color var(--t-base) var(--ease), border-color var(--t-base) var(--ease);
 }
 .mast__link:hover{ color:var(--c-bone); border-bottom-color:var(--c-iron); }
-.mast__link[aria-current="page"]{ color:var(--c-corpse); border-bottom-color:var(--c-corpse); }
+.mast__link[aria-current="page"]{
+  color:var(--c-glow); border-bottom-color:var(--c-glow);
+  text-shadow:0 0 16px rgba(52,224,206,.55);
+}
 .mast__edge{ position:absolute; left:0; right:0; bottom:-14px; }
 
 /* ——— footer: two columns only ——— */
@@ -160,3 +164,48 @@ a:hover{ text-decoration-color: var(--c-corpse); }
   .mast__word{ font-size:var(--fs-300); letter-spacing:.08em; }
   .mast__nav{ margin-left:0; width:100%; gap:var(--s-5); }
 }
+
+/* ============================================================
+   CURSOR — his mace, mirrored so the head leads. Hotspot on the tip.
+   ============================================================ */
+html, body{ cursor:url("assets/cursor-mace.svg") 3 3, auto; }
+a, button, select, summary, [role="option"], .card, .opt, .runepage, label[for]{
+  cursor:url("assets/cursor-mace.svg") 3 3, pointer;
+}
+input, textarea{ cursor:text; }
+button:disabled{ cursor:not-allowed; }
+
+/* ============================================================
+   ATMOSPHERE — the page was a spec sheet on a black wall. These are the
+   layers that give it depth: a teal horizon behind the masthead, a
+   breathing glow on the page ground, and light on the accents.
+   ============================================================ */
+body::before{
+  content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
+  background:
+    radial-gradient(120% 70% at 50% -10%, rgba(52,224,206,.13), transparent 62%),
+    radial-gradient(90% 55% at 12% 8%,   rgba(52,224,206,.07), transparent 60%),
+    radial-gradient(80% 60% at 92% 4%,   rgba(15,107,98,.16),  transparent 62%);
+}
+body::after{
+  content:""; position:fixed; left:50%; bottom:-30vh; width:120vw; height:70vh;
+  transform:translateX(-50%); z-index:-1; pointer-events:none;
+  background:radial-gradient(closest-side, rgba(52,224,206,.10), transparent 72%);
+  filter:blur(30px);
+}
+@media (prefers-reduced-motion: no-preference){
+  body::after{ animation:tide 14s ease-in-out infinite; }
+  @keyframes tide{ 0%,100%{ opacity:.75 } 50%{ opacity:1.25 } }
+}
+
+/* Headings stay solid — a gradient fill hollows them out under .t-engraved,
+   and gradient headline text is the loudest AI-template tell there is. */
+.monument, .monument--sec{ color:var(--c-bone); }
+.eyebrow{ text-shadow:0 0 14px rgba(52,224,206,.22); }
+
+/* the weld seam actually glows now */
+.seam::after{
+  background:linear-gradient(90deg, transparent 14%, rgba(52,224,206,.55) 50%, transparent 86%);
+  filter:blur(1px);
+}
+.seam{ box-shadow:0 0 14px rgba(52,224,206,.10); }

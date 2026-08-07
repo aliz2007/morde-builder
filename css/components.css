@@ -12,13 +12,13 @@
               border-color var(--t-base) var(--ease),
               background-color var(--t-base) var(--ease);
 }
-.btn:hover{ border-color:var(--c-corpse); background:var(--c-plate-hover); }
-.btn:focus-visible{ outline:2px solid var(--c-corpse); outline-offset:2px;
-                    box-shadow:0 0 6px rgba(143,191,58,.30); }
+.btn:hover{ border-color:var(--c-glow); background:var(--c-plate-hover); }
+.btn:focus-visible{ outline:2px solid var(--c-glow); outline-offset:2px;
+                    box-shadow:0 0 6px rgba(52,224,206,.30); }
 .btn:active{ transform:translateY(1px); box-shadow:var(--bevel-recessed); }
 .btn:disabled{ color:var(--c-dust); background:var(--c-forge); border-color:var(--c-iron-dim); cursor:not-allowed; }
 .btn--ghost{ background:transparent; }
-.btn.is-done{ color:var(--c-corpse); border-color:var(--c-corpse); }
+.btn.is-done{ color:var(--c-glow); border-color:var(--c-glow); }
 
 /* ——— difficulty spine ——— */
 .spine{ display:grid; gap:var(--s-4); }
@@ -52,7 +52,7 @@
 }
 .overall__num{
   font-family:var(--f-mono); font-weight:600; font-size:var(--fs-1100);
-  line-height:1; letter-spacing:-.02em; color:var(--c-core);
+  line-height:1; letter-spacing:-.02em; color:var(--c-glow-hot);
   font-variant-numeric:tabular-nums; text-align:center;
 }
 .overall__den{ font-size:var(--fs-500); color:var(--c-dust); }
@@ -65,13 +65,23 @@
 /* ——— rune block ——— */
 .runes{ display:grid; gap:var(--s-4); }
 .runes__head{ display:flex; align-items:center; gap:var(--s-4); }
-.runes__key{ width:52px; height:52px; border-radius:3px; border:1px solid var(--c-iron); }
+.runepage{
+  display:block; position:relative; border:1px solid var(--c-iron); border-radius:2px;
+  overflow:hidden; background:var(--c-forge);
+  box-shadow: var(--bevel-raised), 0 0 0 rgba(52,224,206,0);
+  transition: box-shadow var(--t-base) var(--ease), border-color var(--t-base) var(--ease);
+}
+.runepage img{ display:block; width:100%; height:auto; }
+.runepage:hover, .runepage:focus-visible{
+  border-color:var(--c-glow);
+  box-shadow: var(--bevel-raised), 0 0 22px rgba(52,224,206,.28);
+}
 .runes__keyname{
   font:700 var(--fs-500)/1.15 var(--f-chrome); text-transform:uppercase; letter-spacing:.12em;
   color:var(--c-bone);
 }
-.runes__tree{ padding-left:var(--s-4); border-left:2px solid var(--c-verdigris); }
-.runes__tree--primary{ border-left-color:var(--c-corpse); }
+.runes__tree{ padding-left:var(--s-4); border-left:2px solid var(--c-glow-deep); }
+.runes__tree--primary{ border-left-color:var(--c-glow); }
 .runes__tree--shards{ border-left-color:var(--c-brass); }
 .chips{ display:flex; flex-wrap:wrap; gap:var(--s-2); list-style:none; margin:0; padding:0; }
 .chip{
@@ -79,7 +89,7 @@
   background:var(--c-forge); border:1px solid var(--c-iron); border-radius:2px;
   padding:1px var(--s-2);
 }
-.chip--lead{ color:var(--c-corpse); border-color:var(--c-verdigris); }
+.chip--lead{ color:var(--c-glow); border-color:var(--c-glow-deep); }
 .runes__raw{ word-break:break-word; }
 
 /* ——— build path ——— */
@@ -112,7 +122,7 @@
   counter-increment:bstep; content:counter(bstep,decimal-leading-zero);
   position:absolute; left:0; top:.15em;
   font-family:var(--f-mono); font-weight:600; font-size:var(--fs-100);
-  color:var(--c-verdigris); font-variant-numeric:tabular-nums;
+  color:var(--c-glow-deep); font-variant-numeric:tabular-nums;
 }
 .build__item{ color:var(--c-bone); font-weight:600; }
 .build__note{ color:var(--c-ash); display:block; }
@@ -149,7 +159,7 @@
   color:var(--c-bone); margin:0; display:inline;
 }
 .sect__anchor{
-  margin-left:var(--s-2); color:var(--c-verdigris); text-decoration:none;
+  margin-left:var(--s-2); color:var(--c-glow-deep); text-decoration:none;
   opacity:0; transition:opacity var(--t-base) var(--ease);
   font-family:var(--f-mono); font-size:var(--fs-300);
 }
@@ -160,20 +170,20 @@
 .sect__body p:last-child{ margin-bottom:0; }
 .sect__body p::before{
   content:""; position:absolute; left:calc(var(--s-5) * -1); top:.72em;
-  width:9px; height:1px; background:var(--c-verdigris);
+  width:9px; height:1px; background:var(--c-glow-deep);
 }
 /* semantic identity applied to the wrapper — never the author's words */
 .sect--early{ background:var(--c-slag); }
 .sect--trade{                      /* §4.12 necrotic emission: three layers, never one */
   position:relative;
   background:var(--c-forge);
-  border-left:2px solid var(--c-corpse);   /* (1) hard core */
-  box-shadow:0 0 6px rgba(143,191,58,.30); /* (2) tight bloom */
+  border-left:2px solid var(--c-glow);   /* (1) hard core */
+  box-shadow:0 0 6px rgba(52,224,206,.30); /* (2) tight bloom */
 }
 .sect--trade::after{                       /* (3) wide field */
   content:""; position:absolute; left:0; top:0; bottom:0; width:180px;
   pointer-events:none; z-index:0;
-  background:linear-gradient(90deg, rgba(143,191,58,.07), transparent);
+  background:linear-gradient(90deg, rgba(52,224,206,.07), transparent);
 }
 .sect--trade > *{ position:relative; z-index:1; }
 .sect--watch{ background:var(--c-forge-ember); border-left:2px solid var(--c-ember); }
@@ -199,11 +209,11 @@
   transition:color var(--t-base) var(--ease), border-color var(--t-base) var(--ease);
 }
 .toc__list a:hover{ color:var(--c-bone); }
-.toc__list a.is-active{ color:var(--c-corpse); border-left-color:var(--c-corpse); }
+.toc__list a.is-active{ color:var(--c-glow); border-left-color:var(--c-glow); }
 @media (max-width:1100px){
   .toc__list{ display:flex; flex-wrap:wrap; gap:var(--s-2); }
   .toc__list a{ border-left:0; border:1px solid var(--c-iron); border-radius:2px; }
-  .toc__list a.is-active{ border-color:var(--c-corpse); }
+  .toc__list a.is-active{ border-color:var(--c-glow); }
 }
 
 /* ============ SEARCH ============ */
@@ -218,8 +228,8 @@
   transition:border-color var(--t-base) var(--ease);
 }
 .search__input::placeholder{ color:var(--c-dust); }
-.search__input:focus{ outline:none; border-color:var(--c-corpse); }
-.search__input:focus-visible{ outline:2px solid var(--c-corpse); outline-offset:2px; }
+.search__input:focus{ outline:none; border-color:var(--c-glow); }
+.search__input:focus-visible{ outline:2px solid var(--c-glow); outline-offset:2px; }
 .search__hint{
   position:absolute; right:var(--s-4);
   font:400 var(--fs-100)/1 var(--f-mono); letter-spacing:.06em; color:var(--c-dust);
@@ -244,11 +254,11 @@
              background-color var(--t-base) var(--ease);
 }
 .opt:hover,.opt.is-active{
-  transform:translateX(3px); border-left:3px solid var(--c-corpse); background:var(--c-plate);
+  transform:translateX(3px); border-left:3px solid var(--c-glow); background:var(--c-plate);
 }
 .opt__img{ width:32px; height:32px; border-radius:3px; border:1px solid var(--c-iron); }
 .opt__name{ font-size:var(--fs-400); }
-.opt__name mark{ background:none; color:var(--c-core); font-weight:600; }
+.opt__name mark{ background:none; color:var(--c-glow-hot); font-weight:600; }
 .opt__pill{ display:flex; align-items:baseline; gap:var(--s-2); }
 .opt__val{
   font-family:var(--f-mono); font-weight:600; font-size:var(--fs-300);
@@ -287,7 +297,10 @@
   /* Solid, not translucent: at any alpha that still reads as a scrim, 139
      champion cards ghost through the writeup and make it unreadable. The
      drama comes from the ring shift and the portrait rise, not the see-through. */
-  background:var(--c-slag);
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(52,224,206,.11), transparent 60%),
+    radial-gradient(80% 50% at 88% 6%, rgba(15,107,98,.18), transparent 62%),
+    var(--c-slag);
   animation:scrim var(--t-slow) var(--ease) both;
 }
 .overlay[hidden]{ display:none; }
@@ -299,8 +312,27 @@
   @keyframes rise{ from{ transform:translateY(9px) } to{ transform:translateY(0) } }
 }
 
-.hero{ display:grid; grid-template-columns:auto 1fr; gap:var(--s-5); align-items:end; }
-.hero__portrait{ width:96px; height:96px; border:1px solid var(--c-iron); }
+.hero{
+  position:relative; display:grid; grid-template-columns:auto 1fr;
+  gap:var(--s-5); align-items:end; padding:var(--s-5) 0 var(--s-6);
+}
+.hero__wash{            /* the champion, blown up and blurred into the ground */
+  position:absolute; left:-6%; right:-6%; top:-40%; bottom:-30%; z-index:0;
+  pointer-events:none; opacity:.30;
+  background-position:12% 38%; background-size:cover; background-repeat:no-repeat;
+  filter:blur(46px) saturate(1.25);
+  -webkit-mask-image:linear-gradient(100deg, #000 0%, rgba(0,0,0,.55) 45%, transparent 78%);
+  mask-image:linear-gradient(100deg, #000 0%, rgba(0,0,0,.55) 45%, transparent 78%);
+}
+/* Only the real content is lifted. A blanket `.hero > *` also re-positions the
+   decorative wash and crown, turning both into in-flow grid items — the crown
+   is 900x563 and was claiming a whole row. */
+.hero > :not(.hero__wash):not(.crown--ghost){ position:relative; z-index:1; }
+.hero__portrait{
+  width:132px; height:132px; border:1px solid var(--c-iron);
+  box-shadow:0 0 34px rgba(52,224,206,.30), var(--bevel-raised);
+}
+@media (max-width:700px){ .hero__portrait{ width:96px; height:96px; } }
 .hero__name{ font-size:var(--fs-1000); }
 @media (max-width:700px){ .hero__name{ font-size:var(--fs-900); } }
 
@@ -319,24 +351,18 @@
 .mini__name{ font:600 var(--fs-400)/1 var(--f-chrome); text-transform:uppercase; letter-spacing:.05em; }
 .mini__pill{ margin-left:auto; }
 
-/* ============ RELIC (Tenor) ============
-   The duotone wash must live OUTSIDE the filtered element: a CSS filter
-   applies to an element's pseudo-elements too, so a wash nested inside
-   .relic__frame would itself be desaturated and do nothing. */
+/* ============ RELIC (Tenor) ============ */
 .relic{ margin:0 0 var(--s-6); max-width:var(--w-rail); }
 .relic__stage{
-  position:relative; border:1px solid var(--c-iron); box-shadow:var(--bevel-raised);
-  min-height:120px; background:var(--c-forge);
+  position:relative; min-height:120px; background:var(--c-forge);
+  border:1px solid var(--c-iron);
+  box-shadow: var(--bevel-raised), 0 0 24px rgba(52,224,206,.12);
 }
-.relic__frame{
-  overflow:hidden;
-  filter:grayscale(1) contrast(1.12) brightness(.78);
+.relic__stage::after{           /* a teal edge-light, not a colour wash over the clip */
+  content:""; position:absolute; inset:0; pointer-events:none;
+  box-shadow: inset 0 0 18px rgba(52,224,206,.14);
 }
 .relic__frame > *{ display:block; width:100%; }
-.relic__wash{
-  position:absolute; inset:0; pointer-events:none; mix-blend-mode:color;
-  background:linear-gradient(180deg, rgba(143,191,58,.22), rgba(18,49,45,.30));
-}
 .relic__cap{
   font:400 var(--fs-100)/1.5 var(--f-mono); letter-spacing:.06em;
   color:var(--c-dust); margin-top:var(--s-2);
@@ -363,7 +389,7 @@
 .tbl__icon{ width:42px; height:42px; border-radius:3px; border:1px solid var(--c-iron); margin-bottom:var(--s-2); }
 .tbl__row-h{ color:var(--c-bone); font-weight:600; }
 .tbl-scroll{ overflow-x:auto; }
-.tbl-scroll:focus-visible{ outline:2px solid var(--c-corpse); }
+.tbl-scroll:focus-visible{ outline:2px solid var(--c-glow); }
 
 .deflist{ margin:0; }
 .deflist > div{
@@ -415,7 +441,7 @@
 .stack li{ position:relative; padding-left:var(--s-5); font-size:var(--fs-400); line-height:1.6; }
 .stack li::before{
   content:""; position:absolute; left:0; top:.72em;
-  width:9px; height:1px; background:var(--c-verdigris);
+  width:9px; height:1px; background:var(--c-glow-deep);
 }
 
 /* Item strip must stay one row at the rail/prose widths we ship */
@@ -459,7 +485,7 @@
   color:var(--c-bone); background:var(--c-plate);
   border:1px solid var(--c-iron); border-radius:2px; padding:var(--s-2) var(--s-3);
 }
-.mini__jump:hover{ border-color:var(--c-corpse); }
+.mini__jump:hover{ border-color:var(--c-glow); }
 @media (max-width:620px){
   .mini__pill{ display:none; }
   .mini__jump{ margin-left:auto; max-width:11rem; }
@@ -480,3 +506,11 @@
 /* Runes with no writeup yet: one compact strip, not a row of blanks each */
 .runestrip{ display:flex; flex-wrap:wrap; gap:var(--s-2); list-style:none; margin:var(--s-3) 0 0; padding:0; }
 .runestrip img{ border-radius:3px; border:1px solid var(--c-iron); }
+
+/* Artwork for entities named in free text (alternate setups) */
+.iconstrip{ display:flex; flex-wrap:wrap; gap:var(--s-2); list-style:none; margin:0 0 var(--s-4); padding:0; }
+.iconstrip img{
+  width:40px; height:40px; border-radius:3px; border:1px solid var(--c-iron);
+  box-shadow:0 0 12px rgba(52,224,206,.10);
+}
+.iconstrip li:first-child img{ border-color:var(--c-glow-dim); box-shadow:0 0 16px rgba(52,224,206,.26); }

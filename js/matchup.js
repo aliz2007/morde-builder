@@ -70,9 +70,16 @@ function runesBlock(m) {
   const { primary = [], secondary = [], shards = [], raw = '' } = m.runes || {};
   const chips = (arr, lead) => arr.map((r, i) =>
     `<li class="chip${lead && i === 0 ? ' chip--lead' : ''}">${escapeHtml(r)}</li>`).join('');
+  // The workbook stores a full 602x555 rune-page screenshot from the client,
+  // not a keystone icon. Showing it at 52px threw away the most useful image
+  // in the dataset; it gets full width here.
   return `<div class="runes">
+    ${m.keystoneIcon ? `<a class="runepage" href="${img(m.keystoneIcon)}" target="_blank"
+        rel="noopener noreferrer" aria-label="Open the full rune page image">
+      <img src="${img(m.keystoneIcon)}" alt="Rune page: ${escapeHtml(m.keystone || '')}"
+           width="602" height="555" loading="lazy">
+    </a>` : ''}
     <div class="runes__head">
-      ${m.keystoneIcon ? `<img class="runes__key" src="${img(m.keystoneIcon)}" alt="" width="52" height="52">` : ''}
       <span class="runes__keyname">${escapeHtml(m.keystone || 'Runes')}</span>
     </div>
     ${primary.length ? `<ul class="chips runes__tree runes__tree--primary">${chips(primary, true)}</ul>` : ''}
@@ -169,10 +176,12 @@ export function renderDetail(m) {
   <div class="container w-wide overlay__panel">
     <button class="btn overlay__close" type="button" data-close>Close</button>
 
-    <header class="hero" style="position:relative">
+    <header class="hero">
+      <span class="hero__wash" aria-hidden="true"
+            style="background-image:url('${img(m.portrait)}')"></span>
       <svg class="crown crown--ghost" viewBox="0 0 64 40" aria-hidden="true"><path fill-rule="evenodd" d="M2 40 L2 22 L9 30 L14 8 L21 24 L27 2 L32 0 L37 2 L43 24 L50 8 L55 30 L62 22 L62 40 Z M14 31 L50 31 L50 35 L14 35 Z"/></svg>
       <img class="hero__portrait arch overlay__portrait" src="${img(m.portrait)}" alt=""
-           width="96" height="96">
+           width="132" height="132">
       <div>
         <p class="eyebrow">Matchup</p>
         <h1 class="monument hero__name t-engraved">${escapeHtml(m.name)}</h1>
