@@ -2,19 +2,41 @@
 "intro": {
 "title": "Welcome to The Mordekaiser Bible",
 "subtitle": "If you have any questions, feel free to join my Discord Server and ask around. I am always watching...",
+"subtitleUrl": "https://discord.com/invite/kRhu8Njtkt",
 "toc": [
-"- Matchup Sheet (WIP)",
-"- Itemization Guide",
-"- Rune Guide",
-"- Abilities Guide + Tips and Tricks (WIP)",
-"- Alternate Mordekaiser Setups",
-"- Mordekaiser Content"
+{
+"label": "- Matchup Sheet (WIP)",
+"url": ""
+},
+{
+"label": "- Itemization Guide",
+"url": ""
+},
+{
+"label": "- Rune Guide",
+"url": ""
+},
+{
+"label": "- Abilities Guide + Tips and Tricks (WIP)",
+"url": ""
+},
+{
+"label": "- Alternate Mordekaiser Setups",
+"url": ""
+},
+{
+"label": "- Mordekaiser Content",
+"url": ""
+}
 ],
 "betaNote": "Hi, this spreadsheet is still in it's beta phase.",
 "todo": "I need to still work on the following:\n- Add enemy cooldown timers for each entry (Matchup Sheet)\n- Work on the TL;DR sections (Matchup Sheet)\n- Make an importable Mordekaiser item set from the league client\nOn hold for now:\n- Ability Guide + Tips and Tricks\n- \"Hall of bones\" Donation / Tips page",
 "wikiLabel": "Latest Mordekaiser Change: Wiki",
+"wikiUrl": "https://wiki.leagueoflegends.com/en-us/Mordekaiser/Patch_history",
 "buglist": "Mordekaiser buglist: Credits to Zicktron",
+"buglistUrl": "https://www.reddit.com/r/MordekaiserMains/comments/1o9l1d8/mordekaiser_buglist_30_bugs/",
 "skinNote": "Prestige Money Miser Mordekaiser (April 1st, 2026)",
+"skinUrl": "",
 "patches": [
 {
 "version": "V26.14",
@@ -899,47 +921,6 @@
 "text": "I've actually seen a player called artistic turtle\nrun this rune with Hextech Gunblade + Spirit\nVisage in Grandmasters,\n\nSo if you're not running Rylai's + Approach \nVelocity and don't mind limiting yourself to\na specific build path, this rune can be pretty\nnice for adding additional stats."
 }
 ]
-},
-{
-"row": 24,
-"entries": [
-{
-"icon": null,
-"text": "Add mini runes here"
-},
-{
-"icon": null,
-"text": "Add mini runes here"
-},
-{
-"icon": null,
-"text": "Add mini runes here"
-},
-{
-"icon": null,
-"text": "Add mini runes here"
-},
-{
-"icon": null,
-"text": "Add mini runes here"
-},
-{
-"icon": null,
-"text": "Add mini runes here"
-},
-{
-"icon": null,
-"text": "Add mini runes here"
-},
-{
-"icon": null,
-"text": "Add mini runes here"
-},
-{
-"icon": null,
-"text": "Add mini runes here"
-}
-]
 }
 ],
 "alts": [
@@ -949,6 +930,7 @@
 "runes": "Hail Of Blades -> Taste Of Blood ->\nGrisly Mementos -> Ultimate Hunter\n\nBone Plating -> Revitalize\n\nDouble Adaptive -> Flat Health",
 "items": "Hextech Gunblade\n( To play off of HOB's mixed\ndamage scaling)\n\nGluttonous Greaves\n( For mid lane quest )\n\nRiftmaker\n( Extra Omnivamp )",
 "example": "Person who's running it: HahBuhDuh #YEP",
+"exampleUrl": "https://www.onetricks.gg/players/sByw2TYMHG1x8D5XDTGGYxErR_keR7NQy3na3rqw8YT7IQMuhU2zHkb6Zu-ErQRHbNNvQEyTnc_vgw",
 "comments": ""
 },
 {
@@ -957,6 +939,7 @@
 "runes": "Conqueror -> Triumph -> Haste -> Last Stand -> \n\nShield Bash + Revitalize\n\nAttack Speed + Adaptive Force + Scaling Health",
 "items": "Eclipse\n( Flat% Burst damage )\n\nRiftmaker\n( Extra Damage )",
 "example": "Person who's running it: Cindy #Yep",
+"exampleUrl": "https://www.onetricks.gg/players/IXlLpgKBN9Jr0u8_Z1jIQgDgHUR7MwuF4dvHnXptlDSHZoaUzQ_KKP_tbz47P7J7FFqKMyTMg6nh7Q",
 "comments": ""
 },
 {
@@ -965,6 +948,7 @@
 "runes": "Conqueror -> Absorb Life -> Haste -> \nLast Stand -> \n\nCash Back + Jack of all Trades\n\nAbility Haste + Adaptive Force + \nFlat Health",
 "items": "Doran's Helm start\n( Jack of all Trades )\n\nHextech Rocketbelt\n( Ability haste )\n\nHextech Gunblade\n( Jack of all Trades )\n\nCosmic Drive\n( Ability Haste )",
 "example": "Person who's running it: MinNhut ne hehe #Eclip",
+"exampleUrl": "https://www.onetricks.gg/players/MWLKv9ZL7yDvWlG9yNVrEihSg7lizt-5PyBeTT68n7fstIabTG2vbzFaKSrOwoRQtNErj4XoWL_noA",
 "comments": ""
 },
 {
@@ -973,6 +957,7 @@
 "runes": "Press the attack -> Triumph -> \nAlacrity -> Last Stand -> \n\nShield Bash + Second Wind\n\nAttack Speed + Adaptive Force\n+ Flat Health",
 "items": "Dusk & Dawn\n( Max Burst Damage^ )\n\nRiftmaker\n( Damage Item )",
 "example": "Person who's running it: come to brazil71#TURTL",
+"exampleUrl": "https://www.deeplol.gg/summoner/euw/come%20to%20brazil71-TURTL",
 "comments": ""
 },
 {
@@ -981,6 +966,7 @@
 "runes": "Grasp Of The Undying -> Shield Bash\n-> Bone Plating -> Revitalize\n\nAlacrity -> Cut Down\n\nDouble Adaptive + Flat Health",
 "items": "Dusk & Dawn\n( Damage Item^ )\n\nRiftmaker\n( Maximum Burst^ )",
 "example": "Person who's running it: come to brazil71#TURTL",
+"exampleUrl": "https://www.deeplol.gg/summoner/euw/come%20to%20brazil71-TURTL",
 "comments": ""
 },
 {
@@ -989,6 +975,7 @@
 "runes": "Conqueror -> Triumph -> Haste->\nLast Stand ->\n\nMagical Footwear -> Approach Velocity\n\nAdaptive Force + Movement Speed\n+ Scaling Health",
 "items": "Rylai's\n( To procc Approach Velocity )\n\nRiftmaker / Liandry's / Hextech\nRocketbelt",
 "example": "Person who's running it: Federals1",
+"exampleUrl": "https://www.deeplol.gg/strm/Federals123",
 "comments": ""
 },
 {
@@ -997,6 +984,7 @@
 "runes": "Conqueror -> Triumph -> Alacrity ->\nLast Stand ->\n\nNimbus Cloak -> Transcendence\n\nDouble Adaptive + Flat Health\n\nNote: This was his last altered version\nof the Mordekaiser Mid lane build \nbefore he left, here was his build for\nthe majority of his career.\n--\n[ Pre-altered setups ]\n--\n[Melee]\n\nConqueror -> Triumph -> Alarcity ->\nLast Stand ->\n\nShield Bash -> Second Wind\n\nDouble Adaptive + Flat Health\n\n[Ranged]\n\nPhase Rush -> Nimbus Cloak ->\nTranscendance -> Scorch ->\n\nShield Bash -> Second Wind\n\nFor further details about \nhis overall career:\nhere's LOL Dobby's video",
 "items": "Rocketbelt ( If Ranged) /\nRylai's ( If Melee )\n\n[ Build whatever you didn't\nbuild first, second ]\n\nZhonya's / Kaenic / Abyssal /\nMisc.",
 "example": "Person who's running \nit: 花田错ii",
+"exampleUrl": "https://space.bilibili.com/397237295",
 "comments": ""
 },
 {
@@ -1005,6 +993,7 @@
 "runes": "Conqueror -> Triumph -> Haste->\nLast Stand ->\n\nNimbus Cloak -> Transcendence\n\nAbility Haste + Adaptive Force\n+ Flat Health",
 "items": "Rocketbelt \n(Gap close + CDR)\n\nIonian Boots of Lucidiy\n\nRiftmaker\n(Damage + CDR)\n\nCosmic Drive / \nBloodletter's Curse / \nAny ability haste item\n\nZhonya's (If you need it)",
 "example": "Person who's running it: Twísted Fate#Titan",
+"exampleUrl": "https://www.deeplol.gg/summoner/na/Tw%C3%ADsted%20Fate-Titan/mastery?champion=82",
 "comments": ""
 },
 {
@@ -1013,6 +1002,7 @@
 "runes": "Conqueror -> Triumph -> Alacrity ->\nCoup de Grace ->\n\nNimbus Cloak -> Absolute Focus\n\nDouble Adaptive + Flat Health",
 "items": "Cosmic Drive\nBoots Of Swiftness\nLich Bane\n\nFor third+ items:\n\nZhonya's / Rabadons / \nShadowflame",
 "example": "Person who was running it: \npff1c#pff",
+"exampleUrl": "https://www.deeplol.gg/summoner/vn/pff1c-pff/mastery",
 "comments": ""
 },
 {
@@ -1021,269 +1011,364 @@
 "runes": "Unsealed Spellbook -> Cash Back\n-> Triple Tonic -> Jack Of All Trades ->\n\nNimbus Cloak -> Transcendance\n\nDouble Adaptive + Scaling Health",
 "items": "Rocketbelt\n\nRylai's\n\nShadowflame\n\nZhonya's / Banshee's Veil,\nSpirit Visage, honestly\nit just looks like random flex\npost third item",
 "example": "Person who was running it: \nkaizermorde",
+"exampleUrl": "https://www.google.com/url?q=https://www.deeplol.gg/summoner/na/Kaizer%2520Morde-Death&sa=D&source=editors&ust=1764686092997131&usg=AOvVaw2xn7hSd3BNf0IsybDT6ZYS",
 "comments": ""
 }
 ],
-"creators": [
+"referenceSections": [
+{
+"title": "Currently Active Mordekaiser Creators",
+"rows": [
 {
 "region": "EUW",
 "name": "tjakelol",
 "peak": "Challenger",
 "twitter": "tjake",
+"twitterUrl": "https://x.com/tjake000",
 "youtube": "tjakelol",
+"youtubeUrl": "https://www.youtube.com/@TJakeLoL",
 "twitch": "tjakelol",
+"twitchUrl": "https://www.twitch.tv/tjakelol",
 "alt": "---",
-"opgg": "TJake#0000"
+"altUrl": "",
+"opgg": "TJake#0000",
+"opggUrl": "https://www.deeplol.gg/summoner/euw/TJake-000"
 },
 {
 "region": "CN / KR",
 "name": "花田错铁男",
 "peak": "Challenger",
 "twitter": "---",
+"twitterUrl": "",
 "youtube": "---",
+"youtubeUrl": "",
 "twitch": "---",
+"twitchUrl": "",
 "alt": "花田错铁男",
-"opgg": "(Idk where to find it)"
+"altUrl": "https://space.bilibili.com/397237295",
+"opgg": "(Idk where to find it)",
+"opggUrl": ""
 },
 {
 "region": "EUNE / EUW",
 "name": "Federals1",
 "peak": "Challenger",
 "twitter": "---",
+"twitterUrl": "",
 "youtube": "Federals1",
+"youtubeUrl": "https://www.youtube.com/@Federals1",
 "twitch": "federals123",
+"twitchUrl": "https://www.twitch.tv/federals123",
 "alt": "---",
-"opgg": "Federals123"
+"altUrl": "",
+"opgg": "Federals123",
+"opggUrl": "https://www.deeplol.gg/strm/Federals123"
 },
 {
 "region": "LAN",
 "name": "M0NZT3R",
 "peak": "Challenger",
 "twitter": "---",
+"twitterUrl": "",
 "youtube": "M0NZT3R",
+"youtubeUrl": "https://www.youtube.com/@M_0_N_Z_T_3_R",
 "twitch": "",
+"twitchUrl": "",
 "alt": "---",
-"opgg": "M0NZT3R#777"
+"altUrl": "",
+"opgg": "M0NZT3R#777",
+"opggUrl": "https://op.gg/lol/summoners/lan/M%200%20N%20Z%20T%203%20R-777"
 },
 {
 "region": "NA / VN",
 "name": "Meowdekaiser",
 "peak": "Grandmaster",
 "twitter": "Meowdekaiser",
+"twitterUrl": "https://x.com/Meowdekaiser",
 "youtube": "Meowdekaiser",
+"youtubeUrl": "https://www.youtube.com/channel/UCBmRZ9a5ICnYCRANeZ_gGEg",
 "twitch": "Meowdekaiser",
+"twitchUrl": "https://www.twitch.tv/meowdekaiser_",
 "alt": "---",
-"opgg": "Meowdekaiser#VN100"
+"altUrl": "",
+"opgg": "Meowdekaiser#VN100",
+"opggUrl": "https://www.deeplol.gg/summoner/VN/Meowdekaiser-VN100"
 },
 {
 "region": "VN",
 "name": "Awaken Morde",
 "peak": "Grandmaster",
 "twitter": "---",
+"twitterUrl": "",
 "youtube": "Awaken Morde",
+"youtubeUrl": "https://www.youtube.com/@Awakenmorde",
 "twitch": "---",
+"twitchUrl": "",
 "alt": "---",
-"opgg": "Awaken Morde#Nhqm"
+"altUrl": "",
+"opgg": "Awaken Morde#Nhqm",
+"opggUrl": "https://www.deeplol.gg/summoner/vn/AWAKEN%20MORDE-Nhqm"
 },
 {
 "region": "EUW",
 "name": "Dreadknight",
 "peak": "Master",
 "twitter": "Dreadknight",
+"twitterUrl": "https://x.com/Dreadknight_EUW",
 "youtube": "Dreadknight",
+"youtubeUrl": "https://www.youtube.com/@Dreadknight-EUW",
 "twitch": "Dreaknight_lol",
+"twitchUrl": "https://www.twitch.tv/dreadknight_lol",
 "alt": "",
-"opgg": ""
+"altUrl": "",
+"opgg": "",
+"opggUrl": ""
 },
 {
 "region": "BR",
 "name": "Muck Fordekaiser",
 "peak": "Master",
 "twitter": "---",
+"twitterUrl": "",
 "youtube": "Muck Fordekaiser",
+"youtubeUrl": "https://www.youtube.com/@MuckFordekaiser",
 "twitch": "---",
+"twitchUrl": "",
 "alt": "---",
-"opgg": "---"
+"altUrl": "",
+"opgg": "---",
+"opggUrl": ""
 },
 {
 "region": "KR",
 "name": "Zephyrusk",
 "peak": "Master",
 "twitter": "---",
+"twitterUrl": "",
 "youtube": "ZephyrusK",
+"youtubeUrl": "https://www.youtube.com/@ZephyrusK",
 "twitch": "---",
+"twitchUrl": "",
 "alt": "ZephyrusK",
-"opgg": "---"
+"altUrl": "https://chzzk.naver.com/b41c6b5f726837936545c48c93a9743a",
+"opgg": "---",
+"opggUrl": ""
 },
 {
 "region": "KR",
 "name": "가날이",
 "peak": "Master",
 "twitter": "---",
+"twitterUrl": "",
 "youtube": "가날이",
+"youtubeUrl": "https://www.youtube.com/channel/UCfhA_VLMgttAC79nho-VASw",
 "twitch": "---",
+"twitchUrl": "",
 "alt": "---",
-"opgg": "나리나리가날이#KR1"
+"altUrl": "",
+"opgg": "나리나리가날이#KR1",
+"opggUrl": "https://www.deeplol.gg/summoner/kr/%EB%82%98%EB%A6%AC%EB%82%98%EB%A6%AC%EA%B0%80%EB%82%A0%EC%9D%B4-kr1"
 },
 {
 "region": "KR",
 "name": "오데",
 "peak": "Master",
 "twitter": "---",
+"twitterUrl": "",
 "youtube": "오데",
+"youtubeUrl": "https://www.youtube.com/@%EC%98%A4%EB%8D%B0%EC%B9%B4%EC%9D%B4%EC%A0%80",
 "twitch": "---",
+"twitchUrl": "",
 "alt": "오데",
-"opgg": "우리팀개모데#KR1"
+"altUrl": "https://chzzk.naver.com/e1e8c6b0ef9ed7e436f09ad1766c0637",
+"opgg": "우리팀개모데#KR1",
+"opggUrl": "https://www.deeplol.gg/summoner/kr/%EC%9A%B0%EB%A6%AC%ED%8C%80%EA%B0%9C%EB%AA%A8%EB%8D%B0-kr1"
 },
 {
 "region": "KR",
 "name": "나정우",
 "peak": "Master",
 "twitter": "---",
+"twitterUrl": "",
 "youtube": "나정우",
+"youtubeUrl": "https://www.youtube.com/@%EB%82%98%EC%A0%95%EC%9A%B0J",
 "twitch": "---",
+"twitchUrl": "",
 "alt": "---",
-"opgg": "나는정말우울해요#KR1"
+"altUrl": "",
+"opgg": "나는정말우울해요#KR1",
+"opggUrl": "https://www.deeplol.gg/summoner/kr/%EB%82%98%EB%8A%94%EC%A0%95%EB%A7%90%EC%9A%B0%EC%9A%B8%ED%95%B4%EC%9A%94-kr1"
 },
 {
 "region": "KR",
 "name": "아바유",
 "peak": "Master",
 "twitter": "---",
+"twitterUrl": "",
 "youtube": "아바유",
+"youtubeUrl": "https://www.youtube.com/@abau0403",
 "twitch": "---",
+"twitchUrl": "",
 "alt": "---",
-"opgg": "駒沢乃依#onyx"
+"altUrl": "",
+"opgg": "駒沢乃依#onyx",
+"opggUrl": "https://www.deeplol.gg/summoner/kr/%E9%A7%92%E6%B2%A2%E4%B9%83%E4%BE%9D-onyx"
 },
 {
 "region": "KR",
 "name": "MordeLand",
 "peak": "Master",
 "twitter": "---",
+"twitterUrl": "",
 "youtube": "MordeLand",
+"youtubeUrl": "https://www.youtube.com/@%EB%AA%A8%EB%8D%B0",
 "twitch": "---",
+"twitchUrl": "",
 "alt": "---",
-"opgg": "MordeLand#MDLD"
+"altUrl": "",
+"opgg": "MordeLand#MDLD",
+"opggUrl": "https://www.deeplol.gg/summoner/kr/MordeLand-MDLD"
 },
 {
 "region": "NA",
 "name": "cowlick",
 "peak": "Emerald",
 "twitter": "---",
+"twitterUrl": "",
 "youtube": "cowlick is cool",
+"youtubeUrl": "https://www.youtube.com/@Cow_lick",
 "twitch": "cowlick is cool",
+"twitchUrl": "https://www.twitch.tv/cowlick_is_cool",
 "alt": "---",
-"opgg": "The cowlick"
+"altUrl": "",
+"opgg": "The cowlick",
+"opggUrl": "https://www.deeplol.gg/summoner/na/The%20cowlick-NA1"
+}
+],
+"kind": "people"
 },
 {
-"region": "Region",
-"name": "Name",
-"peak": "Peak Rank",
-"twitter": "Twitter",
-"youtube": "YouTube",
-"twitch": "Twitch",
-"alt": "Alt.",
-"opgg": "Deeplol / opgg"
-},
+"title": "Retired Mordekaiser Creators",
+"rows": [
 {
 "region": "EUNE",
 "name": "Little Mewtwo",
 "peak": "Challenger",
 "twitter": "---",
+"twitterUrl": "",
 "youtube": "Little Mewtwo1",
+"youtubeUrl": "https://www.youtube.com/@LittleMewtwo1",
 "twitch": "Little Mewtwo143",
+"twitchUrl": "https://www.twitch.tv/littlemewtwo143",
 "alt": "---",
-"opgg": "Little Mewtwo#Lia"
+"altUrl": "",
+"opgg": "Little Mewtwo#Lia",
+"opggUrl": "https://www.deeplol.gg/summoner/eun/Little%20Mewtwo-Lia"
 },
 {
 "region": "NA",
 "name": "Kaizer Morde",
 "peak": "Challenger",
 "twitter": "---",
+"twitterUrl": "",
 "youtube": "Kaizer Morde",
+"youtubeUrl": "https://www.youtube.com/@KaizerMorde",
 "twitch": "kaizermordelol",
+"twitchUrl": "https://www.twitch.tv/kaizermordelol",
 "alt": "---",
-"opgg": "Kaizer Morde#Death"
+"altUrl": "",
+"opgg": "Kaizer Morde#Death",
+"opggUrl": "https://www.deeplol.gg/summoner/na/Kaizer%20Morde-Death"
 },
 {
 "region": "KR",
 "name": "페이즈킬러",
 "peak": "Master",
 "twitter": "---",
+"twitterUrl": "",
 "youtube": "페이즈킬러",
+"youtubeUrl": "https://www.youtube.com/@PhaseKiller",
 "twitch": "summitphase",
+"twitchUrl": "https://www.twitch.tv/summitphase",
 "alt": "---",
-"opgg": "PhasedKiller#KR1"
+"altUrl": "",
+"opgg": "PhasedKiller#KR1",
+"opggUrl": "https://www.deeplol.gg/summoner/kr/phasedkiller-kr1"
+}
+],
+"kind": "people"
 },
 {
-"region": "Region",
-"name": "Name",
-"peak": "Peak Rank",
-"twitter": "Title + Link",
-"youtube": "",
-"twitch": "",
-"alt": "Date Posted",
-"opgg": ""
+"title": "Additional Resources / References:",
+"rows": [
+{
+"region": "EUNE / EUW",
+"name": "Federals1",
+"peak": "Challenger",
+"title": "Mordekaiser Matchups (Spreadsheet)",
+"url": "https://docs.google.com/spreadsheets/d/1GyICr7ifX-8ASWfuj9-TCfXcWTzaYw68eCARSHDeP1Q/edit?gid=0",
+"date": "November 1st, 2024"
 },
 {
 "region": "EUNE / EUW",
 "name": "Federals1",
 "peak": "Challenger",
-"twitter": "Mordekaiser Matchups (Spreadsheet)",
-"youtube": "",
-"twitch": "",
-"alt": "November 1st, 2024",
-"opgg": ""
-},
-{
-"region": "EUNE / EUW",
-"name": "Federals1",
-"peak": "Challenger",
-"twitter": "Season 15 Challenger Mordekaiser Guide (Video)",
-"youtube": "",
-"twitch": "",
-"alt": "April 26th, 2025",
-"opgg": ""
+"title": "Season 15 Challenger Mordekaiser Guide (Video)",
+"url": "https://youtu.be/yq9iUCGMCvE?si=_j43nurCaajDp4tH",
+"date": "April 26th, 2025"
 },
 {
 "region": "EUW",
 "name": "Coach Chippy's",
 "peak": "Challenger",
-"twitter": "How To Carry With Mordekaiser (Video)",
-"youtube": "",
-"twitch": "",
-"alt": "February 3rd, 2024",
-"opgg": ""
+"title": "How To Carry With Mordekaiser (Video)",
+"url": "https://youtu.be/YwMBpgTpaoc?si=YXUgQ2LOVtbKhEiQ",
+"date": "February 3rd, 2024"
 },
 {
 "region": "EUNE",
 "name": "Little Mewtwo",
 "peak": "Challenger",
-"twitter": "[14.24] Challenger OTP Mordekaiser Guide (Mobafire)",
-"youtube": "",
-"twitch": "",
-"alt": "December 29, 2024",
-"opgg": ""
+"title": "[14.24] Challenger OTP Mordekaiser Guide (Mobafire)",
+"url": "https://www.mobafire.com/league-of-legends/build/14-the-best-mordekaiser-guide-matchup-rundown-623847",
+"date": "December 29, 2024"
 },
 {
 "region": "NA / VN",
 "name": "Meowdekaiser",
 "peak": "Grandmaster",
-"twitter": "(Part 1 version) Original Mordekaiser Spreadsheet",
-"youtube": "",
-"twitch": "",
-"alt": "April 30th, 2025",
-"opgg": ""
+"title": "(Part 1 version) Original Mordekaiser Spreadsheet",
+"url": "https://docs.google.com/spreadsheets/d/1ykEDi7DUpwu-csW5i7rZSly3sJcuCWmBHvrmQsSUciE/edit?gid=1614187072",
+"date": "April 30th, 2025"
 },
 {
 "region": "EUW",
 "name": "Dreadknight",
 "peak": "Master",
-"twitter": "Mordekaiser Matchups (Spreadsheet)",
-"youtube": "",
-"twitch": "",
-"alt": "March 29th, 2026",
-"opgg": ""
+"title": "Mordekaiser Matchups (Spreadsheet)",
+"url": "https://docs.google.com/spreadsheets/d/117W-tymfna-J8tbp7r-3GC24uZgyyAHhFuX0AfAZ8Fo/edit?gid=0",
+"date": "March 29th, 2026"
+}
+],
+"kind": "resources"
+}
+],
+"notes": [
+{
+"text": "If you know a content creator who mains/plays Mordekaiser but isn't listed here, feel free to ask or let me know in my Discord :)",
+"url": ""
+},
+{
+"text": "For more Mordekaiser related stuff:",
+"url": ""
+},
+{
+"text": "Mordekaiser Mains Discord Server",
+"url": "https://discordapp.com/invite/AESsCCh"
+},
+{
+"text": "My Own Discord server",
+"url": "https://discord.com/invite/kRhu8Njtkt"
 }
 ],
 "credits": [

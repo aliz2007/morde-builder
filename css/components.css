@@ -387,13 +387,22 @@
 
 /* Itemization table: 5 columns of prose need declared widths or the first
    column eats the row. min-width keeps it scrollable rather than crushed. */
-.tbl--items{ table-layout:fixed; min-width:1180px; }
-.tbl--items col.c-cat{ width:104px; }
+.tbl--items{ table-layout:fixed; min-width:1120px; }
 .tbl--items td p{ margin:0 0 var(--s-3); }
 .tbl--items td p:last-child{ margin-bottom:0; }
 
-.rune-card__body p{ margin:0 0 var(--s-3); font-size:var(--fs-400); line-height:1.6; color:var(--c-ash); }
-.rune-card__body p:last-child{ margin-bottom:0; }
+/* Rune guide: hairline-separated rows, not a grid of near-identical cards */
+.runes-tree{ margin-bottom:var(--s-7); }
+.runes-tree__h{ font-size:var(--fs-800); margin-bottom:var(--s-4); }
+.runerows{ list-style:none; margin:0; padding:0; border-top:1px solid var(--c-iron); }
+.runerow{
+  display:grid; grid-template-columns:56px minmax(0,1fr); gap:var(--s-5);
+  padding:var(--s-5) 0; border-bottom:1px solid var(--c-iron); align-items:start;
+}
+.runerow__icon img{ width:42px; height:42px; border-radius:3px; border:1px solid var(--c-iron); }
+.runerow__body p{ margin:0 0 var(--s-3); font-size:var(--fs-400); line-height:1.62; color:var(--c-ash); max-width:var(--w-prose); }
+.runerow__body p:last-child{ margin-bottom:0; }
+@media (max-width:620px){ .runerow{ grid-template-columns:1fr; gap:var(--s-3); } }
 
 /* TL;DR + generic stacks are lists but should not carry browser markers */
 .stack{ list-style:none; margin:0; padding:0; }
@@ -420,3 +429,15 @@
 .card > span{ min-width:0; }
 .card__name{ display:block; overflow-wrap:anywhere; }
 .card__val{ display:block; margin-top:var(--s-1); }
+
+/* Asides the author bracketed mid-build, kept where they were written */
+.build__aside{
+  padding-left:var(--s-6); color:var(--c-brass-hi);
+  font:600 var(--fs-200)/1.4 var(--f-chrome); text-transform:uppercase; letter-spacing:.1em;
+}
+.build__aside::before{ content:none; }
+
+/* Blocks holding two sub-matchups (Udyr: AD and Tank) */
+.variant + .variant{ margin-top:var(--s-7); }
+.variant__h{ font-size:var(--fs-800); }
+.variant__spine{ margin:var(--s-4) 0 var(--s-5); max-width:26rem; }

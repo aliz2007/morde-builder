@@ -48,6 +48,7 @@ function mountMatchups({ matchups }) {
   const index = buildIndex(matchups);
   const slugs = new Map(matchups.map(m => [m.slug, m]));
   let active = -1, rows = [], unwire = null, lastFocus = null;
+  let hasResults = false;   // Enter only auto-navigates over real matches
 
   /* ——— browse grid ——— */
   gridEl.innerHTML = matchups.map(m =>
@@ -68,7 +69,8 @@ function mountMatchups({ matchups }) {
     if (i < 0) input.removeAttribute('aria-activedescendant');
   }
 
-  function open(html) {
+  function open(html, real) {
+    hasResults = !!real;
     pop.innerHTML = html;
     pop.hidden = false;
     input.setAttribute('aria-expanded', 'true');
@@ -94,7 +96,7 @@ function mountMatchups({ matchups }) {
     html += `<p class="search__group">Hardest</p>` +
       hardest.map(m => optionRow(m, `opt-${n++}`, false)).join('');
     html += `<p class="search__group"><a href="#browse">Browse all ${matchups.length}</a></p>`;
-    open(html);
+    open(html, true);
   }
 
   function query(v) {
@@ -102,13 +104,13 @@ function mountMatchups({ matchups }) {
     const hits = rank(index, v);
     if (hits.length) {
       open(hits.slice(0, 40).map((h, i) =>
-        optionRow(h.e.m, `opt-${i}`, false, highlight(h.e, v, h.at))).join(''));
+        optionRow(h.e.m, `opt-${i}`, false, highlight(h.e, v, h.at))).join(''), true);
       return;
     }
     const real = knownChampion(v, matchups);
     if (real) {
       open(`<div class="search__empty"><p><strong>${escapeHtml(real)}</strong> — no writeup yet.</p>
-        <p><a href="#browse">Browse all ${matchups.length}</a></p></div>`);
+        <p><a href="#browse">Browse all ${matchups.length}</a></p></div>`, false);
       return;
     }
     const near = closest(index, v, 3);
@@ -116,7 +118,7 @@ function mountMatchups({ matchups }) {
       <p>No champion matches “${escapeHtml(v)}”.</p>
       <p class="search__group" style="padding-left:0">Did you mean</p>
       ${near.map((m, i) => optionRow(m, `opt-${i}`, false)).join('')}
-      <p style="margin-top:var(--s-3)"><a href="#browse">Browse all ${matchups.length}</a></p></div>`);
+      <p style="margin-top:var(--s-3)"><a href="#browse">Browse all ${matchups.length}</a></p></div>`, false);
   }
 
   input.addEventListener('input', () => query(input.value));
@@ -132,7 +134,9 @@ function mountMatchups({ matchups }) {
       case 'PageDown':  if (max >= 0) { e.preventDefault(); setActive(Math.min(max, active + 5)); } break;
       case 'PageUp':    if (max >= 0) { e.preventDefault(); setActive(Math.max(0, active - 5)); } break;
       case 'Enter': {
-        const target = active >= 0 ? rows[active] : rows[0];
+        // With no active option, Enter takes the top-ranked match — but never a
+        // "Did you mean" suggestion, which the user did not ask for.
+        const target = active >= 0 ? rows[active] : (hasResults ? rows[0] : null);
         if (target) { e.preventDefault(); location.hash = target.getAttribute('href').slice(1); close(); }
         break;
       }

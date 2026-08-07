@@ -51,7 +51,8 @@ export async function load() {
     // Render only when it is real prose.
     m.tldr = (m.tldr || []).filter(t => t && !/^tl;?dr section$/i.test(t.trim()));
     m.sections = (m.sections || []).filter(s => (s.items && s.items.length) || (s.body || '').trim());
-    m.hasWriteup = m.sections.length > 0;
+    m.variants = m.variants || [];
+    m.hasWriteup = m.sections.length > 0 || m.variants.length > 1;
   }
   _cache = { matchups, guides };
   return _cache;

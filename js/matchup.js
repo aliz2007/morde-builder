@@ -79,30 +79,44 @@ function runesBlock(m) {
   </div>`;
 }
 
-function buildBlock(b, i, total) {
+function buildBlock(b) {
   const slots = b.icons.map((ic, k) => {
     const label = ic.placeholder || ic.name || `Item ${k + 1}`;
     return `<span class="build__slot${k === 2 ? ' build__slot--core' : ''}">
       <img class="build__icon" src="${img(ic.file)}" alt="${escapeHtml(label)}" width="42" height="42" loading="lazy">
       <span class="build__step">${String(k + 1).padStart(2, '0')}</span></span>`;
   }).join('');
-  const notes = b.steps.map(s =>
-    `<li><span class="build__item">${escapeHtml(s.item)}</span>${
-      s.note ? `<span class="build__note">${escapeHtml(s.note)}</span>` : ''}</li>`).join('');
+  const notes = b.steps.map(s => s.aside
+    ? `<li class="build__aside">${escapeHtml(s.item || s.note)}</li>`
+    : `<li><span class="build__item">${escapeHtml(s.item)}</span>${
+        s.note ? `<span class="build__note">${escapeHtml(s.note)}</span>` : ''}</li>`).join('');
   return `<div class="build">
-    ${b.condition ? `<p class="build__cond">${escapeHtml(b.condition.replace(/:$/, ''))}</p>`
-      : (total > 1 ? `<p class="build__cond">Path ${i + 1}</p>` : '')}
-    ${b.prelude && b.prelude.length ? `<p class="build__pre mono-micro">${escapeHtml(b.prelude.join(' · '))}</p>` : ''}
+    ${b.condition ? `<p class="build__cond">${escapeHtml(b.condition.replace(/:$/, ''))}</p>` : ''}
     <div class="build__strip">${slots}</div>
     ${notes ? `<ol class="build__notes">${notes}</ol>` : ''}
   </div>`;
 }
 
 function writeup(m) {
+  if (m.variants && m.variants.length > 1) {
+    return m.variants.map(v => `
+      <section class="variant">
+        <h2 class="monument--sec t-engraved variant__h">${escapeHtml(v.label)}</h2>
+        <div class="spine variant__spine">
+          ${spineRow('Early', v.ratings.early)}${spineRow('Mid', v.ratings.mid)}
+          ${spineRow('Late', v.ratings.late)}${spineRow('Overall', v.ratings.overall)}
+        </div>
+        ${sectionList(v.sections)}
+      </section>`).join('<hr class="seam">');
+  }
   if (!m.hasWriteup) {
     return `<div class="sect sect--early"><p>No writeup for this matchup yet.</p></div>`;
   }
-  return m.sections.map((s, i) => {
+  return sectionList(m.sections);
+}
+
+function sectionList(list) {
+  return list.map((s, i) => {
     const meta = sectionMeta(s.heading);
     const paras = (s.items && s.items.length ? s.items : String(s.body || '').split(/\n{2,}/))
       .filter(Boolean).map(t => `<p>${chipify(t)}</p>`).join('');
@@ -118,11 +132,12 @@ function writeup(m) {
 
 /* ——— public render ——— */
 export function renderDetail(m) {
-  const builds = m.builds.map((b, i) => buildBlock(b, i, m.builds.length)).join('');
-  const toc = m.sections.filter(s => s.heading).map(s => {
-    const meta = sectionMeta(s.heading);
-    return `<li><a href="#${meta.slug}" data-spy="${meta.slug}">${escapeHtml(s.heading)}</a></li>`;
-  }).join('');
+  const builds = m.builds.map(buildBlock).join('');
+  const toc = (m.variants && m.variants.length > 1 ? [] : m.sections)
+    .filter(s => s.heading).map(s => {
+      const meta = sectionMeta(s.heading);
+      return `<li><a href="#${meta.slug}" data-spy="${meta.slug}">${escapeHtml(s.heading)}</a></li>`;
+    }).join('');
 
   return `
   <div class="mini" data-mini>
@@ -184,7 +199,9 @@ export function renderDetail(m) {
         ${writeup(m)}
         <div class="writeup__foot">
           <button class="btn btn--ghost" type="button" data-collapse aria-pressed="false">Collapse all</button>
-          ${m.video ? `<span class="mono-micro">${escapeHtml(m.video)}</span>` : ''}
+          ${m.video ? (m.videoUrl
+            ? `<a class="mono-micro" href="${escapeHtml(m.videoUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(m.video)}</a>`
+            : `<span class="mono-micro">${escapeHtml(m.video)}</span>`) : ''}
         </div>
       </div>
 

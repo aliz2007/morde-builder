@@ -51,10 +51,12 @@ export const ALIASES = {
 
 /* Champions that exist in League but have no entry in the Bible — used to tell
    "you typed a real champion we haven't covered" apart from "that isn't a champion". */
-const ROSTER_EXTRA = ['Amumu','Ashe','Bard','Blitzcrank','Caitlyn','Ezreal','Janna','Jinx',
-  'Kayn','Kha\'Zix','Kindred','Leona','Lillia','Milio','Miss Fortune','Nami','Nilah','Nunu & Willump',
-  'Orianna','Rell','Renata Glasc','Samira','Senna','Seraphine','Sivir','Sona','Varus','Xayah',
-  'Rakan','Yuumi','Zeri','Zilean','Gragas','Ivern','Amumu','Trundle','Nocturne','Fiddlesticks'];
+const ROSTER_EXTRA = ['Alistar','Amumu','Aphelios','Ashe','Bard','Blitzcrank','Braum','Caitlyn',
+  'Ezreal','Gragas','Gwen','Janna','Jinx','Karma','Kayn','Kha\'Zix','Kindred','Leona','Lillia',
+  'Lucian','Lulu','Milio','Miss Fortune','Nami','Nilah','Nunu & Willump','Orianna','Pyke','Rakan',
+  'Rell','Renata Glasc','Samira','Senna','Seraphine','Shaco','Sivir','Sona','Soraka','Taric',
+  'Thresh','Varus','Xayah','Yuumi','Zeri','Ziggs','Zyra','Ambessa','Aurora','Briar','Hwei',
+  'Naafiri','Smolder','K\'Sante','Bel\'Veth','Yunara','Mel','Zaahen'];
 
 export function buildIndex(matchups) {
   return matchups.map(m => {

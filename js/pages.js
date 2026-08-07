@@ -18,6 +18,12 @@ const prose = t => String(t || '').split(/\n\s*\n/).map(p => p.replace(/\s*\n\s*
   .filter(Boolean).map(p => `<p>${escapeHtml(p)}</p>`).join('');
 const oneline = t => String(t || '').replace(/\s*\n\s*/g, ' ').trim();
 
+/* The workbook carries 76 hyperlinks — the Discord invite, every creator
+   profile, the wiki and the linked guides. Dropping them loses real content. */
+const ext = (label, url, cls) => url
+  ? `<a${cls ? ` class="${cls}"` : ''} href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`
+  : escapeHtml(label);
+
 /* Tenor: the official embed script is the only reliable way to resolve a post id.
    We keep its chrome out of sight by arch-masking and desaturating the frame. */
 function mountRelics() {
@@ -44,10 +50,12 @@ function renderHome({ guides }) {
   const g = guides.intro;
   if (!$('[data-intro-sub]')) return;
   txt('[data-intro-title]', g.title || 'The Mordekaiser Bible');
-  txt('[data-intro-sub]', g.subtitle);
+  set('[data-intro-sub]', g.subtitleUrl
+    ? ext(g.subtitle, g.subtitleUrl) : escapeHtml(g.subtitle));
   txt('[data-intro-beta]', g.betaNote);
-  txt('[data-intro-bug]', g.buglist);
-  txt('[data-intro-skin]', g.skinNote);
+  set('[data-intro-bug]', ext(g.buglist, g.buglistUrl));
+  set('[data-intro-skin]', ext(g.skinNote, g.skinUrl));
+  set('[data-intro-wiki]', ext(g.wikiLabel, g.wikiUrl));
 
   const todo = String(g.todo || '').split('\n').filter(Boolean);
   set('[data-intro-todo]', todo.map((t, i) =>
@@ -58,17 +66,18 @@ function renderHome({ guides }) {
     'Rune Guide': 'guides.html#runes', 'Alternate Mordekaiser Setups': 'guides.html#setups',
     'Mordekaiser Content': 'guides.html#creators',
   };
+  // The only status the author states is "(WIP)". Anything else would be invented.
   set('[data-toc]', (g.toc || []).map(t => {
-    const label = t.replace(/^-\s*/, '');
+    const label = String(t.label || t).replace(/^-\s*/, '');
     const bare = label.replace(/\s*\(WIP\)\s*$/, '').trim();
     const href = LINK[bare];
     const wip = /\(WIP\)/.test(label);
     return `<div><dt>${href ? `<a href="${href}">${escapeHtml(bare)}</a>` : escapeHtml(bare)}</dt>
-      <dd>${wip ? 'Still being written.' : 'Ready.'}</dd></div>`;
+      <dd>${wip ? '<span class="mono-micro">Work in progress</span>' : ''}</dd></div>`;
   }).join(''));
 
-  set('[data-patches]', (g.patches || []).map(p => `
-    <article class="plate plate--aged">
+  set('[data-patches]', (g.patches || []).map((p, i) => `
+    <article class="plate${i < 2 ? ' plate--aged' : ''}">
       <div class="plate__body">
         <p class="plate__label">Patch</p>
         <p class="num" style="font-size:var(--fs-700);margin:0 0 var(--s-3)">${escapeHtml(p.version)}</p>
@@ -82,8 +91,10 @@ function renderHome({ guides }) {
   set('[data-credits]', (guides.credits || []).map(c =>
     `<p><span style="color:var(--c-bone);font-weight:600">${escapeHtml(c.name)}</span>
      — ${escapeHtml(c.role)}</p>`).join('') +
-    `<p style="color:var(--c-ash)">Everything on this site is Meowdekaiser&rsquo;s writing, reformatted.
-     Nothing has been rewritten or summarised.</p>`);
+    `<p style="color:var(--c-ash)">Every writeup on this site is Meowdekaiser&rsquo;s, reproduced
+     as written. This site only changes how it is laid out.</p>` +
+    (guides.notes || []).filter(n => n.url).map(n =>
+      `<p>${ext(n.text, n.url)}</p>`).join(''));
 }
 
 function renderGuides({ guides }) {
@@ -91,19 +102,23 @@ function renderGuides({ guides }) {
   if (it) {
     const COLS = ['First', 'Second', 'Third', 'Fourth+'];
     let html = `<caption>Every item by the slot you buy it in</caption>
-      <colgroup><col class="c-cat"><col><col><col><col></colgroup>
-      <thead><tr><th scope="col">Item</th>${COLS.map(c => `<th scope="col">${c}</th>`).join('')}</tr></thead>`;
+      <colgroup><col><col><col><col></colgroup>
+      <thead><tr>${COLS.map(c => `<th scope="col">${c}</th>`).join('')}</tr></thead>`;
     for (const sec of guides.itemguide) {
-      html += `<tbody><tr><th scope="rowgroup" colspan="5" class="tbl__row-h"
+      html += `<tbody><tr><th scope="rowgroup" colspan="4" class="tbl__row-h"
                 style="padding-top:var(--s-5)">${escapeHtml(sec.title)}</th></tr>`;
       for (const entry of sec.entries) {
         const by = Object.fromEntries(entry.slots.map(s => [s.slot, s]));
-        const icon = entry.slots.find(s => s.icon)?.icon;
-        html += `<tr><td>${icon
-          ? `<img class="tbl__icon" src="${img(icon)}" alt="" width="42" height="42" loading="lazy">`
-          : ''}</td>` +
-          COLS.map(c => `<td>${by[c] && by[c].text ? prose(by[c].text) : '<span class="mono-micro">—</span>'}</td>`).join('') +
-          `</tr>`;
+        // Each cell is its own item — row 7 is Rylai's as a first item and
+        // Cosmic Drive as a second — so the icon belongs to the cell, not the row.
+        html += `<tr>` +
+          COLS.map(c => {
+            const cellData = by[c];
+            if (!cellData || (!cellData.text && !cellData.icon)) return '<td><span class="mono-micro">—</span></td>';
+            return `<td>${cellData.icon
+              ? `<img class="tbl__icon" src="${img(cellData.icon)}" alt="" width="42" height="42" loading="lazy">`
+              : ''}${cellData.text ? prose(cellData.text) : ''}</td>`;
+          }).join('') + `</tr>`;
       }
       html += `</tbody>`;
     }
@@ -113,16 +128,18 @@ function renderGuides({ guides }) {
 
   const rg = $('[data-runeguide]');
   if (rg) {
+    const TREE = ['Resolve', 'Precision', 'Sorcery', 'Inspiration', 'Shards'];
     rg.innerHTML = guides.runeguide.map((grp, i) => `
-      <section style="margin-bottom:var(--s-7)">
-        <p class="eyebrow" style="margin-bottom:var(--s-4)">Tree ${String(i + 1).padStart(2, '0')}</p>
-        <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(268px,1fr))">
+      <section class="runes-tree">
+        <h3 class="runes-tree__h monument--sec t-engraved">${escapeHtml(TREE[i] || 'Tree ' + (i + 1))}</h3>
+        <ul class="runerows">
           ${grp.entries.filter(e => e.text || e.icon).map(e => `
-            <article class="plate"><div class="plate__body">
-              ${e.icon ? `<img class="tbl__icon" src="${img(e.icon)}" alt="" width="42" height="42" loading="lazy">` : ''}
-              <div class="rune-card__body">${prose(e.text)}</div>
-            </div></article>`).join('')}
-        </div>
+            <li class="runerow">
+              <span class="runerow__icon">${e.icon
+                ? `<img src="${img(e.icon)}" alt="" width="42" height="42" loading="lazy">` : ''}</span>
+              <div class="runerow__body">${prose(e.text)}</div>
+            </li>`).join('')}
+        </ul>
       </section>`).join('');
   }
 
@@ -136,30 +153,49 @@ function renderGuides({ guides }) {
           <p style="margin:0 0 var(--s-4)">${escapeHtml(oneline(a.runes).replace(/\s*->\s*/g, ' \u2192 '))}</p>
           <p class="plate__label">Items</p>
           ${prose(a.items)}
-          ${a.example ? `<p class="mono-micro">${escapeHtml(oneline(a.example))}</p>` : ''}
+          ${a.example ? `<p class="mono-micro">${ext(oneline(a.example), a.exampleUrl)}</p>` : ''}
           ${a.comments ? `<p class="mono-micro">${escapeHtml(oneline(a.comments))}</p>` : ''}
         </dd></div>`).join('');
   }
 
   const cr = $('[data-creators]');
   if (cr) {
-    const rows = guides.creators.filter(c => c.name && c.name !== 'Name');
-    const cell = v => (!v || v === '---') ? '<span class="mono-micro">—</span>' : escapeHtml(v);
-    cr.innerHTML = `<caption>Mordekaiser players worth watching</caption>
-      <thead><tr><th scope="col">Region</th><th scope="col">Name</th><th scope="col">Peak</th>
-      <th scope="col">Twitch</th><th scope="col">YouTube</th><th scope="col">Twitter</th></tr></thead>
-      <tbody>${rows.map(c => `<tr>
-        <td><span class="num" style="font-size:var(--fs-100)">${cell(c.region)}</span></td>
-        <td class="tbl__row-h">${cell(c.name)}</td>
-        <td>${cell(c.peak)}</td><td>${cell(c.twitch)}</td>
-        <td>${cell(c.youtube)}</td><td>${cell(c.twitter)}</td></tr>`).join('')}</tbody>`;
+    const dash = '<span class="mono-micro">—</span>';
+    const cel = (v, url) => (!v || v === '---') ? dash : ext(v, url);
+    cr.innerHTML = (guides.referenceSections || []).map(sec => sec.kind === 'resources'
+      ? `<div class="tbl-scroll"><table class="tbl">
+          <caption>${escapeHtml(sec.title.replace(/:$/, ''))}</caption>
+          <thead><tr><th scope="col">Region</th><th scope="col">By</th><th scope="col">Peak</th>
+          <th scope="col">Resource</th><th scope="col">Posted</th></tr></thead>
+          <tbody>${sec.rows.map(r => `<tr>
+            <td><span class="num" style="font-size:var(--fs-100)">${escapeHtml(r.region || '')}</span></td>
+            <td class="tbl__row-h">${escapeHtml(r.name || '')}</td>
+            <td>${escapeHtml(r.peak || '')}</td>
+            <td>${cel(r.title, r.url)}</td>
+            <td><span class="mono-micro">${escapeHtml(r.date || '')}</span></td></tr>`).join('')}</tbody>
+        </table></div>`
+      : `<div class="tbl-scroll"><table class="tbl">
+          <caption>${escapeHtml(sec.title.replace(/:$/, ''))}</caption>
+          <thead><tr><th scope="col">Region</th><th scope="col">Name</th><th scope="col">Peak</th>
+          <th scope="col">Twitch</th><th scope="col">YouTube</th><th scope="col">Twitter</th>
+          <th scope="col">Profile</th></tr></thead>
+          <tbody>${sec.rows.map(c => `<tr>
+            <td><span class="num" style="font-size:var(--fs-100)">${escapeHtml(c.region || '')}</span></td>
+            <td class="tbl__row-h">${escapeHtml(c.name || '')}</td>
+            <td>${escapeHtml(c.peak || '')}</td>
+            <td>${cel(c.twitch, c.twitchUrl)}</td>
+            <td>${cel(c.youtube, c.youtubeUrl)}</td>
+            <td>${cel(c.twitter, c.twitterUrl)}</td>
+            <td>${cel(c.opgg, c.opggUrl)}</td></tr>`).join('')}</tbody>
+        </table></div>`).join('<hr class="seam">');
   }
 }
 
 function renderFooter({ guides }) {
   set('[data-foot-credits]', (guides.credits || []).map(c =>
     `<li>${escapeHtml(c.name)} — ${escapeHtml(c.role)}</li>`).join(''));
-  const names = guides.creators.filter(c => c.name && c.name !== 'Name').slice(0, 8);
+  const first = (guides.referenceSections || [])[0];
+  const names = ((first && first.rows) || []).slice(0, 8);
   set('[data-foot-creators]', names.map(c =>
     `<li>${escapeHtml(c.name)}${c.region && c.region !== '---' ? ` <span class="mono-micro">${escapeHtml(c.region)}</span>` : ''}</li>`).join(''));
 }
