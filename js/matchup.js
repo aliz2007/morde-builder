@@ -226,6 +226,11 @@ export function renderDetail(m) {
 
 /* ——— behaviour ——— */
 export function wireDetail(root, scroller) {
+  // #overlay is a persistent element whose innerHTML is swapped, so listeners
+  // bound to it survive a close and accumulate on every reopen. One
+  // AbortController removes all of them in the teardown.
+  const ac = new AbortController();
+  const { signal } = ac;
   const spy = root.querySelectorAll('[data-spy]');
   const sections = root.querySelectorAll('.sect[data-slug]');
   const sel = root.querySelector('[data-jump]');
@@ -236,7 +241,7 @@ export function wireDetail(root, scroller) {
       block: 'start',
     });
   };
-  sel?.addEventListener('change', () => goTo(sel.value));
+  sel?.addEventListener('change', () => goTo(sel.value), { signal });
   // Scroll-driven rather than IntersectionObserver-driven: an intersection band
   // narrow enough to pick a single section also leaves gaps where no section is
   // inside it, so the TOC blanks out over long sections. Choosing the last
@@ -285,7 +290,7 @@ export function wireDetail(root, scroller) {
       col.textContent = on ? 'Expand all' : 'Collapse all';
       try { localStorage.setItem('morde.collapsed', on ? '1' : '0'); } catch { /* private mode */ }
     }
-  });
+  }, { signal });
 
   const mini = root.querySelector('[data-mini]');
   const onScroll = () => {
@@ -295,11 +300,11 @@ export function wireDetail(root, scroller) {
     if (mini) mini.setAttribute('aria-hidden', String(!on));
     queueSpy();
   };
-  (scroller || window).addEventListener('scroll', onScroll, { passive: true });
+  (scroller || window).addEventListener('scroll', onScroll, { passive: true, signal });
   onScroll();
 
   return () => {
     if (spyRaf) cancelAnimationFrame(spyRaf);
-    (scroller || window).removeEventListener('scroll', onScroll);
+    ac.abort();
   };
 }

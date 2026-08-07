@@ -72,16 +72,23 @@ function mountMatchups({ matchups }) {
 
   function announce(msg) { if (status) status.textContent = msg; }
 
+  const searchEl = input.closest('.search');
+
   function open(html, real) {
     hasResults = !!real;
     pop.innerHTML = html;
     pop.hidden = false;
     input.setAttribute('aria-expanded', 'true');
+    // On phones the popup is a sheet running to the bottom of the viewport, not
+    // a 352px dropdown; its top edge follows the input.
+    searchEl?.classList.add('is-open');
+    pop.style.setProperty('--pop-top', Math.round(input.getBoundingClientRect().bottom + 6) + 'px');
     rows = [...pop.querySelectorAll('.opt')];
     setActive(-1);
   }
   function close() {
     pop.hidden = true;
+    searchEl?.classList.remove('is-open');
     input.setAttribute('aria-expanded', 'false');
     input.removeAttribute('aria-activedescendant');
     rows = []; active = -1;

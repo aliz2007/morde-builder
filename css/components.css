@@ -464,3 +464,15 @@
   .mini__pill{ display:none; }
   .mini__jump{ margin-left:auto; max-width:11rem; }
 }
+
+/* Phone: a 352px dropdown under a second-screen champ-select timer is not
+   usable. The popup becomes a sheet from the input to the bottom edge. */
+@media (max-width:620px){
+  .search.is-open .search__pop{
+    position:fixed; left:0; right:0; top:var(--pop-top,180px); bottom:0;
+    max-height:none; z-index:9500;
+    border-left:0; border-right:0; border-bottom:0;
+  }
+  .search.is-open .opt{ min-height:52px; }
+  .search.is-open .search__group{ position:sticky; top:0; background:var(--c-forge); z-index:1; }
+}
