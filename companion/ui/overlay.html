@@ -6,10 +6,30 @@
 <link rel="stylesheet" href="shared.css">
 <style>
   html,body{ background:transparent; }
+  #wrap{ position:relative; padding:6px; }
   #card{
-    width:320px; background:rgba(8,11,11,.93); border:1px solid var(--line);
-    border-radius:3px; overflow:hidden;
-    box-shadow:0 6px 30px rgba(0,0,0,.55), 0 0 18px rgba(52,224,206,.12);
+    position:relative; width:320px; background:rgba(8,11,11,.93);
+    border:1px solid var(--line); border-radius:3px; overflow:hidden;
+    box-shadow:0 6px 30px rgba(0,0,0,.55);
+  }
+  #aura{
+    position:absolute; inset:0; border-radius:4px; pointer-events:none; z-index:0;
+    box-shadow:0 0 22px rgba(52,224,206,.28), inset 0 0 1px rgba(52,224,206,.4);
+    animation:breathe 4.5s ease-in-out infinite;
+    will-change:opacity;
+  }
+  #card.arrive{ animation:card-arrive .3s cubic-bezier(.2,.8,.3,1) both; }
+  #flash{
+    position:absolute; left:50%; top:40%; width:150px; height:150px;
+    border:2px solid var(--glow); border-radius:50%; pointer-events:none; opacity:0;
+    box-shadow:0 0 30px rgba(52,224,206,.55), inset 0 0 22px rgba(52,224,206,.35);
+    z-index:3;
+  }
+  #flash.go{ animation:ring-burst .7s cubic-bezier(.2,.8,.3,1) both; }
+  @media (prefers-reduced-motion: reduce){
+    #aura{ animation:none; }
+    #card.arrive{ animation:none; }
+    #flash{ display:none; }
   }
   #bar{
     display:flex; align-items:center; gap:8px; padding:7px 10px;
@@ -47,6 +67,9 @@
 </style>
 </head>
 <body>
+<div id="wrap">
+<span id="aura" aria-hidden="true"></span>
+<span id="flash" aria-hidden="true"></span>
 <div id="card">
   <div id="bar">
     <img id="portrait" alt="" class="hidden">
@@ -70,6 +93,7 @@
       <button id="more">show everything</button>
     </div>
   </div>
+</div>
 </div>
 <script src="overlay.js"></script>
 </body>

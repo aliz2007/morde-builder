@@ -13,5 +13,7 @@ contextBridge.exposeInMainWorld('mb', {
   overlayHide: () => ipcRenderer.send('overlay-hide'),
   overlayClickThrough: on => ipcRenderer.send('overlay-clickthrough', on),
   overlaySolid: () => ipcRenderer.send('overlay-solid'),
+  pickerMin: () => ipcRenderer.send('picker-min'),
+  pickerClose: () => ipcRenderer.send('picker-close'),
   assetUrl: file => pathToFileURL(path.join(repoRoot, 'assets/img', file)).href,
 });

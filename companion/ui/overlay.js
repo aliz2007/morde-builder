@@ -6,9 +6,19 @@ let last = null;
 
 const WORD = { 1: 'free', 2: 'favourable', 3: 'even', 4: 'hard', 5: 'nightmare' };
 
+let lastName = null;
+
 function render(state) {
   const m = state.overlay;
   last = m;
+  if (m && m.name !== lastName) {
+    lastName = m.name;
+    const card = document.querySelector('#card');
+    const flash = document.querySelector('#flash');
+    card.classList.remove('arrive'); flash.classList.remove('go');
+    void card.offsetWidth;
+    card.classList.add('arrive'); flash.classList.add('go');
+  }
   $('#empty').classList.toggle('hidden', !!m);
   $('#content').classList.toggle('hidden', !m);
   if (!m) { $('#champ').textContent = '—'; $('#diff').textContent = ''; return; }

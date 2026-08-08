@@ -205,7 +205,9 @@ class Companion extends EventEmitter {
         this.log('error', `Items: ${err.message}`);
       }
     }
-    if (t.summoners) {
+    if (t.summoners && this.state.phase !== 'ChampSelect') {
+      this.log('warn', 'Summoners: only settable during champ select');
+    } else if (t.summoners) {
       try {
         const r = await pushSummoners(this.lcu, this.gd, matchup);
         this.log('ok', `Summoners set: ${r.spell1} + ${r.spell2}`);

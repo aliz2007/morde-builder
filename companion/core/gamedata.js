@@ -96,8 +96,8 @@ class GameData {
       let hit = best(minors[i], regular[i].perks, id => this.perkName(id));
       if (hit == null) {
         for (const alt of minors) {
-          hit = best(alt, regular[i].perks, id => this.perkName(id));
-          if (hit != null) break;
+          const found = best(alt, regular[i].perks, id => this.perkName(id));
+          if (found != null && !selected.includes(found)) { hit = found; break; }
         }
       }
       if (hit == null) {

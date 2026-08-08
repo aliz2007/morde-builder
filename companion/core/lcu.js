@@ -22,6 +22,7 @@ class Lcu extends EventEmitter {
         port: this.port,
         method,
         path,
+        timeout: 6000,
         rejectUnauthorized: false,
         headers: {
           Authorization: this.auth,
@@ -42,6 +43,7 @@ class Lcu extends EventEmitter {
         });
       });
       req.on('error', reject);
+      req.on('timeout', () => req.destroy(new Error(`LCU ${method} ${path} timed out`)));
       if (payload) req.write(payload);
       req.end();
     });

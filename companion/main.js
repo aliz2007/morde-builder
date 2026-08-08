@@ -14,10 +14,19 @@ const PRELOAD = {
 let companion, picker, overlay, tray;
 let lastPhase = null, lastOverlayName = null;
 
+if (!app.requestSingleInstanceLock()) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    if (picker) { picker.show(); picker.focus(); }
+  });
+}
+
 function createPicker() {
   picker = new BrowserWindow({
-    width: 400, height: 560,
+    width: 408, height: 596,
     title: 'Mordekaiser Bible',
+    frame: false,
     backgroundColor: '#080B0B',
     icon: path.join(__dirname, 'build/icon-256.png'),
     webPreferences: PRELOAD,
@@ -125,6 +134,8 @@ app.whenReady().then(async () => {
   ipcMain.on('pick', (_e, name) => companion.pick(name));
   ipcMain.on('toggle', (_e, k, v) => companion.setToggle(k, v));
   ipcMain.on('overlay-hide', () => overlay.hide());
+  ipcMain.on('picker-min', () => picker.minimize());
+  ipcMain.on('picker-close', () => picker.hide());
   ipcMain.on('overlay-clickthrough', (_e, on) => overlay.setIgnoreMouseEvents(on, { forward: true }));
   ipcMain.on('overlay-solid', () => overlay.setIgnoreMouseEvents(false));
 
