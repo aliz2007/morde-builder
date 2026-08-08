@@ -6,7 +6,7 @@ const fixtures = require('./fixtures');
 
 const PASSWORD = 'mock-secret';
 
-function startMock({ dir }) {
+function startMock({ dir, ws = true }) {
   const recorded = { runePosts: [], runeDeletes: [], itemSetPuts: [], selectionPatches: [] };
   let runePages = [
     { id: 1, name: 'Default page', isDeletable: true },
@@ -70,12 +70,14 @@ function startMock({ dir }) {
     });
   });
 
-  const wss = new WebSocketServer({ server });
-  wss.on('connection', ws => {
-    sockets.add(ws);
-    ws.on('close', () => sockets.delete(ws));
-    ws.on('message', () => {});
-  });
+  if (ws) {
+    const wss = new WebSocketServer({ server });
+    wss.on('connection', sock => {
+      sockets.add(sock);
+      sock.on('close', () => sockets.delete(sock));
+      sock.on('message', () => {});
+    });
+  }
 
   const broadcast = (name, uri, data) => {
     const msg = JSON.stringify([8, name, { uri, eventType: 'Update', data }]);

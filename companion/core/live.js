@@ -44,8 +44,8 @@ class LiveClient extends EventEmitter {
     }
     if (!all?.allPlayers?.length) return;
     if (!this.inGame) { this.inGame = true; this.emit('game-start'); }
-    const meId = all.activePlayer?.riotId;
-    const me = all.allPlayers.find(p => p.riotId === meId);
+    const meId = all.activePlayer?.riotId ?? all.activePlayer?.summonerName;
+    const me = all.allPlayers.find(p => p.riotId === meId || p.summonerName === meId);
     if (!me) return;
     const top = all.allPlayers.find(p => p.team !== me.team && String(p.position).toUpperCase() === 'TOP');
     const name = top?.championName || null;

@@ -1,8 +1,9 @@
 const norm = s => String(s || '').toLowerCase().normalize('NFD')
-  .replace(/[̀-ͯ]/g, '').replace(/['’ʼ`´.\-\s&:,()]/g, '');
+  .replace(/[̀-ͯ]/g, '').replace(/['’ʼ`´.\-\s&:,()\/]/g, '');
 
+const STOP = new Set(['and', 'of', 'the', 'a', 'an']);
 const tokens = s => String(s || '').toLowerCase().normalize('NFD')
-  .replace(/[̀-ͯ]/g, '').split(/[^a-z0-9]+/).filter(Boolean);
+  .replace(/[̀-ͯ]/g, '').split(/[^a-z0-9]+/).filter(t => t && !STOP.has(t));
 
 function score(query, candidate) {
   const q = norm(query), c = norm(candidate);
@@ -70,7 +71,10 @@ class GameData {
     const misses = [];
     const primary = runes.primary || [];
     const secondary = runes.secondary || [];
-    const shards = runes.shards || [];
+    const shards = (runes.shards || []).flatMap(sh => {
+      const m = /^double\s+(.+)$/i.exec(String(sh).trim());
+      return m ? [m[1], m[1]] : [sh];
+    });
     if (primary.length < 4) misses.push(`primary tree has ${primary.length} runes, need 4`);
     if (secondary.length < 2) misses.push(`secondary tree has ${secondary.length} runes, need 2`);
     if (shards.length < 3) misses.push(`${shards.length} stat shards, need 3`);

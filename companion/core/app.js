@@ -27,6 +27,7 @@ class Companion extends EventEmitter {
     this.live = new LiveClient();
     this.watcher = new LockfileWatcher(lockfilePaths);
     this.summonerId = null;
+    this.pollTimer = null;
     this.state = {
       connected: false,
       phase: null,
@@ -106,6 +107,7 @@ class Companion extends EventEmitter {
       this.lcu.on('event', ev => this.onEvent(ev));
       this.lcu.on('ws-error', () => {});
       this.lcu.connectWs(WS_EVENTS);
+      this.startPolling();
 
       const phase = await this.lcu.get('/lol-gameflow/v1/gameflow-phase').catch(() => null);
       if (phase) this.onPhase(String(phase).replace(/"/g, ''));
@@ -115,6 +117,20 @@ class Companion extends EventEmitter {
       this.state.connected = false;
       this.log('error', `Could not talk to the client: ${err.message}`);
     }
+  }
+
+  startPolling(intervalMs = 3000) {
+    if (this.pollTimer) clearInterval(this.pollTimer);
+    this.pollTimer = setInterval(async () => {
+      if (!this.state.connected) return;
+      const phase = await this.lcu.get('/lol-gameflow/v1/gameflow-phase').catch(() => null);
+      if (phase != null) this.onPhase(String(phase).replace(/"/g, ''));
+      if (this.state.phase === 'ChampSelect') {
+        const session = await this.lcu.get('/lol-champ-select/v1/session').catch(() => null);
+        if (session) this.onChampSelect(session);
+      }
+    }, intervalMs);
+    this.pollTimer.unref?.();
   }
 
   onEvent(ev) {
@@ -191,6 +207,7 @@ class Companion extends EventEmitter {
   }
 
   stop() {
+    if (this.pollTimer) clearInterval(this.pollTimer);
     this.watcher.stop();
     this.live.stop();
     this.lcu?.close();

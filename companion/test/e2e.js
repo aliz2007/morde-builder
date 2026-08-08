@@ -150,3 +150,49 @@ test('toggles persist to disk', () => {
   assert.equal(saved.summoners, false);
   assert.equal(saved.runes, true);
 });
+
+test('without a websocket, polling still surfaces champ select and the phase', async () => {
+  const tmp2 = fs.mkdtempSync(path.join(os.tmpdir(), 'mb-nows-'));
+  const mock2 = await startMock({ dir: tmp2, ws: false });
+  const app2 = new Companion({ repoRoot: REPO, configDir: tmp2, lockfilePaths: [mock2.lockfile] });
+  app2.start();
+  await waitFor(() => app2.state.connected);
+  app2.startPolling(120);
+  mock2.setPhase('ChampSelect');
+  mock2.setChampSelect({
+    localPlayerCellId: 0,
+    myTeam: [{ cellId: 0, championId: 82 }],
+    theirTeam: [{ cellId: 5, championId: 122 }],
+  });
+  await waitFor(() => app2.state.phase === 'ChampSelect' && app2.state.enemies.length === 1, 5000);
+  assert.equal(app2.state.enemies[0].name, 'Darius');
+  app2.stop();
+  mock2.close();
+});
+
+test('the author\'s "Double Adaptive" shorthand expands to both stat slots', () => {
+  const page = app.gd.resolveRunePage({
+    primary: ['Conqueror', 'Triumph', 'Alacrity', 'Last Stand'],
+    secondary: ['Shield Bash', 'Bone Plating'],
+    shards: ['Double Adaptive Force', 'Flat Health'],
+  });
+  assert.deepEqual(page.misses, []);
+  assert.deepEqual(page.selectedPerkIds.slice(6), [5008, 5008, 5011]);
+  const short = app.gd.resolveRunePage({
+    primary: ['Conqueror', 'Triumph', 'Alacrity', 'Last Stand'],
+    secondary: ['Shield Bash', 'Bone Plating'],
+    shards: ['Double Adaptive', 'Tenacity / Slow Resist'],
+  });
+  assert.deepEqual(short.misses, []);
+  assert.deepEqual(short.selectedPerkIds.slice(6), [5008, 5008, 5013]);
+});
+
+test('every one of the 139 matchups is structurally resolvable', () => {
+  let structurallyBad = 0;
+  for (const m of app.bible.matchups) {
+    const r = m.runes || {};
+    const shards = (r.shards || []).flatMap(sh => /^double\s/i.test(sh) ? [1, 1] : [1]);
+    if ((r.primary || []).length < 4 || (r.secondary || []).length < 2 || shards.length < 3) structurallyBad++;
+  }
+  assert.equal(structurallyBad, 0);
+});
