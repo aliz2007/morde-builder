@@ -6,6 +6,9 @@ the itemization and rune guides, alternate setups, and creator credits.
 Static HTML, CSS and vanilla ES modules. No framework, no build step, no dependencies.
 Open `index.html` through any static server and it runs.
 
+There is also a **desktop companion** that pushes these runes and builds straight
+into the League client — see [below](#the-desktop-companion).
+
 ## Pages
 
 | Page | What's on it |
@@ -30,6 +33,35 @@ The site is static at the repository root, so no Action is needed:
 1. **Settings → Pages**
 2. **Source: Deploy from a branch**
 3. Branch: this branch (or `main` once merged), folder `/ (root)`
+
+## The desktop companion
+
+An Electron app that puts the same 139 matchups inside the League client. At
+champ select you click whichever enemy you think is going top; it creates that
+matchup's rune page, saves the build as an in-shop item set, and can set your
+summoner spells. In game a small always-on-top card shows the build order and the
+tips, and follows the real enemy top laner once the game knows who that is.
+
+It reads League's own local APIs — the LCU (via the client's lockfile) and the
+Live Client Data API. No game memory, no automation, no server, nothing leaves
+the machine.
+
+**It lives on the `claude/companion-app` branch, not on this one**, so a plain
+clone will not have it:
+
+```bash
+git clone -b claude/companion-app https://github.com/aliz2007/morde-builder.git
+cd morde-builder/companion
+npm install
+npm start
+```
+
+Needs [Node.js](https://nodejs.org) 20+. Installers for Windows, macOS and Linux
+build from a tag — push `companion-v0.1.0` on that branch and the
+`companion-release` workflow attaches all three to a GitHub release. None has
+been published yet.
+
+**[Full install, usage and troubleshooting guide →](https://github.com/aliz2007/morde-builder/blob/claude/companion-app/companion/README.md)**
 
 ## Where the data comes from
 
@@ -76,7 +108,7 @@ python3 tools/build_data.py path/to/Mordekaiser_Matchup_Spreadsheet.xlsx
 
 ## Design notes
 
-The look is a single locked system — near-black oxidised iron, one necrotic green accent
+The look is a single locked system — near-black oxidised iron, one bright teal accent
 under a strict pixel budget, and four typefaces with one job each: Cinzel for monumental
 headings, Barlow Condensed for chrome, Libre Franklin for prose, IBM Plex Mono for every
 number. Spacing runs on a Fibonacci-derived scale rather than the usual 4px grid, corners
