@@ -156,6 +156,59 @@ test('build steps drop prose but keep real items', () => {
   assert.deepEqual(fragments('Riftmaker (For Ramping Damage)'), ['Riftmaker']);
 });
 
+test('the two health shards stay apart', () => {
+  const page = shards => gd.resolveRunePage({
+    primary: ['Grasp of the Undying', 'Demolish', 'Second Wind', 'Overgrowth'],
+    secondary: ['Transcendence', 'Scorch'],
+    shards,
+  }).selectedPerkIds.at(-1);
+
+  const scaling = page(['Adaptive Force', 'Movement Speed', 'Scaling Health']);
+  const flat = page(['Adaptive Force', 'Movement Speed', 'Flat Health']);
+  assert.equal(gd.perkName(scaling), 'Health Scaling');
+  assert.equal(gd.perkName(flat), 'Health');
+  assert.notEqual(scaling, flat);
+});
+
+test('a full word-set match outranks mere substring containment', () => {
+  assert.ok(score('Scaling Health', 'Health Scaling') > score('Scaling Health', 'Health'));
+  assert.ok(score('Tenacity / Slow Resist', 'Tenacity and Slow Resist') > 80);
+  assert.ok(score('Flat Health', 'Health') > score('Flat Health', 'Health Scaling'));
+});
+
+test('every rune name in the Bible resolves to the rune it names', () => {
+  const alt = s => String(s).split(/\s+or\s+/i)[0].trim();
+  const wrong = [];
+  for (const m of bible.matchups) {
+    const r = m.runes || {};
+    const page = gd.resolveRunePage(r);
+    if (page.misses.length) continue;
+    const declared = [
+      ...(r.primary || []).slice(0, 4),
+      ...(r.secondary || []).slice(0, 2),
+      ...(r.shards || []).flatMap(s => {
+        const d = /^double\s+(.+)$/i.exec(String(s).trim());
+        return d ? [d[1], d[1]] : [s];
+      }).slice(0, 3),
+    ].map(alt);
+    page.selectedPerkIds.forEach((id, i) => {
+      if (score(declared[i], gd.perkName(id)) < 50) wrong.push(`${m.name}: "${declared[i]}" -> "${gd.perkName(id)}"`);
+    });
+
+    const rows = gd.slotKinds(gd.styles.find(s => s.id === page.primaryStyleId)).stat;
+    page.selectedPerkIds.slice(6, 9).forEach((id, i) => {
+      const want = declared[6 + i];
+      const mine = score(want, gd.perkName(id));
+      for (const other of rows[i].perks) {
+        if (score(want, gd.perkName(other)) > mine) {
+          wrong.push(`${m.name}: "${want}" took "${gd.perkName(id)}" over the closer "${gd.perkName(other)}"`);
+        }
+      }
+    });
+  }
+  assert.deepEqual([...new Set(wrong)], []);
+});
+
 test('edit distance is Damerau, not plain Levenshtein', () => {
   assert.equal(distance('abc', 'abc'), 0);
   assert.equal(distance('ca', 'ac'), 1);

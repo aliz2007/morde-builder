@@ -116,6 +116,7 @@ function auditRunes(gd, bible) {
   let ok = 0;
   const failures = [];
   const suspicious = [];
+  const fuzzy = new Map();
   for (const m of bible.matchups) {
     const page = gd.resolveRunePage(m.runes || {});
     if (page.misses.length) { failures.push(`${m.name}: ${page.misses.join(' | ')}`); continue; }
@@ -162,11 +163,20 @@ function auditRunes(gd, bible) {
     ].map(alt);
     for (const [i, want] of declared.entries()) {
       const got = names[i];
-      if (got && score(want, got) < 50) suspicious.push(`${m.name}: "${want}" resolved to "${got}"`);
+      if (!got) continue;
+      if (score(want, got) < 50) suspicious.push(`${m.name}: "${want}" resolved to "${got}"`);
+      if (norm(want) !== norm(got)) {
+        const k = `${want} => ${got}`;
+        fuzzy.set(k, (fuzzy.get(k) || 0) + 1);
+      }
     }
   }
 
   console.log(`${ok}/${bible.matchups.length} matchups produce a complete rune page`);
+  if (fuzzy.size) {
+    console.log('every rune name that did not match exactly — read this list, a wrong rune is silent:');
+    for (const [k, n] of [...fuzzy].sort((a, b) => b[1] - a[1])) console.log(`  ${String(n).padStart(4)}x ${k}`);
+  }
   for (const f of failures.slice(0, 40)) console.log('  MISS ' + f);
   if (failures.length > 40) console.log(`  … ${failures.length - 40} more`);
   for (const s of suspicious.slice(0, 40)) console.log('  ODD  ' + s);

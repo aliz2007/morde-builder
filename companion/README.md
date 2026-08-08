@@ -116,6 +116,9 @@ and fixed the following, none of which the mock could have caught:
 - `Flash` resolved to the Arena spell rather than the Summoner's Rift one;
 - game-mode champion clones could shadow the real champion, which would have
   attached item sets to a Mordekaiser nobody plays;
+- `Scaling Health` resolved to the *flat* Health shard in 65 matchups, because
+  substring containment outranked a full word-set match — the worst kind of
+  failure, since a wrong rune is pushed silently;
 - a one-letter typo in the source spreadsheet sank a whole rune page;
 - a matchup listing three secondary runes produced a ten-perk page;
 - two secondary runes from the same row were pushed instead of refused.

@@ -32,10 +32,12 @@ function score(query, candidate) {
   const q = norm(query), c = norm(candidate);
   if (!q || !c) return 0;
   if (q === c) return 100;
+
+  const qt = new Set(tokens(query)), ct = new Set(tokens(candidate));
+  if (qt.size && qt.size === ct.size && [...qt].every(t => ct.has(t))) return 90;
   if (c.startsWith(q) || q.startsWith(c)) return 80;
   if (c.includes(q) || q.includes(c)) return 60;
 
-  const qt = new Set(tokens(query)), ct = new Set(tokens(candidate));
   const inter = [...qt].filter(t => ct.has(t)).length;
   const union = new Set([...qt, ...ct]).size;
   const overlap = union ? Math.round((inter / union) * 50) : 0;
