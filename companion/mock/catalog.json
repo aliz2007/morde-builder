@@ -1,0 +1,579 @@
+{
+ "patch": "16.15.1",
+ "styles": [
+  {
+   "id": 8000,
+   "name": "Precision",
+   "slots": [
+    {
+     "type": "kKeyStone",
+     "perks": [
+      8005,
+      8008,
+      8021,
+      8010
+     ]
+    },
+    {
+     "type": "kMixedRegularSplashable",
+     "perks": [
+      9101,
+      9111,
+      8009
+     ]
+    },
+    {
+     "type": "kMixedRegularSplashable",
+     "perks": [
+      9104,
+      9105,
+      9103
+     ]
+    },
+    {
+     "type": "kMixedRegularSplashable",
+     "perks": [
+      8014,
+      8017,
+      8299
+     ]
+    },
+    {
+     "type": "kStatMod",
+     "perks": [
+      5005,
+      5008,
+      5007
+     ]
+    },
+    {
+     "type": "kStatMod",
+     "perks": [
+      5008,
+      5010,
+      5007
+     ]
+    },
+    {
+     "type": "kStatMod",
+     "perks": [
+      5011,
+      5001,
+      5013
+     ]
+    }
+   ]
+  },
+  {
+   "id": 8400,
+   "name": "Resolve",
+   "slots": [
+    {
+     "type": "kKeyStone",
+     "perks": [
+      8437,
+      8439,
+      8465
+     ]
+    },
+    {
+     "type": "kMixedRegularSplashable",
+     "perks": [
+      8446,
+      8463,
+      8401
+     ]
+    },
+    {
+     "type": "kMixedRegularSplashable",
+     "perks": [
+      8429,
+      8444,
+      8473
+     ]
+    },
+    {
+     "type": "kMixedRegularSplashable",
+     "perks": [
+      8451,
+      8453,
+      8242
+     ]
+    },
+    {
+     "type": "kStatMod",
+     "perks": [
+      5005,
+      5008,
+      5007
+     ]
+    },
+    {
+     "type": "kStatMod",
+     "perks": [
+      5008,
+      5010,
+      5007
+     ]
+    },
+    {
+     "type": "kStatMod",
+     "perks": [
+      5011,
+      5001,
+      5013
+     ]
+    }
+   ]
+  },
+  {
+   "id": 8200,
+   "name": "Sorcery",
+   "slots": [
+    {
+     "type": "kKeyStone",
+     "perks": [
+      8214,
+      8229,
+      8230,
+      8992
+     ]
+    },
+    {
+     "type": "kMixedRegularSplashable",
+     "perks": [
+      8224,
+      8226,
+      8275
+     ]
+    },
+    {
+     "type": "kMixedRegularSplashable",
+     "perks": [
+      8210,
+      8234,
+      8233
+     ]
+    },
+    {
+     "type": "kMixedRegularSplashable",
+     "perks": [
+      8237,
+      8232,
+      8236
+     ]
+    },
+    {
+     "type": "kStatMod",
+     "perks": [
+      5005,
+      5008,
+      5007
+     ]
+    },
+    {
+     "type": "kStatMod",
+     "perks": [
+      5008,
+      5010,
+      5007
+     ]
+    },
+    {
+     "type": "kStatMod",
+     "perks": [
+      5011,
+      5001,
+      5013
+     ]
+    }
+   ]
+  }
+ ],
+ "perks": [
+  {
+   "id": 5001,
+   "name": "Health Scaling"
+  },
+  {
+   "id": 5005,
+   "name": "Attack Speed"
+  },
+  {
+   "id": 5007,
+   "name": "Ability Haste"
+  },
+  {
+   "id": 5008,
+   "name": "Adaptive Force"
+  },
+  {
+   "id": 5010,
+   "name": "Movement Speed"
+  },
+  {
+   "id": 5011,
+   "name": "Health"
+  },
+  {
+   "id": 5013,
+   "name": "Tenacity and Slow Resist"
+  },
+  {
+   "id": 8005,
+   "name": "Press the Attack"
+  },
+  {
+   "id": 8008,
+   "name": "Lethal Tempo"
+  },
+  {
+   "id": 8009,
+   "name": "Presence of Mind"
+  },
+  {
+   "id": 8010,
+   "name": "Conqueror"
+  },
+  {
+   "id": 8014,
+   "name": "Coup de Grace"
+  },
+  {
+   "id": 8017,
+   "name": "Cut Down"
+  },
+  {
+   "id": 8021,
+   "name": "Fleet Footwork"
+  },
+  {
+   "id": 8210,
+   "name": "Transcendence"
+  },
+  {
+   "id": 8214,
+   "name": "Summon Aery"
+  },
+  {
+   "id": 8224,
+   "name": "Axiom Arcanist"
+  },
+  {
+   "id": 8226,
+   "name": "Manaflow Band"
+  },
+  {
+   "id": 8229,
+   "name": "Arcane Comet"
+  },
+  {
+   "id": 8230,
+   "name": "Stormraider's Surge"
+  },
+  {
+   "id": 8232,
+   "name": "Waterwalking"
+  },
+  {
+   "id": 8233,
+   "name": "Absolute Focus"
+  },
+  {
+   "id": 8234,
+   "name": "Celerity"
+  },
+  {
+   "id": 8236,
+   "name": "Gathering Storm"
+  },
+  {
+   "id": 8237,
+   "name": "Scorch"
+  },
+  {
+   "id": 8242,
+   "name": "Unflinching"
+  },
+  {
+   "id": 8275,
+   "name": "Nimbus Cloak"
+  },
+  {
+   "id": 8299,
+   "name": "Last Stand"
+  },
+  {
+   "id": 8401,
+   "name": "Shield Bash"
+  },
+  {
+   "id": 8429,
+   "name": "Conditioning"
+  },
+  {
+   "id": 8437,
+   "name": "Grasp of the Undying"
+  },
+  {
+   "id": 8439,
+   "name": "Aftershock"
+  },
+  {
+   "id": 8444,
+   "name": "Second Wind"
+  },
+  {
+   "id": 8446,
+   "name": "Demolish"
+  },
+  {
+   "id": 8451,
+   "name": "Overgrowth"
+  },
+  {
+   "id": 8453,
+   "name": "Revitalize"
+  },
+  {
+   "id": 8463,
+   "name": "Font of Life"
+  },
+  {
+   "id": 8465,
+   "name": "Guardian"
+  },
+  {
+   "id": 8473,
+   "name": "Bone Plating"
+  },
+  {
+   "id": 8992,
+   "name": "Deathfire Touch"
+  },
+  {
+   "id": 9101,
+   "name": "Absorb Life"
+  },
+  {
+   "id": 9103,
+   "name": "Legend: Bloodline"
+  },
+  {
+   "id": 9104,
+   "name": "Legend: Alacrity"
+  },
+  {
+   "id": 9105,
+   "name": "Legend: Haste"
+  },
+  {
+   "id": 9111,
+   "name": "Triumph"
+  }
+ ],
+ "items": [
+  {
+   "id": 1001,
+   "name": "Boots"
+  },
+  {
+   "id": 1057,
+   "name": "Negatron Cloak"
+  },
+  {
+   "id": 1082,
+   "name": "Dark Seal"
+  },
+  {
+   "id": 1083,
+   "name": "Cull"
+  },
+  {
+   "id": 1120,
+   "name": "Doran's Helm"
+  },
+  {
+   "id": 2504,
+   "name": "Kaenic Rookern"
+  },
+  {
+   "id": 2510,
+   "name": "Dusk and Dawn"
+  },
+  {
+   "id": 3008,
+   "name": "Gluttonous Greaves"
+  },
+  {
+   "id": 3009,
+   "name": "Boots of Swiftness"
+  },
+  {
+   "id": 3047,
+   "name": "Plated Steelcaps"
+  },
+  {
+   "id": 3065,
+   "name": "Spirit Visage"
+  },
+  {
+   "id": 3073,
+   "name": "Experimental Hexplate"
+  },
+  {
+   "id": 3076,
+   "name": "Bramble Vest"
+  },
+  {
+   "id": 3082,
+   "name": "Warden's Mail"
+  },
+  {
+   "id": 3111,
+   "name": "Mercury's Treads"
+  },
+  {
+   "id": 3115,
+   "name": "Nashor's Tooth"
+  },
+  {
+   "id": 3116,
+   "name": "Rylai's Crystal Scepter"
+  },
+  {
+   "id": 3146,
+   "name": "Hextech Gunblade"
+  },
+  {
+   "id": 3152,
+   "name": "Hextech Rocketbelt"
+  },
+  {
+   "id": 3157,
+   "name": "Zhonya's Hourglass"
+  },
+  {
+   "id": 3916,
+   "name": "Oblivion Orb"
+  },
+  {
+   "id": 4401,
+   "name": "Force of Nature"
+  },
+  {
+   "id": 4629,
+   "name": "Cosmic Drive"
+  },
+  {
+   "id": 4633,
+   "name": "Riftmaker"
+  },
+  {
+   "id": 6653,
+   "name": "Liandry's Torment"
+  },
+  {
+   "id": 8010,
+   "name": "Bloodletter's Curse"
+  }
+ ],
+ "spells": [
+  {
+   "id": 4,
+   "name": "Flash"
+  },
+  {
+   "id": 14,
+   "name": "Ignite"
+  },
+  {
+   "id": 6,
+   "name": "Ghost"
+  },
+  {
+   "id": 12,
+   "name": "Teleport"
+  },
+  {
+   "id": 21,
+   "name": "Barrier"
+  },
+  {
+   "id": 11,
+   "name": "Smite"
+  }
+ ],
+ "champions": [
+  {
+   "id": 266,
+   "name": "Aatrox",
+   "alias": "Aatrox"
+  },
+  {
+   "id": 103,
+   "name": "Ahri",
+   "alias": "Ahri"
+  },
+  {
+   "id": 122,
+   "name": "Darius",
+   "alias": "Darius"
+  },
+  {
+   "id": 82,
+   "name": "Mordekaiser",
+   "alias": "Mordekaiser"
+  },
+  {
+   "id": 36,
+   "name": "Dr. Mundo",
+   "alias": "DrMundo"
+  },
+  {
+   "id": 62,
+   "name": "Wukong",
+   "alias": "MonkeyKing"
+  },
+  {
+   "id": 145,
+   "name": "Kai'Sa",
+   "alias": "Kaisa"
+  },
+  {
+   "id": 24,
+   "name": "Jax",
+   "alias": "Jax"
+  },
+  {
+   "id": 86,
+   "name": "Garen",
+   "alias": "Garen"
+  },
+  {
+   "id": 23,
+   "name": "Tryndamere",
+   "alias": "Tryndamere"
+  },
+  {
+   "id": 45,
+   "name": "Veigar",
+   "alias": "Veigar"
+  },
+  {
+   "id": 10,
+   "name": "Kayle",
+   "alias": "Kayle"
+  },
+  {
+   "id": 26,
+   "name": "Zilean",
+   "alias": "Zilean"
+  },
+  {
+   "id": 98,
+   "name": "Shen",
+   "alias": "Shen"
+  }
+ ]
+}

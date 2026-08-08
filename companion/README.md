@@ -85,8 +85,10 @@ MB_LOCKFILE="/path/to/League of Legends/lockfile" npm start
 ## Development
 
 ```bash
-npm test    # full flow against a bundled mock client — no League needed
-npm run smoke   # boots the real app against the mock and screenshots it
+npm test              # full flow against a bundled mock client — no League needed
+npm run audit         # resolve all 139 matchups against the real patch catalog
+npm run smoke         # boots the real app against the mock and screenshots it
+npm run fetch-catalog # refresh the catalog snapshot to the current patch
 ```
 
 `mock/` contains a faithful fake of the LCU (lockfile, auth, REST, WebSocket
@@ -94,12 +96,43 @@ events) and of the Live Client API. The test suite drives the whole flow
 through it: connect → champ select → pick → verify the exact rune page, item
 set and spell payloads the client would receive → in-game top-laner detection.
 
+### Testing against real Riot data
+
+`test/realdata/` holds a trimmed Data Dragon snapshot — every item, summoner
+spell, champion and rune of a real patch, reduced to the fields the resolver
+looks at. `test/realdata.js` reshapes it into the layout the LCU serves and
+`npm run audit` runs the entire Bible through it, reporting anything that fails
+to resolve or resolves to the wrong thing.
+
+This is worth doing because the real catalog is far nastier than any handmade
+fixture: 868 items where 214 names are shared by several ids (Arena copies,
+Ornn upgrades, mode variants), several champions duplicated as game-mode clones,
+and three different summoner spells called "Flash". The audit against it found
+and fixed the following, none of which the mock could have caught:
+
+- ties between identically-named items made every abbreviated build step
+  ("Rocketbelt", "Liandry's", "Rylai's") resolve to nothing — 256 build rows,
+  and four matchups produced an empty item set that the client would reject;
+- `Flash` resolved to the Arena spell rather than the Summoner's Rift one;
+- game-mode champion clones could shadow the real champion, which would have
+  attached item sets to a Mordekaiser nobody plays;
+- a one-letter typo in the source spreadsheet sank a whole rune page;
+- a matchup listing three secondary runes produced a ten-perk page;
+- two secondary runes from the same row were pushed instead of refused.
+
+Two caveats, stated because the audit's output is only as honest as its inputs:
+Data Dragon does not publish the stat-shard rows, so those come from
+`mock/stat-shards.js` and are the one part of the rune page not verified against
+real data; and the snapshot is a patch-in-time, so a rename after it was taken
+would show up on a live client before it shows up here.
+
 **Status:** verified end-to-end against the mock client, including headless runs
 of the real Electron app — and of the **packaged** build, which exercises the
-same file layout the installers ship. It has not yet been run against a live
-League client; any breakage there will be in lockfile discovery or endpoint
-shape, both of which log loudly. If the client boots slower than the app, the
-companion now retries every 3 seconds until the client answers.
+same file layout the installers ship. Name resolution is verified against real
+Data Dragon files. It has not yet been run against a live League client; any
+breakage there will be in lockfile discovery or endpoint shape, both of which
+log loudly. If the client boots slower than the app, the companion now retries
+every 3 seconds until the client answers.
 
 ## A note on Riot policy
 

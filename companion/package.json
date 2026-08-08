@@ -5,7 +5,9 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "node --test test/e2e.js",
+    "test": "node --test test/e2e.js test/realdata.test.js",
+    "audit": "node test/audit-realdata.js",
+    "fetch-catalog": "node test/fetch-catalog.js",
     "smoke": "electron . --mb-smoke",
     "dist": "electron-builder"
   },

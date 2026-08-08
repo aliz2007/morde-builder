@@ -88,7 +88,7 @@ test('picking Aatrox saves an item set without touching other sets', () => {
   assert.deepEqual(set.associatedChampions, [82]);
   assert.ok(set.blocks.length >= 8, `expected both build paths, got ${set.blocks.length} blocks`);
   const ids = set.blocks.flatMap(b => b.items.map(i => i.id));
-  for (const id of ['3076', '1001', '4629', '3047', '4633', '447102', '6653', '447101']) {
+  for (const id of ['3076', '1001', '4629', '3047', '4633', '8010', '6653', '2510']) {
     assert.ok(ids.includes(id), `item ${id} missing from set`);
   }
 });

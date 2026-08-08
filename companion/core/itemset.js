@@ -1,9 +1,11 @@
 const { PREFIX } = require('./runes');
 
+const FILLER = /^(?:flex|variety|items?|flex items?|flex boots?|build variety|build variety items?)$/i;
+
 function fragments(stepText) {
   return String(stepText).split(/\s*(?:\/|->)\s*/)
-    .map(f => f.replace(/\(.*?\)/g, '').trim())
-    .filter(f => f && !/^(flex items?|build variety items?|flex boots)$/i.test(f));
+    .map(f => f.replace(/\([^)]*\)/g, ' ').replace(/[()]/g, ' ').replace(/\s+/g, ' ').trim())
+    .filter(f => /[a-z]/i.test(f) && !FILLER.test(f) && f.split(' ').length <= 5);
 }
 
 function buildItemSet(gd, matchup, mordeId) {
@@ -24,7 +26,9 @@ function buildItemSet(gd, matchup, mordeId) {
         else unresolved.push(frag);
       }
       if (items.length) {
-        blocks.push({ type: `${label} — ${step}. ${s.item}`.slice(0, 80), items });
+        const head = `${step}. ${s.item}`.slice(0, 78);
+        const tail = ` — ${label}`;
+        blocks.push({ type: (head.length + tail.length <= 78 ? head + tail : head), items });
       }
     }
   }
