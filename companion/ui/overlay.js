@@ -51,5 +51,9 @@ $('#pin').addEventListener('click', () => {
   window.mb.overlayClickThrough(pinned);
 });
 
+const bar = $('#bar');
+bar.addEventListener('mouseenter', () => { if (pinned) window.mb.overlaySolid(); });
+bar.addEventListener('mouseleave', () => { if (pinned) window.mb.overlayClickThrough(true); });
+
 window.mb.onState(render);
 window.mb.ready();

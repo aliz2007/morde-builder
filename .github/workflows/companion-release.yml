@@ -1,0 +1,71 @@
+name: companion-release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'companion-v*'
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            artifact: windows
+          - os: macos-latest
+            artifact: mac
+          - os: ubuntu-latest
+            artifact: linux
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: companion
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+
+      - run: npm test
+
+      - name: Build installers
+        run: npx electron-builder --publish never
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: companion-${{ matrix.artifact }}
+          path: |
+            companion/dist/*.exe
+            companion/dist/*.dmg
+            companion/dist/*.AppImage
+          if-no-files-found: error
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/companion-v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+          body: |
+            Mordekaiser Bible Companion.
+
+            - **Windows**: `Mordekaiser Bible Companion Setup *.exe` (installer) or the
+              portable `.exe` (no install, just run it)
+            - **macOS**: `.dmg` — unsigned, so right-click the app → Open the first time
+            - **Linux**: `.AppImage` — `chmod +x` and run
+
+            Start it, then start League. The picker appears at champ select.

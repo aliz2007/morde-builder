@@ -5,54 +5,85 @@
 <title>Mordekaiser Bible</title>
 <link rel="stylesheet" href="shared.css">
 <style>
-  body{ padding:14px; }
-  header{ display:flex; align-items:baseline; gap:10px; margin-bottom:10px; }
-  h1{ font:700 15px/1 var(--sans); margin:0; letter-spacing:.04em; }
-  #status{ font:11px/1.4 var(--mono); color:var(--muted); }
-  #status.on{ color:var(--glow); }
-  .hint{ color:var(--faint); font-size:12px; margin:4px 0 10px; }
-  #enemies{ display:grid; gap:6px; margin:0 0 14px; }
-  .enemy{
-    display:grid; grid-template-columns:36px 1fr auto; gap:10px; align-items:center;
-    text-align:left; padding:7px 9px; text-transform:none; letter-spacing:0; font-size:13px;
+  body{
+    padding:0;
+    background:
+      radial-gradient(120% 60% at 50% -12%, rgba(52,224,206,.13), transparent 60%),
+      var(--bg);
   }
-  .enemy img{ width:36px; height:36px; border-radius:2px; border:1px solid var(--line); }
-  .enemy .no-img{ width:36px; height:36px; border-radius:2px; border:1px solid var(--line);
-    display:grid; place-items:center; color:var(--faint); font:600 14px var(--mono); }
-  .enemy.picked{ border-color:var(--glow); box-shadow:0 0 14px rgba(52,224,206,.25); }
-  .enemy .sub{ display:block; color:var(--faint); font-size:11px; }
+  header{
+    display:flex; align-items:center; gap:10px; padding:14px 16px 10px;
+    background:linear-gradient(180deg, rgba(24,32,31,.9), transparent);
+  }
+  header .crown{ width:34px; height:22px; color:var(--text); filter:drop-shadow(0 0 8px rgba(52,224,206,.35)); }
+  h1{
+    font:700 15px/1 var(--display); text-transform:uppercase; letter-spacing:.1em;
+    margin:0;
+  }
+  #status{ margin-left:auto; font:11px/1.4 var(--mono); color:var(--faint); }
+  #status.on{ color:var(--glow); text-shadow:0 0 10px rgba(52,224,206,.4); }
+  main{ padding:2px 16px 16px; }
+  .hint{ color:var(--faint); font-size:12px; margin:4px 0 10px; }
+  #enemies{ display:grid; gap:6px; margin:0 0 6px; }
+  .enemy{
+    display:grid; grid-template-columns:38px 1fr auto; gap:11px; align-items:center;
+    text-align:left; padding:7px 10px; text-transform:none; letter-spacing:0;
+    font:600 13px var(--sans); border-left:2px solid var(--line);
+  }
+  .enemy:hover{ border-left-color:var(--glow); transform:translateX(2px); }
+  .enemy{ transition:transform .15s, border-color .15s, box-shadow .15s; }
+  .enemy img{ width:38px; height:38px; border-radius:2px; border:1px solid var(--edge); }
+  .enemy .no-img{ width:38px; height:38px; border-radius:2px; border:1px solid var(--line);
+    display:grid; place-items:center; color:var(--faint); font:600 15px var(--mono); }
+  .enemy.picked{
+    border-color:var(--glow); border-left-color:var(--glow);
+    box-shadow:0 0 16px rgba(52,224,206,.22), inset 0 0 24px rgba(52,224,206,.05);
+  }
+  .enemy .sub{ display:block; color:var(--faint); font:400 11px var(--sans); }
   .empty{ color:var(--faint); border:1px dashed var(--line); border-radius:2px;
-    padding:18px 12px; text-align:center; }
-  #toggles{ display:grid; grid-template-columns:1fr 1fr; gap:6px 14px; margin:0 0 12px;
-    padding:10px; background:var(--panel); border:1px solid var(--line); border-radius:2px; }
-  #toggles label{ display:flex; gap:8px; align-items:center; font-size:12px; color:var(--muted); cursor:pointer; }
+    padding:20px 12px; text-align:center; }
+  #toggles{
+    display:grid; grid-template-columns:1fr 1fr; gap:7px 14px; margin:0 0 6px;
+    padding:11px 12px; background:var(--panel); border:1px solid var(--line); border-radius:2px;
+  }
+  #toggles label{ display:flex; gap:8px; align-items:center;
+    font:500 12px var(--chrome); text-transform:uppercase; letter-spacing:.06em;
+    color:var(--muted); cursor:pointer; }
   #toggles input{ accent-color:var(--glow); }
-  #log{ font:11px/1.6 var(--mono); background:var(--panel); border:1px solid var(--line);
-    border-radius:2px; padding:8px 10px; height:130px; overflow-y:auto; }
+  #log{
+    font:11px/1.65 var(--mono); background:var(--panel); border:1px solid var(--line);
+    border-radius:2px; padding:8px 10px; height:126px; overflow-y:auto;
+  }
   #log .ok{ color:var(--ok); } #log .warn{ color:var(--warn); }
   #log .error{ color:var(--bad); } #log .info{ color:var(--muted); }
 </style>
 </head>
 <body>
 <header>
-  <h1>Mordekaiser Bible</h1>
-  <span id="status">waiting for the League client…</span>
+  <svg class="crown" viewBox="0 0 64 40" aria-hidden="true"><path fill-rule="evenodd" d="M2 40 L2 22 L9 30 L14 8 L21 24 L27 2 L32 0 L37 2 L43 24 L50 8 L55 30 L62 22 L62 40 Z M14 31 L50 31 L50 35 L14 35 Z"/></svg>
+  <h1 class="engraved">Mordekaiser Bible</h1>
+  <span id="status">waiting for client…</span>
 </header>
 
-<p class="eyebrow">Enemy team</p>
-<p class="hint">Pick whoever you think is their top laner. Runes go straight to the client.</p>
-<div id="enemies"><div class="empty">Nothing yet — enemies appear here during champ select.</div></div>
+<main>
+  <hr class="seam" style="margin-top:0">
+  <p class="eyebrow">Enemy team</p>
+  <p class="hint">Pick whoever you think is their top laner. Runes go straight to the client.</p>
+  <div id="enemies"><div class="empty">Nothing yet — enemies appear here during champ select.</div></div>
 
-<p class="eyebrow">On pick</p>
-<div id="toggles">
-  <label><input type="checkbox" data-toggle="runes"> Push runes</label>
-  <label><input type="checkbox" data-toggle="items"> Save item set</label>
-  <label><input type="checkbox" data-toggle="summoners"> Set summoners</label>
-  <label><input type="checkbox" data-toggle="overlay"> Show overlay</label>
-</div>
+  <hr class="seam">
+  <p class="eyebrow">On pick</p>
+  <div id="toggles">
+    <label><input type="checkbox" data-toggle="runes"> Push runes</label>
+    <label><input type="checkbox" data-toggle="items"> Save item set</label>
+    <label><input type="checkbox" data-toggle="summoners"> Set summoners</label>
+    <label><input type="checkbox" data-toggle="overlay"> Show overlay</label>
+  </div>
 
-<p class="eyebrow">Log</p>
-<div id="log"></div>
+  <hr class="seam">
+  <p class="eyebrow">Log</p>
+  <div id="log"></div>
+</main>
 
 <script src="picker.js"></script>
 </body>

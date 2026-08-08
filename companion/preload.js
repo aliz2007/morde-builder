@@ -1,7 +1,9 @@
 const { contextBridge, ipcRenderer } = require('electron');
 const path = require('path');
+const { pathToFileURL } = require('url');
 
-const repoRoot = path.resolve(__dirname, '..');
+const rootArg = process.argv.find(a => a.startsWith('--mb-root='));
+const repoRoot = rootArg ? rootArg.slice('--mb-root='.length) : path.resolve(__dirname, '..');
 
 contextBridge.exposeInMainWorld('mb', {
   onState: cb => ipcRenderer.on('state', (_e, s) => cb(s)),
@@ -10,5 +12,6 @@ contextBridge.exposeInMainWorld('mb', {
   setToggle: (key, value) => ipcRenderer.send('toggle', key, value),
   overlayHide: () => ipcRenderer.send('overlay-hide'),
   overlayClickThrough: on => ipcRenderer.send('overlay-clickthrough', on),
-  assetUrl: file => 'file://' + path.join(repoRoot, 'assets/img', file),
+  overlaySolid: () => ipcRenderer.send('overlay-solid'),
+  assetUrl: file => pathToFileURL(path.join(repoRoot, 'assets/img', file)).href,
 });

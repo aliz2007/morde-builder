@@ -2,16 +2,25 @@ const { app, BrowserWindow, Tray, Menu, globalShortcut, ipcMain, nativeImage } =
 const path = require('path');
 const { Companion } = require('./core/app');
 
-const REPO = path.resolve(__dirname, '..');
+const REPO = app.isPackaged
+  ? path.join(process.resourcesPath, 'bible')
+  : path.resolve(__dirname, '..');
 const SMOKE = process.argv.includes('--mb-smoke');
+const PRELOAD = {
+  preload: path.join(__dirname, 'preload.js'),
+  sandbox: false,
+  additionalArguments: ['--mb-root=' + REPO],
+};
 let companion, picker, overlay, tray;
+let lastPhase = null, lastOverlayName = null;
 
 function createPicker() {
   picker = new BrowserWindow({
     width: 400, height: 560,
     title: 'Mordekaiser Bible',
     backgroundColor: '#080B0B',
-    webPreferences: { preload: path.join(__dirname, 'preload.js'), sandbox: false },
+    icon: path.join(__dirname, 'build/icon-256.png'),
+    webPreferences: PRELOAD,
   });
   picker.removeMenu?.();
   picker.loadFile(path.join(__dirname, 'ui/picker.html'));
@@ -25,7 +34,7 @@ function createOverlay() {
     width: 336, height: 500,
     frame: false, transparent: true, resizable: false,
     alwaysOnTop: true, skipTaskbar: true, hasShadow: false,
-    webPreferences: { preload: path.join(__dirname, 'preload.js'), sandbox: false },
+    webPreferences: PRELOAD,
   });
   overlay.setAlwaysOnTop(true, 'screen-saver');
   overlay.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
@@ -48,7 +57,7 @@ function broadcast() {
 }
 
 function createTray() {
-  const icon = nativeImage.createFromPath(path.join(REPO, 'assets/cursor-mace.png'));
+  const icon = nativeImage.createFromPath(path.join(__dirname, 'build/tray.png'));
   tray = new Tray(icon.isEmpty() ? nativeImage.createEmpty() : icon);
   const rebuild = () => {
     const t = companion.state.toggles;
@@ -101,8 +110,15 @@ app.whenReady().then(async () => {
   companion.start();
 
   companion.on('state', s => {
-    if (s.phase === 'ChampSelect' && picker && !picker.isVisible()) picker.show();
-    if (s.overlay && overlay && !overlay.isVisible()) showOverlay(true);
+    if (s.phase !== lastPhase) {
+      lastPhase = s.phase;
+      if (s.phase === 'ChampSelect' && picker && !picker.isVisible()) picker.show();
+    }
+    const name = s.overlay?.name || null;
+    if (name && name !== lastOverlayName) {
+      lastOverlayName = name;
+      showOverlay(true);
+    }
   });
 
   ipcMain.on('ready', broadcast);
@@ -110,6 +126,7 @@ app.whenReady().then(async () => {
   ipcMain.on('toggle', (_e, k, v) => companion.setToggle(k, v));
   ipcMain.on('overlay-hide', () => overlay.hide());
   ipcMain.on('overlay-clickthrough', (_e, on) => overlay.setIgnoreMouseEvents(on, { forward: true }));
+  ipcMain.on('overlay-solid', () => overlay.setIgnoreMouseEvents(false));
 
   globalShortcut.register('CommandOrControl+Shift+M', () => showOverlay(!overlay.isVisible()));
 
@@ -129,7 +146,8 @@ app.whenReady().then(async () => {
       await companion.pick('Aatrox');
       overlay.show();
       await new Promise(r => setTimeout(r, 1200));
-      const out = path.join(__dirname, 'test');
+      const out = process.env.MB_SMOKE_OUT || require('os').tmpdir();
+      console.log('smoke shots ->', out);
       const shot = async (win, name) => {
         const img = await win.webContents.capturePage();
         require('fs').writeFileSync(path.join(out, name), img.toPNG());

@@ -96,6 +96,8 @@ class Companion extends EventEmitter {
   }
 
   async connect(creds) {
+    this.lcu?.close();
+    if (this.retryTimer) { clearTimeout(this.retryTimer); this.retryTimer = null; }
     try {
       this.lcu = new Lcu(creds);
       await this.gd.load(this.lcu);
@@ -115,7 +117,12 @@ class Companion extends EventEmitter {
       if (session) this.onChampSelect(session);
     } catch (err) {
       this.state.connected = false;
-      this.log('error', `Could not talk to the client: ${err.message}`);
+      this.log('warn', `Client not ready yet (${err.code || err.message}) — retrying in 3s`);
+      this.retryTimer = setTimeout(() => {
+        this.retryTimer = null;
+        if (this.watcher.current?.port === creds.port) this.connect(creds);
+      }, 3000);
+      this.retryTimer.unref?.();
     }
   }
 
@@ -186,6 +193,9 @@ class Companion extends EventEmitter {
         this.log('error', `Runes: ${err.message}`);
       }
     }
+    if (t.items && this.summonerId == null) {
+      this.log('warn', 'Items: no summoner id from the client yet');
+    }
     if (t.items && this.summonerId != null) {
       try {
         const r = await pushItemSet(this.lcu, this.gd, matchup, this.summonerId);
@@ -208,6 +218,7 @@ class Companion extends EventEmitter {
 
   stop() {
     if (this.pollTimer) clearInterval(this.pollTimer);
+    if (this.retryTimer) clearTimeout(this.retryTimer);
     this.watcher.stop();
     this.live.stop();
     this.lcu?.close();

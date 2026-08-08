@@ -1,19 +1,45 @@
+@font-face{
+  font-family:'Cinzel'; font-weight:700; font-display:swap;
+  src:url('fonts/cinzel-700.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Barlow Condensed'; font-weight:500; font-display:swap;
+  src:url('fonts/barlowcondensed-500.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Barlow Condensed'; font-weight:600; font-display:swap;
+  src:url('fonts/barlowcondensed-600.woff2') format('woff2');
+}
+@font-face{
+  font-family:'IBM Plex Mono'; font-weight:400; font-display:swap;
+  src:url('fonts/ibmplexmono-400.woff2') format('woff2');
+}
+@font-face{
+  font-family:'IBM Plex Mono'; font-weight:600; font-display:swap;
+  src:url('fonts/ibmplexmono-600.woff2') format('woff2');
+}
+
 :root{
   --bg:      #080B0B;
   --panel:   #101615;
   --raised:  #18201F;
   --line:    #28322F;
+  --edge:    #46534F;
   --text:    #DCDAD2;
   --muted:   #92948E;
   --faint:   #5D625E;
   --glow:    #34E0CE;
   --glow-hi: #A8FFF4;
   --glow-lo: #0F6B62;
+  --glow-mid:#1B8C80;
+  --brass:   #C4A263;
   --warn:    #D08A50;
   --bad:     #E0736A;
   --ok:      #86D9A0;
-  --mono: 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
-  --sans: 'Helvetica Neue', Arial, sans-serif;
+  --display: 'Cinzel', 'Palatino Linotype', Palatino, Georgia, serif;
+  --chrome: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --mono: 'IBM Plex Mono', Consolas, Menlo, monospace;
+  --sans: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 }
 *{ box-sizing:border-box; }
 html,body{ margin:0; }
@@ -22,25 +48,49 @@ body{
   font:13px/1.5 var(--sans);
   user-select:none;
 }
-.eyebrow{
-  font:600 10px/1 var(--sans); text-transform:uppercase; letter-spacing:.14em;
-  color:var(--glow); margin:0 0 6px;
+
+.engraved{ text-shadow:0 1px 0 rgba(0,0,0,.9), 0 -1px 0 rgba(220,218,210,.08); }
+
+.seam{
+  position:relative; height:2px; border:0; margin:12px 0;
+  background:linear-gradient(90deg, transparent, var(--line) 12%, var(--line) 88%, transparent);
 }
+.seam::after{
+  content:""; position:absolute; left:0; right:0; top:1px; height:1px;
+  background:linear-gradient(90deg, transparent 15%, rgba(52,224,206,.5) 50%, transparent 85%);
+  filter:blur(.6px);
+}
+
+.eyebrow{
+  font:600 11px/1 var(--chrome); text-transform:uppercase; letter-spacing:.16em;
+  color:var(--brass); margin:0 0 6px;
+}
+
 .pill{
   font:600 11px/1 var(--mono); padding:3px 7px; border-radius:2px;
-  border:1px solid var(--line); color:var(--muted);
+  border:1px solid var(--line); color:var(--muted); text-transform:uppercase;
+  letter-spacing:.04em;
 }
 .pill--d1,.pill--d2{ color:var(--ok); border-color:var(--glow-lo); }
-.pill--d3{ color:#C4A263; }
+.pill--d3{ color:var(--brass); }
 .pill--d4{ color:var(--warn); }
 .pill--d5{ color:var(--bad); }
+
 button{
-  font:600 11px/1 var(--sans); text-transform:uppercase; letter-spacing:.06em;
+  font:600 12px/1 var(--chrome); text-transform:uppercase; letter-spacing:.08em;
   color:var(--text); background:var(--raised); border:1px solid var(--line);
-  border-radius:2px; padding:7px 10px; cursor:pointer;
+  border-radius:2px; padding:7px 11px; cursor:pointer;
+  transition:border-color .15s, box-shadow .15s, background .15s;
 }
-button:hover{ border-color:var(--glow); }
-button.lit{ color:var(--bg); background:var(--glow); border-color:var(--glow); }
+button:hover{ border-color:var(--glow); box-shadow:0 0 10px rgba(52,224,206,.18); }
+button.lit{
+  color:var(--bg); background:var(--glow); border-color:var(--glow);
+  box-shadow:0 0 14px rgba(52,224,206,.35);
+}
+
+.crown{ fill:currentColor; }
+
 ::-webkit-scrollbar{ width:8px; }
 ::-webkit-scrollbar-thumb{ background:var(--line); border-radius:4px; }
+::-webkit-scrollbar-thumb:hover{ background:var(--glow-lo); }
 ::-webkit-scrollbar-track{ background:transparent; }

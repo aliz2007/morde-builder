@@ -7,6 +7,8 @@ const CANDIDATES = [
   process.env.MB_LOCKFILE,
   '/Applications/League of Legends.app/Contents/LoL/lockfile',
   'C:/Riot Games/League of Legends/lockfile',
+  'D:/Riot Games/League of Legends/lockfile',
+  'C:/Program Files/Riot Games/League of Legends/lockfile',
   path.join(os.homedir(), 'Riot Games/League of Legends/lockfile'),
 ].filter(Boolean);
 
@@ -30,7 +32,7 @@ class LockfileWatcher extends EventEmitter {
         try {
           const creds = parse(fs.readFileSync(p, 'utf8'));
           if (creds) {
-            if (!this.current || this.current.port !== creds.port) {
+            if (!this.current || this.current.port !== creds.port || this.current.password !== creds.password) {
               this.current = creds;
               this.emit('found', creds);
             }

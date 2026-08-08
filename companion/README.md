@@ -49,7 +49,24 @@ Bible's names against it. Whatever the current patch renamed, the app follows;
 whatever it cannot match, it refuses to push and tells you, rather than pushing
 a wrong page.
 
-## Running it
+## Installing it
+
+Grab the build for your OS from the repository's **Releases** page:
+
+- **Windows** — `Mordekaiser Bible Companion Setup <version>.exe` is a one-click
+  installer; there is also a portable `.exe` that runs without installing.
+- **macOS** — the `.dmg`. It is unsigned, so the first launch is
+  right-click → Open.
+- **Linux** — the `.AppImage`; `chmod +x` it and run.
+
+Installers are produced by the `companion-release` GitHub Actions workflow —
+push a `companion-v*` tag (or run the workflow manually from the Actions tab)
+and it builds all three platforms and attaches them to a release.
+
+Start the app whenever; it sits in the tray, waits for the League client, and
+the picker pops up when champ select starts.
+
+## Running from source
 
 Needs [Node.js](https://nodejs.org) 20+.
 
@@ -59,9 +76,7 @@ npm install
 npm start
 ```
 
-Start it whenever; it waits for the League client, and the picker pops up when
-champ select starts. If your League install is somewhere unusual, point the app
-at the lockfile:
+If your League install is somewhere unusual, point the app at the lockfile:
 
 ```bash
 MB_LOCKFILE="/path/to/League of Legends/lockfile" npm start
@@ -80,9 +95,11 @@ through it: connect → champ select → pick → verify the exact rune page, it
 set and spell payloads the client would receive → in-game top-laner detection.
 
 **Status:** verified end-to-end against the mock client, including headless runs
-of the real Electron app. It has not yet been run against a live League client —
-that first run is the remaining step, and any breakage there will be in
-lockfile discovery or endpoint shape, both of which log loudly.
+of the real Electron app — and of the **packaged** build, which exercises the
+same file layout the installers ship. It has not yet been run against a live
+League client; any breakage there will be in lockfile discovery or endpoint
+shape, both of which log loudly. If the client boots slower than the app, the
+companion now retries every 3 seconds until the client answers.
 
 ## A note on Riot policy
 

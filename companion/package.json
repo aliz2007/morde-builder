@@ -3,19 +3,86 @@
   "version": "0.1.0",
   "description": "Champ-select rune/item importer and in-game overlay for the Mordekaiser Bible",
   "main": "main.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "start": "electron .",
     "test": "node --test test/e2e.js",
-    "smoke": "electron . --mb-smoke"
+    "smoke": "electron . --mb-smoke",
+    "dist": "electron-builder"
   },
   "license": "MIT",
   "dependencies": {
     "ws": "^8.21.3"
   },
   "devDependencies": {
-    "electron": "^43.3.0"
+    "electron": "^43.3.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "gg.mordebible.companion",
+    "productName": "Mordekaiser Bible Companion",
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "core/**",
+      "ui/**",
+      "mock/**",
+      "build/tray.png",
+      "build/icon-256.png"
+    ],
+    "extraResources": [
+      {
+        "from": "../data",
+        "to": "bible/data"
+      },
+      {
+        "from": "../assets/img",
+        "to": "bible/assets/img"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "deleteAppDataOnUninstall": false
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "build/icon.png",
+      "category": "public.app-category.games"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "icon": "build/icon.png",
+      "category": "Game"
+    }
+  },
+  "author": "Mordekaiser Bible",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aliz2007/morde-builder.git"
   }
 }
