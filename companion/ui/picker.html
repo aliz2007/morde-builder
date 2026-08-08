@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mordekaiser Bible</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  body{ padding:14px; }
+  header{ display:flex; align-items:baseline; gap:10px; margin-bottom:10px; }
+  h1{ font:700 15px/1 var(--sans); margin:0; letter-spacing:.04em; }
+  #status{ font:11px/1.4 var(--mono); color:var(--muted); }
+  #status.on{ color:var(--glow); }
+  .hint{ color:var(--faint); font-size:12px; margin:4px 0 10px; }
+  #enemies{ display:grid; gap:6px; margin:0 0 14px; }
+  .enemy{
+    display:grid; grid-template-columns:36px 1fr auto; gap:10px; align-items:center;
+    text-align:left; padding:7px 9px; text-transform:none; letter-spacing:0; font-size:13px;
+  }
+  .enemy img{ width:36px; height:36px; border-radius:2px; border:1px solid var(--line); }
+  .enemy .no-img{ width:36px; height:36px; border-radius:2px; border:1px solid var(--line);
+    display:grid; place-items:center; color:var(--faint); font:600 14px var(--mono); }
+  .enemy.picked{ border-color:var(--glow); box-shadow:0 0 14px rgba(52,224,206,.25); }
+  .enemy .sub{ display:block; color:var(--faint); font-size:11px; }
+  .empty{ color:var(--faint); border:1px dashed var(--line); border-radius:2px;
+    padding:18px 12px; text-align:center; }
+  #toggles{ display:grid; grid-template-columns:1fr 1fr; gap:6px 14px; margin:0 0 12px;
+    padding:10px; background:var(--panel); border:1px solid var(--line); border-radius:2px; }
+  #toggles label{ display:flex; gap:8px; align-items:center; font-size:12px; color:var(--muted); cursor:pointer; }
+  #toggles input{ accent-color:var(--glow); }
+  #log{ font:11px/1.6 var(--mono); background:var(--panel); border:1px solid var(--line);
+    border-radius:2px; padding:8px 10px; height:130px; overflow-y:auto; }
+  #log .ok{ color:var(--ok); } #log .warn{ color:var(--warn); }
+  #log .error{ color:var(--bad); } #log .info{ color:var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Mordekaiser Bible</h1>
+  <span id="status">waiting for the League client…</span>
+</header>
+
+<p class="eyebrow">Enemy team</p>
+<p class="hint">Pick whoever you think is their top laner. Runes go straight to the client.</p>
+<div id="enemies"><div class="empty">Nothing yet — enemies appear here during champ select.</div></div>
+
+<p class="eyebrow">On pick</p>
+<div id="toggles">
+  <label><input type="checkbox" data-toggle="runes"> Push runes</label>
+  <label><input type="checkbox" data-toggle="items"> Save item set</label>
+  <label><input type="checkbox" data-toggle="summoners"> Set summoners</label>
+  <label><input type="checkbox" data-toggle="overlay"> Show overlay</label>
+</div>
+
+<p class="eyebrow">Log</p>
+<div id="log"></div>
+
+<script src="picker.js"></script>
+</body>
+</html>

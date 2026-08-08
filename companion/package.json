@@ -1,0 +1,21 @@
+{
+  "name": "mordekaiser-bible-companion",
+  "version": "0.1.0",
+  "description": "Champ-select rune/item importer and in-game overlay for the Mordekaiser Bible",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/e2e.js",
+    "smoke": "electron . --mb-smoke"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.21.3"
+  },
+  "devDependencies": {
+    "electron": "^43.3.0"
+  }
+}

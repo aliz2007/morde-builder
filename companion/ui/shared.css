@@ -1,0 +1,46 @@
+:root{
+  --bg:      #080B0B;
+  --panel:   #101615;
+  --raised:  #18201F;
+  --line:    #28322F;
+  --text:    #DCDAD2;
+  --muted:   #92948E;
+  --faint:   #5D625E;
+  --glow:    #34E0CE;
+  --glow-hi: #A8FFF4;
+  --glow-lo: #0F6B62;
+  --warn:    #D08A50;
+  --bad:     #E0736A;
+  --ok:      #86D9A0;
+  --mono: 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+  --sans: 'Helvetica Neue', Arial, sans-serif;
+}
+*{ box-sizing:border-box; }
+html,body{ margin:0; }
+body{
+  background:var(--bg); color:var(--text);
+  font:13px/1.5 var(--sans);
+  user-select:none;
+}
+.eyebrow{
+  font:600 10px/1 var(--sans); text-transform:uppercase; letter-spacing:.14em;
+  color:var(--glow); margin:0 0 6px;
+}
+.pill{
+  font:600 11px/1 var(--mono); padding:3px 7px; border-radius:2px;
+  border:1px solid var(--line); color:var(--muted);
+}
+.pill--d1,.pill--d2{ color:var(--ok); border-color:var(--glow-lo); }
+.pill--d3{ color:#C4A263; }
+.pill--d4{ color:var(--warn); }
+.pill--d5{ color:var(--bad); }
+button{
+  font:600 11px/1 var(--sans); text-transform:uppercase; letter-spacing:.06em;
+  color:var(--text); background:var(--raised); border:1px solid var(--line);
+  border-radius:2px; padding:7px 10px; cursor:pointer;
+}
+button:hover{ border-color:var(--glow); }
+button.lit{ color:var(--bg); background:var(--glow); border-color:var(--glow); }
+::-webkit-scrollbar{ width:8px; }
+::-webkit-scrollbar-thumb{ background:var(--line); border-radius:4px; }
+::-webkit-scrollbar-track{ background:transparent; }

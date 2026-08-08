@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MB Overlay</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  html,body{ background:transparent; }
+  #card{
+    width:320px; background:rgba(8,11,11,.92); border:1px solid var(--line);
+    border-radius:3px; overflow:hidden;
+    box-shadow:0 6px 30px rgba(0,0,0,.55), 0 0 18px rgba(52,224,206,.10);
+  }
+  #bar{
+    display:flex; align-items:center; gap:8px; padding:7px 10px;
+    background:var(--panel); border-bottom:1px solid var(--line);
+    -webkit-app-region:drag;
+  }
+  #bar img{ width:26px; height:26px; border-radius:2px; }
+  #bar .name{ font:700 13px/1 var(--sans); letter-spacing:.03em; }
+  #bar .pill{ margin-left:auto; }
+  #bar button{ -webkit-app-region:no-drag; padding:4px 7px; font-size:10px; }
+  #body{ padding:10px 12px 12px; max-height:430px; overflow-y:auto; }
+  section{ margin:0 0 12px; }
+  .cond{ font:600 10px/1.3 var(--sans); text-transform:uppercase; letter-spacing:.1em;
+    color:#C4A263; margin:0 0 5px; }
+  .strip{ display:flex; gap:4px; margin:0 0 6px; }
+  .strip img{ width:30px; height:30px; border-radius:2px; border:1px solid var(--line); }
+  ol{ margin:0; padding:0; list-style:none; counter-reset:n; }
+  ol li{ position:relative; padding-left:22px; margin:0 0 5px; font-size:12px; }
+  ol li::before{ counter-increment:n; content:counter(n,decimal-leading-zero);
+    position:absolute; left:0; top:1px; font:600 10px var(--mono); color:var(--glow-lo); }
+  ol .item{ font-weight:600; }
+  ol .note{ color:var(--muted); }
+  ul{ margin:0; padding:0; list-style:none; }
+  ul li{ position:relative; padding-left:14px; margin:0 0 6px; font-size:12px; color:var(--muted); }
+  ul li::before{ content:""; position:absolute; left:0; top:9px; width:8px; height:1px; background:var(--glow-lo); }
+  .summs{ display:flex; gap:8px; font:600 12px var(--mono); color:var(--glow); }
+  #more{ width:100%; }
+  .hidden{ display:none; }
+  #empty{ padding:20px 14px; color:var(--faint); text-align:center; }
+</style>
+</head>
+<body>
+<div id="card">
+  <div id="bar">
+    <img id="portrait" alt="" class="hidden">
+    <span class="name" id="champ">—</span>
+    <span class="pill" id="diff"></span>
+    <button id="pin" title="Click-through on/off">pin</button>
+    <button id="hide" title="Hide (Ctrl/Cmd+Shift+M)">hide</button>
+  </div>
+  <div id="body">
+    <div id="empty">Pick an enemy in champ select and the plan shows up here.</div>
+    <div id="content" class="hidden">
+      <section>
+        <p class="eyebrow">Summoners</p>
+        <div class="summs" id="summs"></div>
+      </section>
+      <div id="builds"></div>
+      <section id="tipsWrap">
+        <p class="eyebrow" id="tipsHead">Tips</p>
+        <ul id="tips"></ul>
+      </section>
+      <button id="more">show everything</button>
+    </div>
+  </div>
+</div>
+<script src="overlay.js"></script>
+</body>
+</html>
