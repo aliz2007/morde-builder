@@ -1,34 +1,123 @@
 # Mordekaiser Bible — Companion
 
-A desktop companion for the Bible. During champ select you pick which enemy you
-think is going top; it pushes the matchup's rune page straight into your client,
-saves the item build as an in-shop item set, and optionally sets your summoner
-spells. In game, a small always-on-top overlay shows the build order and the
-writeup's tips — and switches itself to the real enemy top laner once the game
-can tell you who that is.
+A desktop app that puts the Bible inside your League client. At champ select you
+click whichever enemy you think is going top; it pushes that matchup's rune page
+into the client, saves the build as an in-shop item set, and can set your
+summoner spells. In game a small always-on-top card shows the build order and
+the writeup's tips, and switches itself to the real enemy top laner once the
+game knows who that is.
 
 ![picker](docs/picker.png) ![overlay](docs/overlay.png)
 
-## What it does
+---
 
-- **Runes** — builds the page from the matchup's runes and creates it in the
-  client as `MB: <champion>`, already selected. Re-picking replaces the old MB
-  page instead of stacking new ones.
-- **Items** — saves the matchup's build (both paths, with the author's notes)
-  as an item set named `MB: <champion>`, visible in the in-game shop. Your other
-  item sets are left untouched.
-- **Summoner spells** — optional, off by default. Sets the matchup's spells in
-  champ select.
-- **Overlay** — frameless always-on-top card with the difficulty, summoners,
-  both build paths and the tips. Toggle with `Ctrl/Cmd+Shift+M`, drag by its
-  title bar, `pin` makes it click-through, `hide` hides it. Works with League in
-  borderless or windowed mode (a fullscreen-exclusive game covers every OS
-  window; use borderless, which is what most players run).
-- In game it polls Riot's Live Client Data API; when the enemy top laner is
-  known it switches the overlay to that matchup automatically.
+## Installing it
 
-Everything is per-toggle: runes, items, summoners and the overlay can each be
-turned off in the picker window or the tray menu, and the choice persists.
+### Option A — run from source
+
+This works right now, on Windows, macOS and Linux. You need
+[Node.js](https://nodejs.org) 20 or newer (the LTS installer is fine; on Windows
+just click through it).
+
+```bash
+git clone -b claude/companion-app https://github.com/aliz2007/morde-builder.git
+cd morde-builder/companion
+npm install
+npm start
+```
+
+`-b claude/companion-app` matters — the companion lives on that branch, not on
+the repository's default branch. After the first time, `npm start` from
+`morde-builder/companion` is all you need.
+
+### Option B — a downloadable installer
+
+The repository can build a one-click Windows installer, a macOS `.dmg` and a
+Linux `.AppImage`, but **no release has been published yet**, so there is
+nothing on the Releases page to download today. To produce one:
+
+```bash
+git checkout claude/companion-app
+git tag companion-v0.1.0
+git push origin companion-v0.1.0
+```
+
+That fires the `companion-release` workflow, which builds all three platforms
+and attaches them to a GitHub release. Tag the `claude/companion-app` branch —
+tagging any branch without a `companion/` folder just fails the build.
+
+Once a release exists:
+
+- **Windows** — `Mordekaiser Bible Companion Setup <version>.exe` installs in one
+  click; the portable `.exe` runs without installing. Both are unsigned, so
+  SmartScreen shows "Windows protected your PC" — *More info* → *Run anyway*.
+- **macOS** — the `.dmg`. Unsigned, so the first launch is right-click → **Open**
+  rather than a double-click.
+- **Linux** — the `.AppImage`; `chmod +x` it and run it.
+
+---
+
+## Using it
+
+**Start the companion whenever — before or after League.** It puts a crown in
+your tray (Windows) or menu bar (macOS) and waits. The picker window's status
+dot lights up teal when it finds your client.
+
+**At champ select** the picker lists the enemy team as they lock in. Click the
+one you think is going top. Champions the Bible has a writeup for are the ones
+worth clicking; the rest say so.
+
+That one click, depending on your toggles:
+
+| | What it does |
+|---|---|
+| **Push runes** | Creates a page called `MB: <champion>` in your client and selects it. Re-picking replaces it instead of stacking new pages. |
+| **Save item set** | Saves the matchup's build — both paths, with the author's notes as row labels — as an item set named `MB: <champion>`, visible in the in-game shop. Your own item sets are left alone. |
+| **Set summoners** | Off by default. Sets the matchup's summoner spells. Only works during champ select. |
+| **Show overlay** | Opens the overlay card. |
+
+Every toggle is in the picker window and the tray menu, and your choice sticks
+between launches.
+
+**In game**, the overlay shows the difficulty ratings, summoners, both build
+paths and the tips:
+
+- `Ctrl+Shift+M` (`Cmd+Shift+M` on macOS) shows and hides it
+- drag it anywhere by its title bar
+- **pin** makes it click-through, so you can play straight through it
+- **hide** puts it away; the hotkey or the tray brings it back
+
+Once the game tells the app who the enemy top laner actually is, the overlay
+switches to that matchup on its own — so a wrong guess at champ select fixes
+itself.
+
+**Run League borderless or windowed.** A fullscreen-exclusive game covers every
+other window on the OS, including this one. Borderless is what most players use
+already.
+
+### If something does not work
+
+**The status dot never lights up.** The app looks for League's `lockfile` in the
+usual places (`C:/Riot Games/…`, `D:/Riot Games/…`, `C:/Program Files/Riot Games/…`,
+`/Applications/League of Legends.app/…`, and your home folder). If yours is
+somewhere else, point it there:
+
+```bash
+MB_LOCKFILE="D:/Games/League of Legends/lockfile" npm start
+```
+
+On Windows PowerShell: `$env:MB_LOCKFILE="D:/Games/League of Legends/lockfile"; npm start`
+
+**"The client refused the rune page."** Your rune pages are full. Delete one in
+the client and pick again.
+
+**A champion pushes nothing and logs an error.** The app refuses to push a page
+it cannot resolve completely, rather than pushing a wrong one. The log line
+names exactly which rune or item it could not find.
+
+**Nothing appears over the game.** See the borderless note above.
+
+---
 
 ## How it talks to League
 
@@ -49,38 +138,7 @@ Bible's names against it. Whatever the current patch renamed, the app follows;
 whatever it cannot match, it refuses to push and tells you, rather than pushing
 a wrong page.
 
-## Installing it
-
-Grab the build for your OS from the repository's **Releases** page:
-
-- **Windows** — `Mordekaiser Bible Companion Setup <version>.exe` is a one-click
-  installer; there is also a portable `.exe` that runs without installing.
-- **macOS** — the `.dmg`. It is unsigned, so the first launch is
-  right-click → Open.
-- **Linux** — the `.AppImage`; `chmod +x` it and run.
-
-Installers are produced by the `companion-release` GitHub Actions workflow —
-push a `companion-v*` tag (or run the workflow manually from the Actions tab)
-and it builds all three platforms and attaches them to a release.
-
-Start the app whenever; it sits in the tray, waits for the League client, and
-the picker pops up when champ select starts.
-
-## Running from source
-
-Needs [Node.js](https://nodejs.org) 20+.
-
-```bash
-cd companion
-npm install
-npm start
-```
-
-If your League install is somewhere unusual, point the app at the lockfile:
-
-```bash
-MB_LOCKFILE="/path/to/League of Legends/lockfile" npm start
-```
+---
 
 ## Development
 
@@ -89,6 +147,7 @@ npm test              # full flow against a bundled mock client — no League ne
 npm run audit         # resolve all 139 matchups against the real patch catalog
 npm run smoke         # boots the real app against the mock and screenshots it
 npm run fetch-catalog # refresh the catalog snapshot to the current patch
+npm run dist          # build an installer for the machine you are on
 ```
 
 `mock/` contains a faithful fake of the LCU (lockfile, auth, REST, WebSocket
@@ -113,12 +172,12 @@ and fixed the following, none of which the mock could have caught:
 - ties between identically-named items made every abbreviated build step
   ("Rocketbelt", "Liandry's", "Rylai's") resolve to nothing — 256 build rows,
   and four matchups produced an empty item set that the client would reject;
-- `Flash` resolved to the Arena spell rather than the Summoner's Rift one;
-- game-mode champion clones could shadow the real champion, which would have
-  attached item sets to a Mordekaiser nobody plays;
 - `Scaling Health` resolved to the *flat* Health shard in 65 matchups, because
   substring containment outranked a full word-set match — the worst kind of
   failure, since a wrong rune is pushed silently;
+- `Flash` resolved to the Arena spell rather than the Summoner's Rift one;
+- game-mode champion clones could shadow the real champion, which would have
+  attached item sets to a Mordekaiser nobody plays;
 - a one-letter typo in the source spreadsheet sank a whole rune page;
 - a matchup listing three secondary runes produced a ten-perk page;
 - two secondary runes from the same row were pushed instead of refused.
@@ -132,10 +191,12 @@ would show up on a live client before it shows up here.
 **Status:** verified end-to-end against the mock client, including headless runs
 of the real Electron app — and of the **packaged** build, which exercises the
 same file layout the installers ship. Name resolution is verified against real
-Data Dragon files. It has not yet been run against a live League client; any
+Data Dragon files. **It has not yet been run against a live League client**; any
 breakage there will be in lockfile discovery or endpoint shape, both of which
-log loudly. If the client boots slower than the app, the companion now retries
-every 3 seconds until the client answers.
+log loudly. If the client boots slower than the app, the companion retries every
+3 seconds until the client answers.
+
+---
 
 ## A note on Riot policy
 
