@@ -11,26 +11,50 @@ async function pushRunes(lcu, gd, matchup) {
   const page = gd.resolveRunePage(matchup.runes || {});
   if (page.misses.length) throw new ResolveError(page.misses);
 
-  const pages = await lcu.get('/lol-perks/v1/pages');
-  for (const p of (pages || []).filter(p => p.name && p.name.startsWith(PREFIX))) {
+  const pages = (await lcu.get('/lol-perks/v1/pages')) || [];
+  for (const p of pages.filter(p => p.name && p.name.startsWith(PREFIX))) {
     await lcu.del(`/lol-perks/v1/pages/${p.id}`).catch(() => {});
   }
 
-  try {
-    await lcu.post('/lol-perks/v1/pages', {
-      name: PREFIX + matchup.name,
-      primaryStyleId: page.primaryStyleId,
-      subStyleId: page.subStyleId,
-      selectedPerkIds: page.selectedPerkIds,
-      current: true,
+  const body = {
+    name: PREFIX + matchup.name,
+    primaryStyleId: page.primaryStyleId,
+    subStyleId: page.subStyleId,
+    selectedPerkIds: page.selectedPerkIds,
+    current: true,
+  };
+
+  // Rune pages have a hard cap in the client. When the cap is hit, free a slot
+  // ourselves instead of making the user delete one by hand: oldest deletable,
+  // non-current page first (MB pages were already removed above).
+  const victims = pages
+    .filter(p => !p.name || !p.name.startsWith(PREFIX))
+    .filter(p => p.isDeletable !== false && p.isTemporary !== true)
+    .sort((a, b) => {
+      const act = p => (p.current || p.isActive ? 1 : 0);
+      if (act(a) !== act(b)) return act(a) - act(b);
+      return (a.lastModified || a.id) - (b.lastModified || b.id);
     });
-  } catch (err) {
-    if (err.status === 400 || err.status === 403) {
-      throw new Error('The client refused the rune page — pages may be full. Delete one in the client and retry.');
+
+  const freed = [];
+  while (true) {
+    try {
+      await lcu.post('/lol-perks/v1/pages', body);
+      if (freed.length) page.freedPages = freed;
+      return page;
+    } catch (err) {
+      if ((err.status === 400 || err.status === 403) && victims.length) {
+        const victim = victims.shift();
+        await lcu.del(`/lol-perks/v1/pages/${victim.id}`).catch(() => {});
+        freed.push(victim.name || `#${victim.id}`);
+        continue;
+      }
+      if (err.status === 400 || err.status === 403) {
+        throw new Error('The client refused the rune page and no deletable page was left to make room.');
+      }
+      throw err;
     }
-    throw err;
   }
-  return page;
 }
 
 async function pushSummoners(lcu, gd, matchup) {

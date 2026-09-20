@@ -104,6 +104,35 @@ test('re-picking replaces the MB rune page and item set instead of stacking', as
   assert.equal(mbSets[0].title, 'MB: Darius');
 });
 
+test('Cho\'Gath resolves "Movement Speed" to the shard the client calls "Move Speed"', async () => {
+  await app.pick("Cho'Gath");
+  const page = mock.recorded.runePosts.at(-1);
+  assert.equal(page.name, "MB: Cho'Gath");
+  assert.deepEqual(page.selectedPerkIds.slice(6), [5008, 5010, 5001],
+    'Adaptive Force / Move Speed / Health Scaling — the mock uses the real client names and rows');
+});
+
+test('full rune pages make room automatically instead of failing', async () => {
+  const tmp3 = fs.mkdtempSync(path.join(os.tmpdir(), 'mb-full-'));
+  const full = await startMock({ dir: tmp3, ws: false, pageLimit: 2 });
+  full.seedPages([
+    { id: 50, name: 'My top page', isDeletable: true, current: false, lastModified: 200 },
+    { id: 51, name: 'Default page', isDeletable: true, current: true, lastModified: 100 },
+  ]);
+  const app3 = new Companion({ repoRoot: REPO, configDir: tmp3, lockfilePaths: [full.lockfile] });
+  app3.start();
+  await waitFor(() => app3.state.connected);
+  await app3.pick('Darius');
+  const mb = full.runePages.find(p => p.name === 'MB: Darius');
+  assert.ok(mb, 'MB page pushed after freeing a slot');
+  assert.ok(full.recorded.runeDeletes.includes(50), 'a deletable page was removed to make room');
+  assert.ok(full.runePages.some(p => p.id === 51), 'the current page was left alone');
+  assert.ok(!full.runePages.some(p => p.id === 50), 'the freed page is gone');
+  assert.ok(app3.state.log.some(l => /make room/.test(l.message)), 'the freed page is named in the log');
+  app3.stop();
+  full.close();
+});
+
 test('a matchup whose runes cannot be resolved fails loudly and pushes nothing', async () => {
   const unresolvable = app.bible.matchups.find(m => m.keystone === 'Unsealed Spellbook');
   assert.ok(unresolvable, 'fixture assumes an Unsealed Spellbook matchup exists');

@@ -7,6 +7,27 @@ const STOP = new Set(['and', 'of', 'the', 'a', 'an']);
 const tokens = s => String(s || '').toLowerCase().normalize('NFD')
   .replace(/[̀-ͯ]/g, '').split(/[^a-z0-9]+/).filter(t => t && !STOP.has(t));
 
+// Two word-tokens count as the same word when they are identical, when one is a
+// prefix of the other ('move' ~ 'movement' — the client calls the shard "Move
+// Speed" while guides write "Movement Speed"), or when they differ by one edit.
+function tokenEq(a, b) {
+  if (a === b) return true;
+  const [s, l] = a.length <= b.length ? [a, b] : [b, a];
+  if (s.length >= 4 && l.startsWith(s)) return true;
+  return distance(a, b) <= 1;
+}
+
+// Greedy bipartite match: how many query tokens find a distinct candidate token.
+function tokenOverlap(qt, ct) {
+  const used = new Set();
+  let n = 0;
+  for (const q of qt) {
+    const hit = ct.findIndex((c, i) => !used.has(i) && tokenEq(q, c));
+    if (hit >= 0) { used.add(hit); n++; }
+  }
+  return n;
+}
+
 function distance(a, b) {
   if (a === b) return 0;
   if (!a.length || !b.length) return Math.max(a.length, b.length);
@@ -33,13 +54,13 @@ function score(query, candidate) {
   if (!q || !c) return 0;
   if (q === c) return 100;
 
-  const qt = new Set(tokens(query)), ct = new Set(tokens(candidate));
-  if (qt.size && qt.size === ct.size && [...qt].every(t => ct.has(t))) return 90;
+  const qt = [...tokens(query)], ct = [...tokens(candidate)];
+  if (qt.length && qt.length === ct.length && tokenOverlap(qt, ct) === qt.length) return 90;
   if (c.startsWith(q) || q.startsWith(c)) return 80;
   if (c.includes(q) || q.includes(c)) return 60;
 
-  const inter = [...qt].filter(t => ct.has(t)).length;
-  const union = new Set([...qt, ...ct]).size;
+  const inter = tokenOverlap(qt, ct);
+  const union = qt.length + ct.length - inter;
   const overlap = union ? Math.round((inter / union) * 50) : 0;
 
   const span = Math.max(q.length, c.length);
