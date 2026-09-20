@@ -52,9 +52,10 @@ the machine.
 Grab the installer from the
 **[latest release](https://github.com/aliz2007/morde-builder/releases/latest)**:
 
-- **Windows** — download `Mordekaiser Bible Companion Setup x.y.z.exe` and run it
-  (or the portable `.exe`, no install). Unsigned, so SmartScreen warns:
-  *More info* → *Run anyway*.
+- **Windows** — download `Mordekaiser-Bible-Companion-x.y.z-windows.zip`,
+  extract it, double-click the `.exe` inside. No install, no terminal. (The
+  `Setup` exe is there too if you want a proper installer.) Unsigned, so
+  SmartScreen warns: *More info* → *Run anyway*.
 - **macOS** — download the `.dmg`, drag the app to Applications, and
   **right-click → Open** the first time (it's unsigned).
 - **Linux** — download the `.AppImage`, `chmod +x` it, run it.

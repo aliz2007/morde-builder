@@ -36,11 +36,21 @@ jobs:
       - name: Build installers
         run: npx electron-builder --publish never
 
+      - name: Zip the portable exe for one-click download
+        if: matrix.artifact == 'windows'
+        shell: pwsh
+        run: |
+          $v = (Get-Content package.json | ConvertFrom-Json).version
+          $exe = Get-ChildItem "dist/*.exe" | Where-Object { $_.Name -notmatch 'Setup' } | Select-Object -First 1
+          Compress-Archive -Path $exe.FullName -DestinationPath "dist/Mordekaiser-Bible-Companion-$v-windows.zip"
+          Get-Item "dist/Mordekaiser-Bible-Companion-$v-windows.zip"
+
       - uses: actions/upload-artifact@v4
         with:
           name: companion-${{ matrix.artifact }}
           path: |
             companion/dist/*.exe
+            companion/dist/*.zip
             companion/dist/*.dmg
             companion/dist/*.AppImage
             companion/dist/latest*.yml
@@ -65,9 +75,13 @@ jobs:
           body: |
             Mordekaiser Bible Companion.
 
-            - **Windows**: `Mordekaiser Bible Companion Setup *.exe` (installer) or the
-              portable `.exe` (no install, just run it)
+            - **Windows (easiest)**: `Mordekaiser-Bible-Companion-*-windows.zip` —
+              download, extract, double-click the `.exe` inside. No install, no terminal.
+              Or use `Setup *.exe` for a proper installer with a Start Menu entry.
             - **macOS**: `.dmg` — unsigned, so right-click the app → Open the first time
             - **Linux**: `.AppImage` — `chmod +x` and run
+
+            The app updates itself after this — you'll never download it again
+            (macOS excepted: unsigned apps can't self-update there).
 
             Start it, then start League. The picker appears at champ select.

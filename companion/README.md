@@ -20,7 +20,7 @@ and download the file for your system:
 
 | Your system | File to download | Then |
 |---|---|---|
-| **Windows** | `Mordekaiser Bible Companion Setup x.y.z.exe` | Run it — it installs like any app. Or grab the other `.exe` (portable): no install, just double-click. Windows SmartScreen will warn because the app is unsigned: click **More info → Run anyway**. |
+| **Windows** | `Mordekaiser-Bible-Companion-x.y.z-windows.zip` | Extract the zip, double-click the `.exe` inside. Done — no install, no terminal. (Want a Start Menu entry? Use `Setup x.y.z.exe` instead.) Windows SmartScreen will warn because the app is unsigned: click **More info → Run anyway**. |
 | **macOS** | `Mordekaiser Bible Companion x.y.z-arm64.dmg` | Open the `.dmg`, drag the app to Applications. It's unsigned, so the first launch is **right-click → Open** (not a double-click), then confirm. |
 | **Linux** | `Mordekaiser Bible Companion x.y.z.AppImage` | `chmod +x` the file and run it. |
 
