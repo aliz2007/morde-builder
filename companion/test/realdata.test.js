@@ -62,6 +62,17 @@ test('the author\'s typos and shorthand still resolve', () => {
   assert.equal(gd.itemByName("Doran's Helm start").name, "Doran's Helm");
 });
 
+test('the client\'s "Move Speed" shard answers to "Movement Speed"', () => {
+  assert.ok(score('Movement Speed', 'Move Speed') >= 40);
+  const page = gd.resolveRunePage({
+    primary: ['Conqueror', 'Triumph', 'Alacrity', 'Cut Down'],
+    secondary: ['Shield Bash', 'Revitalize'],
+    shards: ['Adaptive Force', 'Movement Speed', 'Scaling Health'],
+  });
+  assert.deepEqual(page.misses, []);
+  assert.equal(page.selectedPerkIds[7], 5010);
+});
+
 test('a one-letter rune typo does not sink the whole page', () => {
   const page = gd.resolveRunePage({
     primary: ['Grasp of the Undying', 'Demolish', 'Second Wind', 'Overgrowth'],

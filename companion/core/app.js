@@ -189,6 +189,9 @@ class Companion extends EventEmitter {
       try {
         const page = await pushRunes(this.lcu, this.gd, matchup);
         this.log('ok', `Runes set: ${page.selectedPerkIds.length} perks pushed`);
+        if (page.freedPages?.length) {
+          this.log('info', `Pages were full — deleted "${page.freedPages.join('", "')}" to make room`);
+        }
       } catch (err) {
         this.log('error', `Runes: ${err.message}`);
       }

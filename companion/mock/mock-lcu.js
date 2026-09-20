@@ -6,7 +6,7 @@ const fixtures = require('./fixtures');
 
 const PASSWORD = 'mock-secret';
 
-function startMock({ dir, ws = true }) {
+function startMock({ dir, ws = true, pageLimit = 0 }) {
   const recorded = { runePosts: [], runeDeletes: [], itemSetPuts: [], selectionPatches: [] };
   let runePages = [
     { id: 1, name: 'Default page', isDeletable: true },
@@ -28,6 +28,9 @@ function startMock({ dir, ws = true }) {
     'GET /lol-champ-select/v1/session': () => session || { httpStatus: 404 },
     'GET /lol-perks/v1/pages': () => runePages,
     'POST /lol-perks/v1/pages': body => {
+      if (pageLimit && runePages.length >= pageLimit) {
+        return { httpStatus: 400, errorCode: 'RPC_ERROR', message: 'Max rune pages reached' };
+      }
       const page = { ...body, id: nextPageId++ };
       runePages.push(page);
       recorded.runePosts.push(page);
@@ -64,7 +67,7 @@ function startMock({ dir, ws = true }) {
       const handler = routes[`${req.method} ${req.url}`];
       if (!handler) { res.writeHead(404); return res.end('{}'); }
       const out = handler(body ? JSON.parse(body) : undefined);
-      if (out && out.httpStatus === 404) { res.writeHead(404); return res.end('{}'); }
+      if (out && out.httpStatus >= 400) { res.writeHead(out.httpStatus); return res.end(JSON.stringify(out)); }
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(out === null ? '' : JSON.stringify(out));
     });
@@ -94,6 +97,7 @@ function startMock({ dir, ws = true }) {
         lockfile,
         recorded,
         get runePages() { return runePages; },
+        seedPages(list) { runePages.push(...list); },
         get itemSets() { return itemSets; },
         setPhase(p) {
           phase = p;

@@ -108,8 +108,11 @@ MB_LOCKFILE="D:/Games/League of Legends/lockfile" npm start
 
 On Windows PowerShell: `$env:MB_LOCKFILE="D:/Games/League of Legends/lockfile"; npm start`
 
-**"The client refused the rune page."** Your rune pages are full. Delete one in
-the client and pick again.
+**Rune pages full?** They aren't a problem any more. When the client has no free
+slot, the app deletes the oldest deletable page it isn't using (never one called
+`MB: …` — those are replaced, and never the page currently selected) and says in
+the log which page it removed. Only if every single page is undeletable will it
+ask you to free one yourself.
 
 **A champion pushes nothing and logs an error.** The app refuses to push a page
 it cannot resolve completely, rather than pushing a wrong one. The log line
@@ -184,9 +187,11 @@ and fixed the following, none of which the mock could have caught:
 
 Two caveats, stated because the audit's output is only as honest as its inputs:
 Data Dragon does not publish the stat-shard rows, so those come from
-`mock/stat-shards.js` and are the one part of the rune page not verified against
-real data; and the snapshot is a patch-in-time, so a rename after it was taken
-would show up on a live client before it shows up here.
+`mock/stat-shards.js` — kept in sync with the rows and names the live client
+actually serves (`Move Speed`, not `Movement Speed`; flex row is Adaptive
+Force / Move Speed / Health Scaling) — and the snapshot is a patch-in-time, so
+a rename after it was taken would show up on a live client before it shows up
+here.
 
 **Status:** verified end-to-end against the mock client, including headless runs
 of the real Electron app — and of the **packaged** build, which exercises the
