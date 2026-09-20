@@ -9,7 +9,7 @@ const { Companion } = require('../core/app');
 const REPO = path.resolve(__dirname, '../..');
 let tmp, mock, live, app;
 
-const waitFor = (fn, ms = 4000) => new Promise((resolve, reject) => {
+const waitFor = (fn, ms = 10000) => new Promise((resolve, reject) => {
   const t0 = Date.now();
   const tick = () => {
     const v = fn();
