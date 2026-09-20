@@ -84,6 +84,11 @@ paths and the tips:
 
 - `Ctrl+Shift+M` (`Cmd+Shift+M` on macOS) shows and hides it
 - drag it anywhere by its title bar
+- **drag the bottom-right corner** to resize it — shrink it down to just the
+  title bar if you like; size and position are remembered between games
+- **view** opens a checklist of what the card shows — TL;DR, early game, how to
+  trade, what to watch out for, tips, items, summoners — tick only what you want
+  and the card shrinks to match; your picks stick between launches
 - **pin** makes it click-through, so you can play straight through it
 - **hide** puts it away; the hotkey or the tray brings it back
 

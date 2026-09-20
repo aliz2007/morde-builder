@@ -39,9 +39,12 @@ function createPicker() {
 }
 
 function createOverlay() {
+  const saved = companion.overlayBounds || {};
   overlay = new BrowserWindow({
-    width: 336, height: 500,
-    frame: false, transparent: true, resizable: false,
+    width: saved.width || 336, height: saved.height || 500,
+    x: saved.x, y: saved.y,
+    minWidth: 190, minHeight: 120,
+    frame: false, transparent: true, resizable: true,
     alwaysOnTop: true, skipTaskbar: true, hasShadow: false,
     webPreferences: PRELOAD,
   });
@@ -49,6 +52,21 @@ function createOverlay() {
   overlay.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   overlay.loadFile(path.join(__dirname, 'ui/overlay.html'));
   overlay.hide();
+
+  let boundsTimer = null;
+  const persistBounds = () => {
+    if (overlay && !overlay.isDestroyed() && overlay.isVisible()) {
+      companion.saveOverlayBounds(overlay.getBounds());
+    }
+  };
+  overlay.on('resize', () => {
+    clearTimeout(boundsTimer);
+    boundsTimer = setTimeout(persistBounds, 400);
+  });
+  overlay.on('move', () => {
+    clearTimeout(boundsTimer);
+    boundsTimer = setTimeout(persistBounds, 400);
+  });
 }
 
 function showOverlay(show) {
@@ -133,7 +151,17 @@ app.whenReady().then(async () => {
   ipcMain.on('ready', broadcast);
   ipcMain.on('pick', (_e, name) => companion.pick(name));
   ipcMain.on('toggle', (_e, k, v) => companion.setToggle(k, v));
+  ipcMain.on('section', (_e, k, v) => companion.setSection(k, v));
   ipcMain.on('overlay-hide', () => overlay.hide());
+  ipcMain.on('overlay-resize', (_e, dw, dh) => {
+    if (!overlay || overlay.isDestroyed()) return;
+    const b = overlay.getBounds();
+    overlay.setBounds({
+      x: b.x, y: b.y,
+      width: Math.max(190, Math.round(b.width + dw)),
+      height: Math.max(120, Math.round(b.height + dh)),
+    });
+  });
   ipcMain.on('picker-min', () => picker.minimize());
   ipcMain.on('picker-close', () => picker.hide());
   ipcMain.on('overlay-clickthrough', (_e, on) => overlay.setIgnoreMouseEvents(on, { forward: true }));

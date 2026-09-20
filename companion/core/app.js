@@ -15,6 +15,10 @@ const WS_EVENTS = [
 ];
 
 const DEFAULT_TOGGLES = { runes: true, items: true, summoners: false, overlay: true };
+const DEFAULT_SECTIONS = {
+  summoners: true, builds: true, tldr: true,
+  early: true, watch: true, trade: true, tips: true,
+};
 
 class Companion extends EventEmitter {
   constructor({ repoRoot, configDir, lockfilePaths = [] }) {
@@ -28,25 +32,39 @@ class Companion extends EventEmitter {
     this.watcher = new LockfileWatcher(lockfilePaths);
     this.summonerId = null;
     this.pollTimer = null;
+    const cfg = this.loadConfig();
+    this.overlayBounds = cfg.overlayBounds;
     this.state = {
       connected: false,
       phase: null,
       enemies: [],
       picked: null,
       overlayMatchup: null,
-      toggles: this.loadConfig(),
+      toggles: cfg.toggles,
+      sections: cfg.sections,
       log: [],
     };
   }
 
   loadConfig() {
-    try { return { ...DEFAULT_TOGGLES, ...JSON.parse(fs.readFileSync(this.configPath, 'utf8')) }; }
-    catch { return { ...DEFAULT_TOGGLES }; }
+    let raw = {};
+    try { raw = JSON.parse(fs.readFileSync(this.configPath, 'utf8')); } catch {}
+    // legacy shape: the whole file was the toggles object
+    const legacy = 'runes' in raw || 'items' in raw;
+    return {
+      toggles: { ...DEFAULT_TOGGLES, ...(legacy ? raw : raw.toggles) },
+      sections: { ...DEFAULT_SECTIONS, ...(legacy ? null : raw.sections) },
+      overlayBounds: legacy ? null : (raw.overlayBounds || null),
+    };
   }
 
   saveConfig() {
     fs.mkdirSync(path.dirname(this.configPath), { recursive: true });
-    fs.writeFileSync(this.configPath, JSON.stringify(this.state.toggles, null, 2));
+    fs.writeFileSync(this.configPath, JSON.stringify({
+      toggles: this.state.toggles,
+      sections: this.state.sections,
+      overlayBounds: this.overlayBounds || null,
+    }, null, 2));
   }
 
   setToggle(key, value) {
@@ -54,6 +72,19 @@ class Companion extends EventEmitter {
     this.state.toggles[key] = !!value;
     this.saveConfig();
     this.publish();
+  }
+
+  setSection(key, value) {
+    if (!(key in this.state.sections)) return;
+    this.state.sections[key] = !!value;
+    this.saveConfig();
+    this.publish();
+  }
+
+  saveOverlayBounds(bounds) {
+    if (!bounds || typeof bounds.width !== 'number' || typeof bounds.height !== 'number') return;
+    this.overlayBounds = bounds;
+    this.saveConfig();
   }
 
   log(level, message) {
