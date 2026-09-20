@@ -30,6 +30,11 @@ do anything else. When champ select starts, the picker window pops up — click
 the enemy you think is going top and your runes, item set and the in-game
 overlay card are handled for you.
 
+**It updates itself.** Whenever a new version is published, the app downloads
+it in the background and offers to restart into it — no reinstalling, ever
+again. (Windows and Linux only: macOS refuses unsigned self-updates, so on a
+Mac it will tell you there's a new version to grab instead.)
+
 ### Option B — run from source
 
 You need [Node.js](https://nodejs.org) 20 or newer (the LTS installer is fine;

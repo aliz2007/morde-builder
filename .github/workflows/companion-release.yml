@@ -43,6 +43,8 @@ jobs:
             companion/dist/*.exe
             companion/dist/*.dmg
             companion/dist/*.AppImage
+            companion/dist/latest*.yml
+            companion/dist/*.blockmap
           if-no-files-found: error
 
   release:

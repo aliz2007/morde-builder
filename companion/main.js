@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, Menu, globalShortcut, ipcMain, nativeImage } = require('electron');
+const { app, BrowserWindow, Tray, Menu, globalShortcut, ipcMain, nativeImage, dialog } = require('electron');
 const path = require('path');
 const { Companion } = require('./core/app');
 
@@ -6,6 +6,31 @@ const REPO = app.isPackaged
   ? path.join(process.resourcesPath, 'bible')
   : path.resolve(__dirname, '..');
 const SMOKE = process.argv.includes('--mb-smoke');
+
+// Auto-update from GitHub Releases: downloads in the background, installs on
+// quit (or on the spot if the user says so). Packaged builds only — in dev
+// there is no app-update.yml to read.
+function setupAutoUpdater() {
+  if (!app.isPackaged || SMOKE) return;
+  const { autoUpdater } = require('electron-updater');
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+  autoUpdater.on('update-downloaded', info => {
+    companion?.log('ok', `Update ${info.version} downloaded — it installs when you quit`);
+    dialog.showMessageBox({
+      type: 'info',
+      title: 'Update ready',
+      message: `Mordekaiser Bible Companion ${info.version} is downloaded.`,
+      detail: 'Restart the app now to update, or it will update itself next time you quit.',
+      buttons: ['Restart now', 'Later'],
+      defaultId: 1,
+    }).then(r => { if (r.response === 0) { app.isQuitting = true; autoUpdater.quitAndInstall(); } });
+  });
+  autoUpdater.on('error', err => companion?.log('warn', `Auto-update: ${err.message}`));
+  const check = () => autoUpdater.checkForUpdates().catch(() => {});
+  check();
+  setInterval(check, 30 * 60 * 1000).unref?.();
+}
 const PRELOAD = {
   preload: path.join(__dirname, 'preload.js'),
   sandbox: false,
@@ -132,6 +157,7 @@ app.whenReady().then(async () => {
   createPicker();
   createOverlay();
   createTray();
+  setupAutoUpdater();
 
   companion.on('state', broadcast);
   companion.start();
