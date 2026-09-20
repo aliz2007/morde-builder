@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, Menu, globalShortcut, ipcMain, nativeImage } = require('electron');
+const { app, BrowserWindow, Tray, Menu, globalShortcut, ipcMain, nativeImage, dialog } = require('electron');
 const path = require('path');
 const { Companion } = require('./core/app');
 
@@ -6,6 +6,31 @@ const REPO = app.isPackaged
   ? path.join(process.resourcesPath, 'bible')
   : path.resolve(__dirname, '..');
 const SMOKE = process.argv.includes('--mb-smoke');
+
+// Auto-update from GitHub Releases: downloads in the background, installs on
+// quit (or on the spot if the user says so). Packaged builds only — in dev
+// there is no app-update.yml to read.
+function setupAutoUpdater() {
+  if (!app.isPackaged || SMOKE) return;
+  const { autoUpdater } = require('electron-updater');
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+  autoUpdater.on('update-downloaded', info => {
+    companion?.log('ok', `Update ${info.version} downloaded — it installs when you quit`);
+    dialog.showMessageBox({
+      type: 'info',
+      title: 'Update ready',
+      message: `Mordekaiser Bible Companion ${info.version} is downloaded.`,
+      detail: 'Restart the app now to update, or it will update itself next time you quit.',
+      buttons: ['Restart now', 'Later'],
+      defaultId: 1,
+    }).then(r => { if (r.response === 0) { app.isQuitting = true; autoUpdater.quitAndInstall(); } });
+  });
+  autoUpdater.on('error', err => companion?.log('warn', `Auto-update: ${err.message}`));
+  const check = () => autoUpdater.checkForUpdates().catch(() => {});
+  check();
+  setInterval(check, 30 * 60 * 1000).unref?.();
+}
 const PRELOAD = {
   preload: path.join(__dirname, 'preload.js'),
   sandbox: false,
@@ -39,9 +64,12 @@ function createPicker() {
 }
 
 function createOverlay() {
+  const saved = companion.overlayBounds || {};
   overlay = new BrowserWindow({
-    width: 336, height: 500,
-    frame: false, transparent: true, resizable: false,
+    width: saved.width || 336, height: saved.height || 500,
+    x: saved.x, y: saved.y,
+    minWidth: 190, minHeight: 120,
+    frame: false, transparent: true, resizable: true,
     alwaysOnTop: true, skipTaskbar: true, hasShadow: false,
     webPreferences: PRELOAD,
   });
@@ -49,6 +77,21 @@ function createOverlay() {
   overlay.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   overlay.loadFile(path.join(__dirname, 'ui/overlay.html'));
   overlay.hide();
+
+  let boundsTimer = null;
+  const persistBounds = () => {
+    if (overlay && !overlay.isDestroyed() && overlay.isVisible()) {
+      companion.saveOverlayBounds(overlay.getBounds());
+    }
+  };
+  overlay.on('resize', () => {
+    clearTimeout(boundsTimer);
+    boundsTimer = setTimeout(persistBounds, 400);
+  });
+  overlay.on('move', () => {
+    clearTimeout(boundsTimer);
+    boundsTimer = setTimeout(persistBounds, 400);
+  });
 }
 
 function showOverlay(show) {
@@ -114,6 +157,7 @@ app.whenReady().then(async () => {
   createPicker();
   createOverlay();
   createTray();
+  setupAutoUpdater();
 
   companion.on('state', broadcast);
   companion.start();
@@ -133,7 +177,17 @@ app.whenReady().then(async () => {
   ipcMain.on('ready', broadcast);
   ipcMain.on('pick', (_e, name) => companion.pick(name));
   ipcMain.on('toggle', (_e, k, v) => companion.setToggle(k, v));
+  ipcMain.on('section', (_e, k) => companion.setOverlayFocus(k));
   ipcMain.on('overlay-hide', () => overlay.hide());
+  ipcMain.on('overlay-resize', (_e, dw, dh) => {
+    if (!overlay || overlay.isDestroyed()) return;
+    const b = overlay.getBounds();
+    overlay.setBounds({
+      x: b.x, y: b.y,
+      width: Math.max(190, Math.round(b.width + dw)),
+      height: Math.max(120, Math.round(b.height + dh)),
+    });
+  });
   ipcMain.on('picker-min', () => picker.minimize());
   ipcMain.on('picker-close', () => picker.hide());
   ipcMain.on('overlay-clickthrough', (_e, on) => overlay.setIgnoreMouseEvents(on, { forward: true }));
@@ -165,6 +219,41 @@ app.whenReady().then(async () => {
       };
       await shot(picker, 'smoke-picker.png');
       await shot(overlay, 'smoke-overlay.png');
+
+      // interaction checks: the section selector and the resize grip
+      const before = overlay.getBounds();
+      const checks = await overlay.webContents.executeJavaScript(`(() => {
+        const out = {};
+        const sel = document.querySelector('#focus');
+        out.selectorOptions = [...sel.options].map(o => o.value);
+        sel.value = 'trade';
+        sel.dispatchEvent(new Event('change'));
+        const grip = document.querySelector('#grip');
+        grip.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, screenX: 500, screenY: 600, pointerId: 1 }));
+        grip.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, screenX: 620, screenY: 685, pointerId: 1 }));
+        grip.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 1 }));
+        return out;
+      })()`);
+      await new Promise(r => setTimeout(r, 400));
+      const after = overlay.getBounds();
+      checks.resizeSent = [before.width, before.height, '->', after.width, after.height];
+      checks.resized = after.width >= before.width + 100 && after.height >= before.height + 70;
+      checks.onlyTradeShown = await overlay.webContents.executeJavaScript(`(() => {
+        const txt = document.querySelector('#tipsWrap').textContent;
+        return {
+          tipsWrapHasTrade: txt.includes('How to trade'),
+          buildsHidden: document.querySelector('#builds').classList.contains('hidden'),
+          summsHidden: document.querySelector('#summsWrap').classList.contains('hidden'),
+          selectorValue: document.querySelector('#focus').value,
+        };
+      })()`);
+      checks.focusPersisted = companion.state.overlayFocus === 'trade';
+      await shot(overlay, 'smoke-overlay-trade.png');
+      console.log('SMOKE CHECKS', JSON.stringify(checks));
+      if (!checks.resized || !checks.onlyTradeShown.tipsWrapHasTrade || !checks.onlyTradeShown.buildsHidden || !checks.focusPersisted) {
+        console.error('SMOKE INTERACTION FAILED');
+        process.exitCode = 1;
+      }
       console.log('SMOKE OK');
       app.isQuitting = true;
       app.quit();

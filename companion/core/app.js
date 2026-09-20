@@ -15,6 +15,8 @@ const WS_EVENTS = [
 ];
 
 const DEFAULT_TOGGLES = { runes: true, items: true, summoners: false, overlay: true };
+// Which section the overlay card shows; 'all' shows everything.
+const OVERLAY_SECTIONS = ['all', 'tldr', 'early', 'trade', 'watch', 'tips', 'builds', 'summoners'];
 
 class Companion extends EventEmitter {
   constructor({ repoRoot, configDir, lockfilePaths = [] }) {
@@ -28,25 +30,39 @@ class Companion extends EventEmitter {
     this.watcher = new LockfileWatcher(lockfilePaths);
     this.summonerId = null;
     this.pollTimer = null;
+    const cfg = this.loadConfig();
+    this.overlayBounds = cfg.overlayBounds;
     this.state = {
       connected: false,
       phase: null,
       enemies: [],
       picked: null,
       overlayMatchup: null,
-      toggles: this.loadConfig(),
+      toggles: cfg.toggles,
+      overlayFocus: cfg.overlayFocus,
       log: [],
     };
   }
 
   loadConfig() {
-    try { return { ...DEFAULT_TOGGLES, ...JSON.parse(fs.readFileSync(this.configPath, 'utf8')) }; }
-    catch { return { ...DEFAULT_TOGGLES }; }
+    let raw = {};
+    try { raw = JSON.parse(fs.readFileSync(this.configPath, 'utf8')); } catch {}
+    // legacy shape: the whole file was the toggles object
+    const legacy = 'runes' in raw || 'items' in raw;
+    return {
+      toggles: { ...DEFAULT_TOGGLES, ...(legacy ? raw : raw.toggles) },
+      overlayFocus: OVERLAY_SECTIONS.includes(raw.overlayFocus) ? raw.overlayFocus : 'all',
+      overlayBounds: legacy ? null : (raw.overlayBounds || null),
+    };
   }
 
   saveConfig() {
     fs.mkdirSync(path.dirname(this.configPath), { recursive: true });
-    fs.writeFileSync(this.configPath, JSON.stringify(this.state.toggles, null, 2));
+    fs.writeFileSync(this.configPath, JSON.stringify({
+      toggles: this.state.toggles,
+      overlayFocus: this.state.overlayFocus,
+      overlayBounds: this.overlayBounds || null,
+    }, null, 2));
   }
 
   setToggle(key, value) {
@@ -54,6 +70,19 @@ class Companion extends EventEmitter {
     this.state.toggles[key] = !!value;
     this.saveConfig();
     this.publish();
+  }
+
+  setOverlayFocus(key) {
+    if (!OVERLAY_SECTIONS.includes(key)) return;
+    this.state.overlayFocus = key;
+    this.saveConfig();
+    this.publish();
+  }
+
+  saveOverlayBounds(bounds) {
+    if (!bounds || typeof bounds.width !== 'number' || typeof bounds.height !== 'number') return;
+    this.overlayBounds = bounds;
+    this.saveConfig();
   }
 
   log(level, message) {

@@ -47,6 +47,25 @@ It reads League's own local APIs — the LCU (via the client's lockfile) and the
 Live Client Data API. No game memory, no automation, no server, nothing leaves
 the machine.
 
+### Download it (no technical setup)
+
+Grab the installer from the
+**[latest release](https://github.com/aliz2007/morde-builder/releases/latest)**:
+
+- **Windows** — download `Mordekaiser-Bible-Companion-x.y.z-windows.zip`,
+  extract it, double-click the `.exe` inside. No install, no terminal. (The
+  `Setup` exe is there too if you want a proper installer.) Unsigned, so
+  SmartScreen warns: *More info* → *Run anyway*.
+- **macOS** — download the `.dmg`, drag the app to Applications, and
+  **right-click → Open** the first time (it's unsigned).
+- **Linux** — download the `.AppImage`, `chmod +x` it, run it.
+
+Then just launch it — before or after League, order doesn't matter. It sits in
+the tray/menu bar, pops up the picker when champ select starts, and one click on
+the enemy top laner sets your runes, item set and in-game tips card.
+
+### Run it from source (developers)
+
 ```bash
 git clone -b claude/companion-app https://github.com/aliz2007/morde-builder.git
 cd morde-builder/companion
@@ -57,10 +76,6 @@ npm start
 Needs [Node.js](https://nodejs.org) 20+. The companion lives on the
 `claude/companion-app` branch, not on this repository's default branch, which is
 why `-b` is there.
-
-Installers for Windows, macOS and Linux build from a tag — push
-`companion-v0.1.0` on that branch and the `companion-release` workflow attaches
-all three to a GitHub release. None has been published yet.
 
 **[Full install, usage and troubleshooting guide →](https://github.com/aliz2007/morde-builder/blob/claude/companion-app/companion/README.md)**
 

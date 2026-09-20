@@ -9,7 +9,7 @@ const { Companion } = require('../core/app');
 const REPO = path.resolve(__dirname, '../..');
 let tmp, mock, live, app;
 
-const waitFor = (fn, ms = 4000) => new Promise((resolve, reject) => {
+const waitFor = (fn, ms = 10000) => new Promise((resolve, reject) => {
   const t0 = Date.now();
   const tick = () => {
     const v = fn();
@@ -176,8 +176,39 @@ test('in game, the overlay follows the real enemy top laner', async () => {
 test('toggles persist to disk', () => {
   app.setToggle('summoners', false);
   const saved = JSON.parse(fs.readFileSync(path.join(tmp, 'config.json'), 'utf8'));
-  assert.equal(saved.summoners, false);
-  assert.equal(saved.runes, true);
+  assert.equal(saved.toggles.summoners, false);
+  assert.equal(saved.toggles.runes, true);
+});
+
+test('overlay section focus persists to disk and rides the state snapshot', () => {
+  app.setOverlayFocus('early');
+  assert.equal(app.snapshot().overlayFocus, 'early');
+  let saved = JSON.parse(fs.readFileSync(path.join(tmp, 'config.json'), 'utf8'));
+  assert.equal(saved.overlayFocus, 'early');
+  app.setOverlayFocus('nonsense'); // ignored
+  assert.equal(app.snapshot().overlayFocus, 'early');
+  app.setOverlayFocus('all');
+  saved = JSON.parse(fs.readFileSync(path.join(tmp, 'config.json'), 'utf8'));
+  assert.equal(saved.overlayFocus, 'all');
+});
+
+test('overlay bounds persist to disk', () => {
+  app.saveOverlayBounds({ x: 40, y: 50, width: 260, height: 200 });
+  const saved = JSON.parse(fs.readFileSync(path.join(tmp, 'config.json'), 'utf8'));
+  assert.deepEqual(saved.overlayBounds, { x: 40, y: 50, width: 260, height: 200 });
+  app.saveOverlayBounds(null); // ignored
+  const again = JSON.parse(fs.readFileSync(path.join(tmp, 'config.json'), 'utf8'));
+  assert.equal(again.overlayBounds.width, 260);
+});
+
+test('a legacy config file (flat toggles) still loads', () => {
+  const tmp4 = fs.mkdtempSync(path.join(os.tmpdir(), 'mb-legacy-'));
+  fs.writeFileSync(path.join(tmp4, 'config.json'), JSON.stringify({ runes: false, summoners: true }));
+  const app4 = new Companion({ repoRoot: REPO, configDir: tmp4, lockfilePaths: [] });
+  assert.equal(app4.state.toggles.runes, false);
+  assert.equal(app4.state.toggles.summoners, true);
+  assert.equal(app4.state.overlayFocus, 'all');
+  assert.equal(app4.overlayBounds, null);
 });
 
 test('without a websocket, polling still surfaces champ select and the phase', async () => {

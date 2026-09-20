@@ -1,6 +1,6 @@
 {
   "name": "mordekaiser-bible-companion",
-  "version": "0.1.0",
+  "version": "0.4.1",
   "description": "Champ-select rune/item importer and in-game overlay for the Mordekaiser Bible",
   "main": "main.js",
   "scripts": {
@@ -13,12 +13,20 @@
   },
   "license": "MIT",
   "dependencies": {
+    "electron-updater": "^6.8.9",
     "ws": "^8.21.3"
   },
   "devDependencies": {
     "electron": "^43.3.0",
     "electron-builder": "^26.15.3"
   },
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "aliz2007",
+      "repo": "morde-builder"
+    }
+  ],
   "build": {
     "appId": "gg.mordebible.companion",
     "productName": "Mordekaiser Bible Companion",
