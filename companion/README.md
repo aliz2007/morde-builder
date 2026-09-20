@@ -13,11 +13,27 @@ game knows who that is.
 
 ## Installing it
 
-### Option A — run from source
+### Option A — download the app (easiest, no Node.js needed)
 
-This works right now, on Windows, macOS and Linux. You need
-[Node.js](https://nodejs.org) 20 or newer (the LTS installer is fine; on Windows
-just click through it).
+Go to the **[latest release](https://github.com/aliz2007/morde-builder/releases/latest)**
+and download the file for your system:
+
+| Your system | File to download | Then |
+|---|---|---|
+| **Windows** | `Mordekaiser Bible Companion Setup x.y.z.exe` | Run it — it installs like any app. Or grab the other `.exe` (portable): no install, just double-click. Windows SmartScreen will warn because the app is unsigned: click **More info → Run anyway**. |
+| **macOS** | `Mordekaiser Bible Companion x.y.z-arm64.dmg` | Open the `.dmg`, drag the app to Applications. It's unsigned, so the first launch is **right-click → Open** (not a double-click), then confirm. |
+| **Linux** | `Mordekaiser Bible Companion x.y.z.AppImage` | `chmod +x` the file and run it. |
+
+**Launching it:** start the app whenever — before or after League. It puts a
+crown in your tray (Windows) or menu bar (macOS) and waits; you don't need to
+do anything else. When champ select starts, the picker window pops up — click
+the enemy you think is going top and your runes, item set and the in-game
+overlay card are handled for you.
+
+### Option B — run from source
+
+You need [Node.js](https://nodejs.org) 20 or newer (the LTS installer is fine;
+on Windows just click through it).
 
 ```bash
 git clone -b claude/companion-app https://github.com/aliz2007/morde-builder.git
@@ -30,30 +46,18 @@ npm start
 the repository's default branch. After the first time, `npm start` from
 `morde-builder/companion` is all you need.
 
-### Option B — a downloadable installer
+### Cutting a new release (maintainers)
 
-The repository can build a one-click Windows installer, a macOS `.dmg` and a
-Linux `.AppImage`, but **no release has been published yet**, so there is
-nothing on the Releases page to download today. To produce one:
+Push a `companion-v*` tag on a branch that contains `companion/`:
 
 ```bash
 git checkout claude/companion-app
-git tag companion-v0.1.0
-git push origin companion-v0.1.0
+git tag companion-v0.3.0
+git push origin companion-v0.3.0
 ```
 
 That fires the `companion-release` workflow, which builds all three platforms
-and attaches them to a GitHub release. Tag the `claude/companion-app` branch —
-tagging any branch without a `companion/` folder just fails the build.
-
-Once a release exists:
-
-- **Windows** — `Mordekaiser Bible Companion Setup <version>.exe` installs in one
-  click; the portable `.exe` runs without installing. Both are unsigned, so
-  SmartScreen shows "Windows protected your PC" — *More info* → *Run anyway*.
-- **macOS** — the `.dmg`. Unsigned, so the first launch is right-click → **Open**
-  rather than a double-click.
-- **Linux** — the `.AppImage`; `chmod +x` it and run it.
+and attaches them to a GitHub release.
 
 ---
 
