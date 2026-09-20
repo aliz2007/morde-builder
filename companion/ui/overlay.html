@@ -17,9 +17,11 @@
   #aura{
     position:absolute; inset:0; border-radius:4px; pointer-events:none; z-index:0;
     box-shadow:0 0 22px rgba(52,224,206,.28), inset 0 0 1px rgba(52,224,206,.4);
-    animation:breathe 4.5s ease-in-out infinite;
-    will-change:opacity;
+    opacity:.8;
   }
+  /* brief pulse when a new matchup arrives — NOT an infinite animation:
+     an endless one repaints the window 60x/s forever and burns CPU idle */
+  #aura.pulse{ animation:breathe 1.6s ease-in-out 2; }
   #card.arrive{ animation:card-arrive .3s cubic-bezier(.2,.8,.3,1) both; }
   #flash{
     position:absolute; left:50%; top:40%; width:150px; height:150px;
@@ -29,7 +31,7 @@
   }
   #flash.go{ animation:ring-burst .7s cubic-bezier(.2,.8,.3,1) both; }
   @media (prefers-reduced-motion: reduce){
-    #aura{ animation:none; }
+    #aura.pulse{ animation:none; }
     #card.arrive{ animation:none; }
     #flash{ display:none; }
   }
@@ -78,14 +80,23 @@
   }
   #bar .pill{ margin-left:0; }
 
-  /* resize grip */
-  #grip{
-    position:absolute; right:0; bottom:0; width:26px; height:26px; z-index:4;
-    cursor:nwse-resize; -webkit-app-region:no-drag; touch-action:none;
+  /* resize handles: invisible strips on every edge + corners.
+     The SE/SW corners keep the diagonal stripes so resize is discoverable. */
+  .rz{ position:absolute; z-index:5; -webkit-app-region:no-drag; touch-action:none; }
+  .rz[data-edge=n]{ top:0; left:14px; right:14px; height:9px; cursor:ns-resize; }
+  .rz[data-edge=s]{ bottom:0; left:14px; right:14px; height:9px; cursor:ns-resize; }
+  .rz[data-edge=e]{ right:0; top:14px; bottom:14px; width:9px; cursor:ew-resize; }
+  .rz[data-edge=w]{ left:0; top:14px; bottom:14px; width:9px; cursor:ew-resize; }
+  .rz[data-edge=ne]{ top:0; right:0; width:16px; height:16px; cursor:nesw-resize; }
+  .rz[data-edge=sw]{ bottom:0; left:0; width:16px; height:16px; cursor:nesw-resize; }
+  .rz[data-edge=nw]{ top:0; left:0; width:16px; height:16px; cursor:nwse-resize; }
+  .rz[data-edge=se]{ bottom:0; right:0; width:16px; height:16px; cursor:nwse-resize; }
+  .rz[data-edge=se], .rz[data-edge=sw]{
     background:
       linear-gradient(135deg, transparent 0 42%, var(--glow-lo) 42% 52%, transparent 52% 62%, var(--glow-lo) 62% 72%, transparent 72% 82%, var(--glow-lo) 82% 92%, transparent 92%);
   }
-  #grip:hover{ filter:brightness(1.8); }
+  .rz[data-edge=sw]{ transform:scaleX(-1); }
+  .rz[data-edge=se]:hover, .rz[data-edge=sw]:hover{ filter:brightness(1.8); }
 </style>
 </head>
 <body>
@@ -122,8 +133,15 @@
       <button id="more">show everything</button>
     </div>
   </div>
-  <span id="grip" title="Drag to resize"></span>
 </div>
+<span class="rz" data-edge="n"></span>
+<span class="rz" data-edge="s"></span>
+<span class="rz" data-edge="e"></span>
+<span class="rz" data-edge="w"></span>
+<span class="rz" data-edge="ne"></span>
+<span class="rz" data-edge="nw"></span>
+<span class="rz" data-edge="se" title="Drag to resize"></span>
+<span class="rz" data-edge="sw" title="Drag to resize"></span>
 </div>
 <script src="overlay.js"></script>
 </body>

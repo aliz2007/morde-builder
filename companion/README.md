@@ -93,7 +93,7 @@ paths and the tips:
 
 - `Ctrl+Shift+M` (`Cmd+Shift+M` on macOS) shows and hides it
 - drag it anywhere by its title bar
-- **drag the bottom-right corner** to resize it — shrink it down to just the
+- **drag any edge or corner** to resize it — shrink it down to just the
   title bar if you like; size and position are remembered between games
 - **the dropdown in the title bar picks what the card shows** — Everything,
   TL;DR, Early game, How to trade, Watch out for, Tips, Items or Summoners —

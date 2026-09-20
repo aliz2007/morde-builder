@@ -29,9 +29,10 @@ function render(state) {
     lastName = m.name;
     const card = document.querySelector('#card');
     const flash = document.querySelector('#flash');
-    card.classList.remove('arrive'); flash.classList.remove('go');
+    const aura = document.querySelector('#aura');
+    card.classList.remove('arrive'); flash.classList.remove('go'); aura.classList.remove('pulse');
     void card.offsetWidth;
-    card.classList.add('arrive'); flash.classList.add('go');
+    card.classList.add('arrive'); flash.classList.add('go'); aura.classList.add('pulse');
   }
   $('#empty').classList.toggle('hidden', !!m);
   $('#content').classList.toggle('hidden', !m);
@@ -91,25 +92,25 @@ const bar = $('#bar');
 bar.addEventListener('mouseenter', () => { if (pinned) window.mb.overlaySolid(); });
 bar.addEventListener('mouseleave', () => { if (pinned) window.mb.overlayClickThrough(true); });
 
-// free resize: drag the bottom-right grip, window follows the cursor
-const grip = $('#grip');
+// free resize: drag ANY edge or corner, window follows the cursor.
+// The renderer reports the edge + absolute cursor position; the main process
+// owns the bounds math (anchoring the opposite side on n/w drags).
 let drag = null;
-grip.addEventListener('pointerdown', e => {
-  drag = { x: e.screenX, y: e.screenY };
-  try { grip.setPointerCapture(e.pointerId); } catch {}
-  e.preventDefault();
-});
-grip.addEventListener('pointermove', e => {
-  if (!drag) return;
-  const dx = e.screenX - drag.x, dy = e.screenY - drag.y;
-  if (dx || dy) {
-    window.mb.overlayResize(dx, dy);
-    drag = { x: e.screenX, y: e.screenY };
-  }
-});
-const endDrag = () => { drag = null; };
-grip.addEventListener('pointerup', endDrag);
-grip.addEventListener('pointercancel', endDrag);
+for (const h of document.querySelectorAll('.rz')) {
+  h.addEventListener('pointerdown', e => {
+    drag = { edge: h.dataset.edge };
+    try { h.setPointerCapture(e.pointerId); } catch {}
+    window.mb.overlayResizeStart();
+    e.preventDefault();
+  });
+  h.addEventListener('pointermove', e => {
+    if (!drag) return;
+    window.mb.overlayResizeTo(drag.edge, Math.round(e.screenX), Math.round(e.screenY));
+  });
+  const endDrag = () => { drag = null; };
+  h.addEventListener('pointerup', endDrag);
+  h.addEventListener('pointercancel', endDrag);
+}
 
 window.mb.onState(render);
 window.mb.ready();

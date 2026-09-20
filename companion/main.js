@@ -179,14 +179,25 @@ app.whenReady().then(async () => {
   ipcMain.on('toggle', (_e, k, v) => companion.setToggle(k, v));
   ipcMain.on('section', (_e, k) => companion.setOverlayFocus(k));
   ipcMain.on('overlay-hide', () => overlay.hide());
-  ipcMain.on('overlay-resize', (_e, dw, dh) => {
-    if (!overlay || overlay.isDestroyed()) return;
-    const b = overlay.getBounds();
-    overlay.setBounds({
-      x: b.x, y: b.y,
-      width: Math.max(190, Math.round(b.width + dw)),
-      height: Math.max(120, Math.round(b.height + dh)),
-    });
+  let resizeStart = null;
+  ipcMain.on('overlay-resize-start', () => {
+    if (overlay && !overlay.isDestroyed()) resizeStart = overlay.getBounds();
+  });
+  ipcMain.on('overlay-resize-to', (_e, edge, sx, sy) => {
+    if (!overlay || overlay.isDestroyed() || !resizeStart) return;
+    if (!/^(n|s|e|w|ne|nw|se|sw)$/.test(edge)) return;
+    const b = resizeStart;
+    let x = b.x, y = b.y, width = b.width, height = b.height;
+    if (edge.includes('e')) width = sx - b.x;
+    if (edge.includes('w')) width = b.x + b.width - sx;
+    if (edge.includes('s')) height = sy - b.y;
+    if (edge.includes('n')) height = b.y + b.height - sy;
+    width = Math.max(190, Math.round(width));
+    height = Math.max(120, Math.round(height));
+    // anchor the opposite side when dragging the west/north edges
+    if (edge.includes('w')) x = b.x + b.width - width;
+    if (edge.includes('n')) y = b.y + b.height - height;
+    overlay.setBounds({ x, y, width, height });
   });
   ipcMain.on('picker-min', () => picker.minimize());
   ipcMain.on('picker-close', () => picker.hide());
@@ -220,24 +231,40 @@ app.whenReady().then(async () => {
       await shot(picker, 'smoke-picker.png');
       await shot(overlay, 'smoke-overlay.png');
 
-      // interaction checks: the section selector and the resize grip
+      // interaction checks: the section selector and edge/corner resizing
       const before = overlay.getBounds();
+      const seX = before.x + before.width + 120, seY = before.y + before.height + 70;
       const checks = await overlay.webContents.executeJavaScript(`(() => {
         const out = {};
         const sel = document.querySelector('#focus');
         out.selectorOptions = [...sel.options].map(o => o.value);
         sel.value = 'trade';
         sel.dispatchEvent(new Event('change'));
-        const grip = document.querySelector('#grip');
-        grip.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, screenX: 500, screenY: 600, pointerId: 1 }));
-        grip.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, screenX: 620, screenY: 685, pointerId: 1 }));
-        grip.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 1 }));
+        const h = document.querySelector('[data-edge="se"]');
+        h.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, screenX: ${before.x + before.width - 4}, screenY: ${before.y + before.height - 4}, pointerId: 1 }));
+        h.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, screenX: ${seX}, screenY: ${seY}, pointerId: 1 }));
+        h.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 1 }));
         return out;
       })()`);
       await new Promise(r => setTimeout(r, 400));
       const after = overlay.getBounds();
       checks.resizeSent = [before.width, before.height, '->', after.width, after.height];
-      checks.resized = after.width >= before.width + 100 && after.height >= before.height + 70;
+      checks.resized = after.width >= before.width + 100 && after.height >= before.height + 60;
+
+      // west edge: dragging it left grows the width while the right edge stays put
+      const wX = after.x - 60;
+      await overlay.webContents.executeJavaScript(`(() => {
+        const h = document.querySelector('[data-edge="w"]');
+        h.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, screenX: ${after.x + 2}, screenY: ${after.y + 60}, pointerId: 2 }));
+        h.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, screenX: ${wX}, screenY: ${after.y + 60}, pointerId: 2 }));
+        h.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 2 }));
+      })()`);
+      await new Promise(r => setTimeout(r, 400));
+      const afterW = overlay.getBounds();
+      checks.westResize = [after.x, after.width, '->', afterW.x, afterW.width];
+      checks.westResized = afterW.width >= after.width + 50
+        && Math.abs(afterW.x + afterW.width - (after.x + after.width)) <= 2
+        && Math.abs(afterW.height - after.height) <= 2;
       checks.onlyTradeShown = await overlay.webContents.executeJavaScript(`(() => {
         const txt = document.querySelector('#tipsWrap').textContent;
         return {
@@ -250,7 +277,7 @@ app.whenReady().then(async () => {
       checks.focusPersisted = companion.state.overlayFocus === 'trade';
       await shot(overlay, 'smoke-overlay-trade.png');
       console.log('SMOKE CHECKS', JSON.stringify(checks));
-      if (!checks.resized || !checks.onlyTradeShown.tipsWrapHasTrade || !checks.onlyTradeShown.buildsHidden || !checks.focusPersisted) {
+      if (!checks.resized || !checks.westResized || !checks.onlyTradeShown.tipsWrapHasTrade || !checks.onlyTradeShown.buildsHidden || !checks.focusPersisted) {
         console.error('SMOKE INTERACTION FAILED');
         process.exitCode = 1;
       }
