@@ -151,7 +151,7 @@ app.whenReady().then(async () => {
   ipcMain.on('ready', broadcast);
   ipcMain.on('pick', (_e, name) => companion.pick(name));
   ipcMain.on('toggle', (_e, k, v) => companion.setToggle(k, v));
-  ipcMain.on('section', (_e, k, v) => companion.setSection(k, v));
+  ipcMain.on('section', (_e, k) => companion.setOverlayFocus(k));
   ipcMain.on('overlay-hide', () => overlay.hide());
   ipcMain.on('overlay-resize', (_e, dw, dh) => {
     if (!overlay || overlay.isDestroyed()) return;
@@ -193,6 +193,41 @@ app.whenReady().then(async () => {
       };
       await shot(picker, 'smoke-picker.png');
       await shot(overlay, 'smoke-overlay.png');
+
+      // interaction checks: the section selector and the resize grip
+      const before = overlay.getBounds();
+      const checks = await overlay.webContents.executeJavaScript(`(() => {
+        const out = {};
+        const sel = document.querySelector('#focus');
+        out.selectorOptions = [...sel.options].map(o => o.value);
+        sel.value = 'trade';
+        sel.dispatchEvent(new Event('change'));
+        const grip = document.querySelector('#grip');
+        grip.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, screenX: 500, screenY: 600, pointerId: 1 }));
+        grip.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, screenX: 620, screenY: 685, pointerId: 1 }));
+        grip.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 1 }));
+        return out;
+      })()`);
+      await new Promise(r => setTimeout(r, 400));
+      const after = overlay.getBounds();
+      checks.resizeSent = [before.width, before.height, '->', after.width, after.height];
+      checks.resized = after.width >= before.width + 100 && after.height >= before.height + 70;
+      checks.onlyTradeShown = await overlay.webContents.executeJavaScript(`(() => {
+        const txt = document.querySelector('#tipsWrap').textContent;
+        return {
+          tipsWrapHasTrade: txt.includes('How to trade'),
+          buildsHidden: document.querySelector('#builds').classList.contains('hidden'),
+          summsHidden: document.querySelector('#summsWrap').classList.contains('hidden'),
+          selectorValue: document.querySelector('#focus').value,
+        };
+      })()`);
+      checks.focusPersisted = companion.state.overlayFocus === 'trade';
+      await shot(overlay, 'smoke-overlay-trade.png');
+      console.log('SMOKE CHECKS', JSON.stringify(checks));
+      if (!checks.resized || !checks.onlyTradeShown.tipsWrapHasTrade || !checks.onlyTradeShown.buildsHidden || !checks.focusPersisted) {
+        console.error('SMOKE INTERACTION FAILED');
+        process.exitCode = 1;
+      }
       console.log('SMOKE OK');
       app.isQuitting = true;
       app.quit();

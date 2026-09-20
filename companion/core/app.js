@@ -15,10 +15,8 @@ const WS_EVENTS = [
 ];
 
 const DEFAULT_TOGGLES = { runes: true, items: true, summoners: false, overlay: true };
-const DEFAULT_SECTIONS = {
-  summoners: true, builds: true, tldr: true,
-  early: true, watch: true, trade: true, tips: true,
-};
+// Which section the overlay card shows; 'all' shows everything.
+const OVERLAY_SECTIONS = ['all', 'tldr', 'early', 'trade', 'watch', 'tips', 'builds', 'summoners'];
 
 class Companion extends EventEmitter {
   constructor({ repoRoot, configDir, lockfilePaths = [] }) {
@@ -41,7 +39,7 @@ class Companion extends EventEmitter {
       picked: null,
       overlayMatchup: null,
       toggles: cfg.toggles,
-      sections: cfg.sections,
+      overlayFocus: cfg.overlayFocus,
       log: [],
     };
   }
@@ -53,7 +51,7 @@ class Companion extends EventEmitter {
     const legacy = 'runes' in raw || 'items' in raw;
     return {
       toggles: { ...DEFAULT_TOGGLES, ...(legacy ? raw : raw.toggles) },
-      sections: { ...DEFAULT_SECTIONS, ...(legacy ? null : raw.sections) },
+      overlayFocus: OVERLAY_SECTIONS.includes(raw.overlayFocus) ? raw.overlayFocus : 'all',
       overlayBounds: legacy ? null : (raw.overlayBounds || null),
     };
   }
@@ -62,7 +60,7 @@ class Companion extends EventEmitter {
     fs.mkdirSync(path.dirname(this.configPath), { recursive: true });
     fs.writeFileSync(this.configPath, JSON.stringify({
       toggles: this.state.toggles,
-      sections: this.state.sections,
+      overlayFocus: this.state.overlayFocus,
       overlayBounds: this.overlayBounds || null,
     }, null, 2));
   }
@@ -74,9 +72,9 @@ class Companion extends EventEmitter {
     this.publish();
   }
 
-  setSection(key, value) {
-    if (!(key in this.state.sections)) return;
-    this.state.sections[key] = !!value;
+  setOverlayFocus(key) {
+    if (!OVERLAY_SECTIONS.includes(key)) return;
+    this.state.overlayFocus = key;
     this.saveConfig();
     this.publish();
   }

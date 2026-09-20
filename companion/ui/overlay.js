@@ -3,35 +3,28 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 let expanded = false;
 let pinned = false;
 let last = null;
-let lastSections = null;
+let lastFocus = 'all';
 
 const WORD = { 1: 'free', 2: 'favourable', 3: 'even', 4: 'hard', 5: 'nightmare' };
 
-// key -> Bible section heading (TL;DR and the four writeup sections)
+// selector value -> Bible section heading (TL;DR and the four writeup sections)
 const TIP_SECTIONS = [
   ['early', 'Early Game'],
   ['trade', 'How to trade'],
   ['watch', 'What to watch out for'],
   ['tips', 'Tips'],
 ];
-const MENU = [
-  ['tldr', 'TL;DR'],
-  ['early', 'Early game'],
-  ['trade', 'How to trade'],
-  ['watch', 'Watch out for'],
-  ['tips', 'Tips'],
-  ['builds', 'Items'],
-  ['summoners', 'Summoners'],
-];
 
 let lastName = null;
 
 function render(state) {
   const m = state.overlay;
-  const sec = state.sections || {};
+  const focus = state.overlayFocus || 'all';
   last = m;
-  lastSections = sec;
-  renderMenu(sec);
+  lastFocus = focus;
+  const show = key => focus === 'all' || focus === key;
+  if ($('#focus').value !== focus) $('#focus').value = focus;
+
   if (m && m.name !== lastName) {
     lastName = m.name;
     const card = document.querySelector('#card');
@@ -53,11 +46,11 @@ function render(state) {
   if (m.portrait) { portrait.src = window.mb.assetUrl(m.portrait); portrait.classList.remove('hidden'); }
   else portrait.classList.add('hidden');
 
-  $('#summsWrap').classList.toggle('hidden', sec.summoners === false);
+  $('#summsWrap').classList.toggle('hidden', !show('summoners'));
   $('#summs').innerHTML = m.summoners.map(s => `<span>${esc(s)}</span>`).join('<span>·</span>') || '—';
 
-  $('#builds').classList.toggle('hidden', sec.builds === false);
-  $('#builds').innerHTML = m.builds.map(b => `
+  $('#builds').classList.toggle('hidden', !show('builds'));
+  $('#builds').innerHTML = show('builds') ? m.builds.map(b => `
     <section>
       ${b.condition ? `<p class="cond">${esc(b.condition.replace(/:$/, ''))}</p>` : '<p class="eyebrow">Items</p>'}
       <div class="strip">${b.icons.map(i =>
@@ -65,12 +58,12 @@ function render(state) {
       <ol>${b.steps.slice(0, expanded ? 99 : 4).map(s =>
         `<li><span class="item">${esc(s.item)}</span>${s.note ? ` <span class="note">— ${esc(s.note)}</span>` : ''}</li>`).join('')}
       </ol>
-    </section>`).join('');
+    </section>`).join('') : '';
 
   const source = [];
-  if (sec.tldr !== false && m.tldr.length) source.push({ heading: 'TL;DR', items: m.tldr });
+  if (show('tldr') && m.tldr.length) source.push({ heading: 'TL;DR', items: m.tldr });
   for (const [key, heading] of TIP_SECTIONS) {
-    if (sec[key] === false) continue;
+    if (!show(key)) continue;
     const t = m.tips.find(t => t.heading === heading);
     if (t) source.push(t);
   }
@@ -82,21 +75,11 @@ function render(state) {
     </section>`).join('');
 
   $('#more').textContent = expanded ? 'show less' : 'show everything';
-  $('#more').classList.toggle('hidden', source.length <= 1 && !expanded);
+  $('#more').classList.toggle('hidden', (source.length <= 1 && !expanded) || focus !== 'all');
 }
 
-function renderMenu(sec) {
-  const menu = $('#viewMenu');
-  menu.innerHTML = MENU.map(([key, label]) => `
-    <label><input type="checkbox" data-key="${key}" ${sec[key] === false ? '' : 'checked'}>${label}</label>
-  `).join('');
-  for (const input of menu.querySelectorAll('input')) {
-    input.addEventListener('change', () => window.mb.setSection(input.dataset.key, input.checked));
-  }
-}
-
-$('#view').addEventListener('click', () => $('#viewMenu').classList.toggle('hidden'));
-$('#more').addEventListener('click', () => { expanded = !expanded; if (last) render({ overlay: last, sections: lastSections }); });
+$('#focus').addEventListener('change', e => window.mb.setSection(e.target.value));
+$('#more').addEventListener('click', () => { expanded = !expanded; if (last) render({ overlay: last, overlayFocus: lastFocus }); });
 $('#hide').addEventListener('click', () => window.mb.overlayHide());
 $('#pin').addEventListener('click', () => {
   pinned = !pinned;
@@ -113,7 +96,7 @@ const grip = $('#grip');
 let drag = null;
 grip.addEventListener('pointerdown', e => {
   drag = { x: e.screenX, y: e.screenY };
-  grip.setPointerCapture(e.pointerId);
+  try { grip.setPointerCapture(e.pointerId); } catch {}
   e.preventDefault();
 });
 grip.addEventListener('pointermove', e => {

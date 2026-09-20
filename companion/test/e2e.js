@@ -180,18 +180,16 @@ test('toggles persist to disk', () => {
   assert.equal(saved.toggles.runes, true);
 });
 
-test('overlay section choices persist to disk and ride the state snapshot', () => {
-  app.setSection('tips', false);
-  app.setSection('watch', false);
-  assert.equal(app.snapshot().sections.tips, false);
-  const saved = JSON.parse(fs.readFileSync(path.join(tmp, 'config.json'), 'utf8'));
-  assert.equal(saved.sections.tips, false);
-  assert.equal(saved.sections.watch, false);
-  assert.equal(saved.sections.early, true);
-  app.setSection('nonsense', true); // ignored
-  assert.equal(app.snapshot().sections.nonsense, undefined);
-  app.setSection('tips', true);
-  app.setSection('watch', true);
+test('overlay section focus persists to disk and rides the state snapshot', () => {
+  app.setOverlayFocus('early');
+  assert.equal(app.snapshot().overlayFocus, 'early');
+  let saved = JSON.parse(fs.readFileSync(path.join(tmp, 'config.json'), 'utf8'));
+  assert.equal(saved.overlayFocus, 'early');
+  app.setOverlayFocus('nonsense'); // ignored
+  assert.equal(app.snapshot().overlayFocus, 'early');
+  app.setOverlayFocus('all');
+  saved = JSON.parse(fs.readFileSync(path.join(tmp, 'config.json'), 'utf8'));
+  assert.equal(saved.overlayFocus, 'all');
 });
 
 test('overlay bounds persist to disk', () => {
@@ -209,7 +207,7 @@ test('a legacy config file (flat toggles) still loads', () => {
   const app4 = new Companion({ repoRoot: REPO, configDir: tmp4, lockfilePaths: [] });
   assert.equal(app4.state.toggles.runes, false);
   assert.equal(app4.state.toggles.summoners, true);
-  assert.equal(app4.state.sections.tips, true);
+  assert.equal(app4.state.overlayFocus, 'all');
   assert.equal(app4.overlayBounds, null);
 });
 
