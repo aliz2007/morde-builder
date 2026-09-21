@@ -11,6 +11,7 @@ class LiveClient extends EventEmitter {
     this.timer = null;
     this.topLaner = null;
     this.inGame = false;
+    this.lastState = null;
   }
 
   fetch(path) {
@@ -39,7 +40,12 @@ class LiveClient extends EventEmitter {
     try {
       all = await this.fetch('/liveclientdata/allgamedata');
     } catch {
-      if (this.inGame) { this.inGame = false; this.topLaner = null; this.emit('game-end'); }
+      if (this.inGame) {
+        this.inGame = false;
+        this.topLaner = null;
+        this.lastState = null;
+        this.emit('game-end');
+      }
       return;
     }
     if (!all?.allPlayers?.length) return;
@@ -53,6 +59,29 @@ class LiveClient extends EventEmitter {
       this.topLaner = name;
       this.emit('top-laner', name);
     }
+
+    // Slim game state for the item advisor: who is fed, what they built.
+    const slim = p => ({
+      championName: p.championName,
+      position: p.position,
+      level: p.level,
+      kills: p.scores?.kills ?? 0,
+      deaths: p.scores?.deaths ?? 0,
+      assists: p.scores?.assists ?? 0,
+      cs: p.scores?.creepScore ?? 0,
+      items: (p.items || []).map(i => ({ id: i.itemID, price: i.price ?? 0 })),
+    });
+    const state = {
+      gameTime: all.gameData?.gameTime ?? 0,
+      me: slim(me),
+      enemies: all.allPlayers.filter(p => p.team !== me.team).map(slim),
+      allies: all.allPlayers.filter(p => p.team === me.team && p !== me).map(slim),
+    };
+    const key = JSON.stringify(state);
+    if (key !== this.lastState) {
+      this.lastState = key;
+      this.emit('game-state', state);
+    }
   }
 
   start(intervalMs = 5000) {
@@ -65,6 +94,7 @@ class LiveClient extends EventEmitter {
   stop() {
     if (this.timer) clearInterval(this.timer);
     this.timer = null;
+    this.lastState = null;
   }
 }
 

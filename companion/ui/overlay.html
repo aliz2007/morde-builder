@@ -68,6 +68,12 @@
   ul li::before{ content:""; position:absolute; left:0; top:9px; width:8px; height:1px; background:var(--glow-lo); }
   .summs{ display:flex; gap:8px; font:600 12px var(--mono); color:var(--glow); }
   #more{ width:100%; }
+  .pick{ margin:0 0 9px; }
+  .pick .item{ display:block; font-weight:600; font-size:12px; }
+  .pick .note{ display:block; color:var(--muted); font-size:11px; line-height:1.35; }
+  .hintline{ color:var(--muted); font-size:12px; margin:0 0 6px; }
+  .hintline b{ color:var(--text); }
+  .warnline{ color:var(--warn); }
   .hidden{ display:none; }
   #empty{ padding:20px 14px; color:var(--faint); text-align:center; }
 
@@ -117,6 +123,7 @@
       <option value="tips">Tips</option>
       <option value="builds">Items</option>
       <option value="summoners">Summoners</option>
+      <option value="live">Next items (live)</option>
     </select>
     <button id="pin" title="Click-through on/off">pin</button>
     <button id="hide" title="Hide (Ctrl/Cmd+Shift+M)">hide</button>
@@ -130,6 +137,10 @@
       </section>
       <div id="builds"></div>
       <div id="tipsWrap"></div>
+      <section id="liveWrap" class="hidden">
+        <p class="eyebrow">Next items — live</p>
+        <div id="live"></div>
+      </section>
       <button id="more">show everything</button>
     </div>
   </div>
