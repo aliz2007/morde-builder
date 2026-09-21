@@ -99,7 +99,9 @@ paths and the tips:
   TL;DR, Early game, How to trade, Watch out for, Tips, Items or Summoners —
   so you can read just the section you want; your choice sticks between launches
 - **pin** makes it click-through, so you can play straight through it
-- **hide** puts it away; the hotkey or the tray brings it back
+- **hide** puts it away. To bring it back: press `Ctrl+Shift+M`, or left-click
+  the tray icon (check the ^ overflow next to the clock) and flip **Overlay
+  enabled** off and on — it also comes back on its own when a new game starts
 
 Once the game tells the app who the enemy top laner actually is, the overlay
 switches to that matchup on its own — so a wrong guess at champ select fixes
