@@ -159,6 +159,18 @@ test('every matchup yields an item set of ids that exist in the catalog', () => 
   assert.deepEqual(unknown, []);
 });
 
+test('every item set opens with the starting items', () => {
+  const morde = gd.champByName('Mordekaiser');
+  const known = new Map(gd.items.map(i => [String(i.id), i.name]));
+  for (const name of ['Aatrox', "Cho'Gath", 'Jax', 'Olaf']) {
+    const { set } = buildItemSet(gd, bible.find(name), morde.id);
+    assert.equal(set.blocks[0].type, 'Starting items', `${name}: first block`);
+    const starters = set.blocks[0].items.map(it => known.get(it.id));
+    assert.ok(starters.includes("Doran's Ring"), `${name}: ring — got ${starters}`);
+    assert.ok(starters.includes("Doran's Shield"), `${name}: shield — got ${starters}`);
+  }
+});
+
 test('build steps drop prose but keep real items', () => {
   assert.deepEqual(fragments('Bramble Vest Rush -> Boots'), ['Bramble Vest Rush', 'Boots']);
   assert.deepEqual(fragments("Bloodletter's Curse / Liandry's / Flex Items"), ["Bloodletter's Curse", "Liandry's"]);

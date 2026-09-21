@@ -127,6 +127,9 @@ function createTray() {
   };
   rebuild();
   companion.on('state', rebuild);
+  // left-click (Windows/Linux) opens the picker — the tray icon can end up in
+  // the overflow chevron, so this must be an obvious way back to the app
+  tray.on('click', () => { picker.show(); picker.focus(); });
 }
 
 async function startSmoke() {
@@ -176,7 +179,12 @@ app.whenReady().then(async () => {
 
   ipcMain.on('ready', broadcast);
   ipcMain.on('pick', (_e, name) => companion.pick(name));
-  ipcMain.on('toggle', (_e, k, v) => companion.setToggle(k, v));
+  ipcMain.on('toggle', (_e, k, v) => {
+    companion.setToggle(k, v);
+    // the picker's "Overlay enabled" checkbox is also the recovery path when
+    // the overlay was hidden with its hide button — flipping it brings it back
+    if (k === 'overlay') showOverlay(!!v);
+  });
   ipcMain.on('section', (_e, k) => companion.setOverlayFocus(k));
   ipcMain.on('overlay-hide', () => overlay.hide());
   let resizeStart = null;

@@ -2,6 +2,11 @@ const { PREFIX } = require('./runes');
 
 const FILLER = /^(?:flex|variety|items?|flex items?|flex boots?|build variety|build variety items?)$/i;
 
+// Mordekaiser's standard level-1 buys. The Bible doesn't list a starter per
+// matchup, so every set opens with the choices. Starters that don't exist in
+// the current patch's catalog are skipped silently (no bogus warnings).
+const STARTERS = ["Doran's Ring", "Doran's Shield", "Doran's Helm"];
+
 function fragments(stepText) {
   return String(stepText).split(/\s*(?:\/|->)\s*/)
     .map(f => f.replace(/\([^)]*\)/g, ' ').replace(/[()]/g, ' ').replace(/\s+/g, ' ').trim())
@@ -11,6 +16,10 @@ function fragments(stepText) {
 function buildItemSet(gd, matchup, mordeId) {
   const unresolved = [];
   const blocks = [];
+  const starters = STARTERS.map(n => gd.itemByName(n))
+    .filter(Boolean)
+    .map(i => ({ id: String(i.id), count: 1 }));
+  if (starters.length) blocks.push({ type: 'Starting items', items: starters });
   for (const [bi, build] of (matchup.builds || []).entries()) {
     const label = build.condition
       ? build.condition.replace(/:$/, '')
