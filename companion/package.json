@@ -1,11 +1,11 @@
 {
   "name": "mordekaiser-bible-companion",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "description": "Champ-select rune/item importer and in-game overlay for the Mordekaiser Bible",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "node --test test/e2e.js test/realdata.test.js",
+    "test": "node --test test/e2e.js test/realdata.test.js test/advisor.test.js",
     "audit": "node test/audit-realdata.js",
     "fetch-catalog": "node test/fetch-catalog.js",
     "smoke": "electron . --mb-smoke",

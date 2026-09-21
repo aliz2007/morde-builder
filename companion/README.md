@@ -107,6 +107,19 @@ Once the game tells the app who the enemy top laner actually is, the overlay
 switches to that matchup on its own — so a wrong guess at champ select fixes
 itself.
 
+**Live item advice.** In game, a **Next items — live** section appears in the
+overlay (pick it from the dropdown, or see it in Everything). Until you finish
+the matchup's core items it just tells you what's missing; after that it reads
+the enemy team's actual builds, scores and champions every few seconds and
+recommends your next items with the reasoning attached — crit stackers pull
+out Randuin's, MR stackers pull Void Staff, a fed enemy pulls a targeted
+counter named after them, squishy teams pull burst, healing teams pull
+Grievous, and so on. It follows the Bible author's own itemization guide
+(anti-burst, anti-kite, tank and situational sections), warns you when Mejai's
+is a trap, and suggests boots. It never recommends something you already
+built, and it only recommends items that exist in your patch. Turn it off with
+**Live item advice** in the picker or the tray.
+
 **Run League borderless or windowed.** A fullscreen-exclusive game covers every
 other window on the OS, including this one. Borderless is what most players use
 already.

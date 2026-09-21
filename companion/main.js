@@ -121,6 +121,7 @@ function createTray() {
       { label: 'Save item set', type: 'checkbox', checked: t.items, click: i => companion.setToggle('items', i.checked) },
       { label: 'Set summoners', type: 'checkbox', checked: t.summoners, click: i => companion.setToggle('summoners', i.checked) },
       { label: 'Overlay enabled', type: 'checkbox', checked: t.overlay, click: i => companion.setToggle('overlay', i.checked) },
+      { label: 'Live item advice', type: 'checkbox', checked: t.advisor, click: i => companion.setToggle('advisor', i.checked) },
       { type: 'separator' },
       { label: 'Quit', click: () => { app.isQuitting = true; app.quit(); } },
     ]));
@@ -140,7 +141,7 @@ async function startSmoke() {
   const mock = await startMock({ dir: tmp });
   const live = await startMockLive();
   process.env.MB_LIVE_URL = live.url;
-  companion = new Companion({ repoRoot: REPO, configDir: tmp, lockfilePaths: [mock.lockfile] });
+  companion = new Companion({ repoRoot: REPO, configDir: tmp, lockfilePaths: [mock.lockfile], liveIntervalMs: 400 });
   companion.live.base = new URL(live.url);
   companion.state.toggles.summoners = true;
   return { mock, live };
@@ -284,8 +285,53 @@ app.whenReady().then(async () => {
       })()`);
       checks.focusPersisted = companion.state.overlayFocus === 'trade';
       await shot(overlay, 'smoke-overlay-trade.png');
+
+      // live advisor: go in game with an unbuilt core -> "finish your core"
+      mock.setPhase('InProgress');
+      const mk = (name, pos, team, items = []) => ({
+        championName: name, position: pos, team, level: 11,
+        scores: { kills: 0, deaths: 0, assists: 0, creepScore: 100 },
+        riotId: name, summonerName: name,
+        items: items.map(id => ({ itemID: id, price: 0 })),
+      });
+      smoke.live.setGame({
+        activePlayer: { riotId: 'me', summonerName: 'me' },
+        gameData: { gameTime: 900 },
+        allPlayers: [
+          { ...mk('Mordekaiser', 'TOP', 'ORDER'), riotId: 'me', summonerName: 'me' },
+          mk('Ahri', 'MIDDLE', 'ORDER'),
+          mk('Aatrox', 'TOP', 'CHAOS', [4633]),
+          mk('Dr. Mundo', 'JUNGLE', 'CHAOS'),
+          mk('Jinx', 'BOTTOM', 'CHAOS'),
+          mk('Lux', 'UTILITY', 'CHAOS'),
+        ],
+      });
+      await new Promise(r => setTimeout(r, 1600));
+      await overlay.webContents.executeJavaScript(`(() => {
+        const sel = document.querySelector('#focus');
+        sel.value = 'live';
+        sel.dispatchEvent(new Event('change'));
+      })()`);
+      await new Promise(r => setTimeout(r, 600));
+      checks.adviceState = companion.state.advice
+        ? { coreDone: companion.state.advice.coreDone, missing: companion.state.advice.missingCore }
+        : null;
+      checks.adviceDom = await overlay.webContents.executeJavaScript(`(() => {
+        const wrap = document.querySelector('#liveWrap');
+        return {
+          visible: !wrap.classList.contains('hidden'),
+          text: document.querySelector('#live').textContent.trim().slice(0, 90),
+        };
+      })()`);
+      checks.adviceOk = !!checks.adviceState
+        && checks.adviceState.coreDone === false
+        && checks.adviceState.missing.length > 0
+        && checks.adviceDom.visible
+        && checks.adviceDom.text.includes('Finish your core');
+      await shot(overlay, 'smoke-overlay-live.png');
+
       console.log('SMOKE CHECKS', JSON.stringify(checks));
-      if (!checks.resized || !checks.westResized || !checks.onlyTradeShown.tipsWrapHasTrade || !checks.onlyTradeShown.buildsHidden || !checks.focusPersisted) {
+      if (!checks.resized || !checks.westResized || !checks.onlyTradeShown.tipsWrapHasTrade || !checks.onlyTradeShown.buildsHidden || !checks.focusPersisted || !checks.adviceOk) {
         console.error('SMOKE INTERACTION FAILED');
         process.exitCode = 1;
       }

@@ -8,20 +8,39 @@ const { Bible } = require('./bible');
 const { pushRunes, pushSummoners } = require('./runes');
 const { pushItemSet } = require('./itemset');
 const { LiveClient } = require('./live');
+const { advise, resolveItem } = require('./advisor');
+const { fragments } = require('./itemset');
 
 const WS_EVENTS = [
   'OnJsonApiEvent_lol-champ-select_v1_session',
   'OnJsonApiEvent_lol-gameflow_v1_gameflow-phase',
 ];
 
-const DEFAULT_TOGGLES = { runes: true, items: true, summoners: false, overlay: true };
+const DEFAULT_TOGGLES = { runes: true, items: true, summoners: false, overlay: true, advisor: true };
 // Which section the overlay card shows; 'all' shows everything.
-const OVERLAY_SECTIONS = ['all', 'tldr', 'early', 'trade', 'watch', 'tips', 'builds', 'summoners'];
+const OVERLAY_SECTIONS = ['all', 'tldr', 'early', 'trade', 'watch', 'tips', 'builds', 'summoners', 'live'];
+
+// The advisor's candidate pool beyond what the Bible's builds already use —
+// the full universe from the author's itemization guide.
+const COUNTERS = [
+  'Hextech Rocketbelt', "Rylai's Crystal Scepter", 'Cosmic Drive',
+  'Riftmaker', 'Dusk & Dawn', "Liandry's Torment", "Bloodletter's Curse",
+  "Nashor's Tooth", 'Hextech Gunblade', "Rabadon's Deathcap", 'Shadowflame',
+  'Void Staff', 'Experimental Hexplate',
+  "Zhonya's Hourglass", "Banshee's Veil", 'Kaenic Rookern', "Sterak's Gage", "Death's Dance",
+  "Randuin's Omen", 'Frozen Heart', 'Thornmail', 'Spirit Visage', 'Force of Nature',
+  'Abyssal Mask', "Jak'Sho, The Protean", 'Unending Despair', "Dead Man's Plate",
+  "Warmog's Armor", "Guardian's Angel",
+  'Oblivion Orb', 'Morellonomicon', "Serpent's Fang",
+  'Dark Seal', "Mejai's Soulstealer",
+  'Plated Steelcaps', "Mercury's Treads", 'Boots of Swiftness', 'Gluttonous Greaves', "Sorcerer's Shoes",
+];
 
 class Companion extends EventEmitter {
-  constructor({ repoRoot, configDir, lockfilePaths = [] }) {
+  constructor({ repoRoot, configDir, lockfilePaths = [], liveIntervalMs }) {
     super();
     this.repoRoot = repoRoot;
+    this.liveIntervalMs = liveIntervalMs;
     this.configPath = path.join(configDir, 'config.json');
     this.bible = new Bible(repoRoot);
     this.gd = new GameData();
@@ -32,6 +51,9 @@ class Companion extends EventEmitter {
     this.pollTimer = null;
     const cfg = this.loadConfig();
     this.overlayBounds = cfg.overlayBounds;
+    this.pool = null;        // advisor candidate pool, built once the catalog loads
+    this.catalogById = null; // classified catalog entries by item id
+    this.lastAdviceKey = null;
     this.state = {
       connected: false,
       phase: null,
@@ -40,6 +62,7 @@ class Companion extends EventEmitter {
       overlayMatchup: null,
       toggles: cfg.toggles,
       overlayFocus: cfg.overlayFocus,
+      advice: null,
       log: [],
     };
   }
@@ -68,6 +91,10 @@ class Companion extends EventEmitter {
   setToggle(key, value) {
     if (!(key in this.state.toggles)) return;
     this.state.toggles[key] = !!value;
+    if (key === 'advisor' && !value) {
+      this.state.advice = null;
+      this.lastAdviceKey = null;
+    }
     this.saveConfig();
     this.publish();
   }
@@ -120,8 +147,87 @@ class Companion extends EventEmitter {
         this.log('info', `In game: enemy top is ${name} — overlay switched`);
       }
     });
-    this.live.on('game-end', () => this.log('info', 'Game ended'));
+    this.live.on('game-state', gs => this.onGameState(gs));
+    this.live.on('game-end', () => {
+      this.state.advice = null;
+      this.lastAdviceKey = null;
+      this.log('info', 'Game ended');
+    });
     return this;
+  }
+
+  // The advisor's item universe: every item the Bible's builds use, plus the
+  // counter pool above — all resolved against the client's own catalog, so
+  // anything the patch doesn't have is never recommended.
+  buildPool() {
+    this.catalogById = new Map();
+    for (const i of this.gd.items) this.catalogById.set(Number(i.id), i);
+
+    const ids = new Set();
+    const fragCache = new Map();
+    const resolve = f => {
+      if (!fragCache.has(f)) fragCache.set(f, this.gd.itemByName(f));
+      return fragCache.get(f);
+    };
+    for (const m of this.bible.matchups) {
+      for (const b of m.builds || []) {
+        for (const s of b.steps || []) {
+          if (s.aside) continue;
+          for (const f of fragments(s.item)) {
+            const hit = resolve(f);
+            if (hit) ids.add(Number(hit.id));
+          }
+        }
+      }
+    }
+    for (const name of COUNTERS) {
+      const hit = this.gd.itemByName(name);
+      if (hit) ids.add(Number(hit.id));
+    }
+    const candidates = [...ids]
+      .map(id => this.catalogById.get(id))
+      .filter(Boolean)
+      .map(resolveItem);
+    this.pool = { candidates };
+  }
+
+  // The matchup's core: the first steps of its first build path.
+  coreFor(matchup) {
+    const build = (matchup?.builds || [])[0];
+    if (!build) return [];
+    const out = [];
+    for (const s of (build.steps || []).filter(s => !s.aside).slice(0, 3)) {
+      for (const f of fragments(s.item)) {
+        const hit = this.gd.itemByName(f);
+        if (hit) out.push({ id: Number(hit.id), name: hit.name });
+      }
+    }
+    return [...new Map(out.map(o => [o.id, o])).values()];
+  }
+
+  onGameState(gs) {
+    if (!this.state.toggles.advisor || !this.pool) return;
+    const enrich = p => ({
+      ...p,
+      items: p.items
+        .map(i => this.catalogById.get(Number(i.id)))
+        .filter(Boolean)
+        .map(resolveItem),
+    });
+    const advice = advise({
+      me: enrich(gs.me),
+      enemies: gs.enemies.map(enrich),
+      allies: (gs.allies || []).map(enrich),
+      core: this.coreFor(this.state.overlayMatchup),
+      pool: this.pool,
+      gameMinutes: Math.max(1, (gs.gameTime || 0) / 60),
+    });
+    const key = JSON.stringify(advice);
+    if (key !== this.lastAdviceKey) {
+      this.lastAdviceKey = key;
+      this.state.advice = advice;
+      this.publish();
+    }
   }
 
   async connect(creds) {
@@ -130,6 +236,7 @@ class Companion extends EventEmitter {
     try {
       this.lcu = new Lcu(creds);
       await this.gd.load(this.lcu);
+      this.buildPool();
       const me = await this.lcu.get('/lol-summoner/v1/current-summoner');
       this.summonerId = me?.summonerId ?? null;
       this.state.connected = true;
@@ -177,8 +284,14 @@ class Companion extends EventEmitter {
   onPhase(phase) {
     if (phase === this.state.phase) return;
     this.state.phase = phase;
-    if (phase === 'InProgress') this.live.start();
-    else this.live.stop();
+    if (phase === 'InProgress') this.live.start(this.liveIntervalMs);
+    else {
+      this.live.stop();
+      if (this.state.advice) {
+        this.state.advice = null;
+        this.lastAdviceKey = null;
+      }
+    }
     if (phase === 'ChampSelect') this.log('info', 'Champ select started — pick the enemy top laner');
     this.publish();
   }

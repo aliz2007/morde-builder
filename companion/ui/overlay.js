@@ -4,6 +4,7 @@ let expanded = false;
 let pinned = false;
 let last = null;
 let lastFocus = 'all';
+let lastAdvice = null;
 
 const WORD = { 1: 'free', 2: 'favourable', 3: 'even', 4: 'hard', 5: 'nightmare' };
 
@@ -77,10 +78,35 @@ function render(state) {
 
   $('#more').textContent = expanded ? 'show less' : 'show everything';
   $('#more').classList.toggle('hidden', (source.length <= 1 && !expanded) || focus !== 'all');
+
+  // live situational advice (only exists while in game with the advisor on)
+  const a = state.advice;
+  lastAdvice = a || null;
+  const lw = $('#liveWrap');
+  lw.classList.toggle('hidden', !show('live') || !a);
+  if (show('live') && a) {
+    if (!a.coreDone) {
+      $('#live').innerHTML = `<p class="hintline">Finish your core first: <b>${esc(a.missingCore.join(' → '))}</b></p>`;
+    } else {
+      const parts = [];
+      if (a.recommendations.length) {
+        parts.push(a.recommendations.map(r => `
+          <div class="pick">
+            <span class="item">${esc(r.name)}</span>
+            <span class="note">${r.reasons.map(esc).join(' · ')}</span>
+          </div>`).join(''));
+      } else {
+        parts.push('<p class="hintline">No strong read yet — their builds are still taking shape.</p>');
+      }
+      if (a.boots) parts.push(`<p class="hintline">Boots: <b>${esc(a.boots.name)}</b> — ${esc(a.boots.why)}</p>`);
+      for (const n of a.notes || []) parts.push(`<p class="hintline warnline">${esc(n)}</p>`);
+      $('#live').innerHTML = parts.join('');
+    }
+  }
 }
 
 $('#focus').addEventListener('change', e => window.mb.setSection(e.target.value));
-$('#more').addEventListener('click', () => { expanded = !expanded; if (last) render({ overlay: last, overlayFocus: lastFocus }); });
+$('#more').addEventListener('click', () => { expanded = !expanded; if (last) render({ overlay: last, overlayFocus: lastFocus, advice: lastAdvice }); });
 $('#hide').addEventListener('click', () => window.mb.overlayHide());
 $('#pin').addEventListener('click', () => {
   pinned = !pinned;
