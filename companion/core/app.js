@@ -62,6 +62,7 @@ class Companion extends EventEmitter {
       overlayMatchup: null,
       toggles: cfg.toggles,
       overlayFocus: cfg.overlayFocus,
+      flashKey: cfg.flashKey,
       advice: null,
       log: [],
     };
@@ -76,6 +77,7 @@ class Companion extends EventEmitter {
       toggles: { ...DEFAULT_TOGGLES, ...(legacy ? raw : raw.toggles) },
       overlayFocus: OVERLAY_SECTIONS.includes(raw.overlayFocus) ? raw.overlayFocus : 'all',
       overlayBounds: legacy ? null : (raw.overlayBounds || null),
+      flashKey: raw.flashKey === 'D' ? 'D' : 'F',
     };
   }
 
@@ -85,6 +87,7 @@ class Companion extends EventEmitter {
       toggles: this.state.toggles,
       overlayFocus: this.state.overlayFocus,
       overlayBounds: this.overlayBounds || null,
+      flashKey: this.state.flashKey,
     }, null, 2));
   }
 
@@ -97,6 +100,19 @@ class Companion extends EventEmitter {
     }
     this.saveConfig();
     this.publish();
+  }
+
+  // Which key Flash lands on (spell1 = D, spell2 = F). Re-pushes summoners
+  // immediately if we're in champ select with a matchup already picked.
+  setFlashKey(key) {
+    if (key !== 'D' && key !== 'F') return;
+    if (this.state.flashKey === key) return;
+    this.state.flashKey = key;
+    this.saveConfig();
+    this.publish();
+    if (this.state.picked && this.state.toggles.summoners && this.state.phase === 'ChampSelect') {
+      this.pick(this.state.picked);
+    }
   }
 
   setOverlayFocus(key) {
@@ -354,8 +370,8 @@ class Companion extends EventEmitter {
       this.log('warn', 'Summoners: only settable during champ select');
     } else if (t.summoners) {
       try {
-        const r = await pushSummoners(this.lcu, this.gd, matchup);
-        this.log('ok', `Summoners set: ${r.spell1} + ${r.spell2}`);
+        const r = await pushSummoners(this.lcu, this.gd, matchup, this.state.flashKey);
+        this.log('ok', `Summoners set: ${r.spell1} on D, ${r.spell2} on F`);
       } catch (err) {
         this.log('error', `Summoners: ${err.message}`);
       }

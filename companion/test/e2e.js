@@ -74,9 +74,44 @@ test('picking Aatrox pushes a correct rune page', async () => {
   assert.equal(page.current, true);
 });
 
-test('picking Aatrox pushes summoner spells', () => {
+test('picking Aatrox pushes summoner spells (default: Flash on F)', () => {
   assert.equal(mock.recorded.selectionPatches.length, 1);
-  assert.deepEqual(mock.recorded.selectionPatches[0], { spell1Id: 4, spell2Id: 14 });
+  assert.deepEqual(mock.recorded.selectionPatches[0], { spell1Id: 14, spell2Id: 4 });
+});
+
+test('flash key setting reorders spells and re-pushes in champ select', async () => {
+  const tmp5 = fs.mkdtempSync(path.join(os.tmpdir(), 'mb-flash-'));
+  const mock5 = await startMock({ dir: tmp5 });
+  const app5 = new Companion({ repoRoot: REPO, configDir: tmp5, lockfilePaths: [mock5.lockfile] });
+  app5.state.toggles.summoners = true;
+  app5.start();
+  try {
+    await waitFor(() => app5.state.connected);
+    mock5.setPhase('ChampSelect');
+    mock5.setChampSelect({
+      localPlayerCellId: 0,
+      myTeam: [{ cellId: 0, championId: 82 }],
+      theirTeam: [{ cellId: 5, championId: 266 }],
+    });
+    await waitFor(() => app5.state.phase === 'ChampSelect');
+    await app5.pick('Aatrox');
+    assert.deepEqual(mock5.recorded.selectionPatches.at(-1), { spell1Id: 14, spell2Id: 4 }, 'default F');
+    app5.setFlashKey('D');
+    assert.equal(app5.state.flashKey, 'D');
+    // already picked + in champ select -> re-pushed without another pick
+    await waitFor(() => mock5.recorded.selectionPatches.length >= 2);
+    assert.deepEqual(mock5.recorded.selectionPatches.at(-1), { spell1Id: 4, spell2Id: 14 }, 'Flash on D');
+    const saved = JSON.parse(fs.readFileSync(path.join(tmp5, 'config.json'), 'utf8'));
+    assert.equal(saved.flashKey, 'D', 'persisted to disk');
+    app5.setFlashKey('F');
+    await waitFor(() => mock5.recorded.selectionPatches.length >= 3);
+    assert.deepEqual(mock5.recorded.selectionPatches.at(-1), { spell1Id: 14, spell2Id: 4 });
+    app5.setFlashKey('X'); // ignored
+    assert.equal(app5.state.flashKey, 'F');
+  } finally {
+    app5.stop();
+    mock5.close();
+  }
 });
 
 test('picking Aatrox saves an item set without touching other sets', () => {
@@ -209,6 +244,7 @@ test('a legacy config file (flat toggles) still loads', () => {
   assert.equal(app4.state.toggles.summoners, true);
   assert.equal(app4.state.overlayFocus, 'all');
   assert.equal(app4.overlayBounds, null);
+  assert.equal(app4.state.flashKey, 'F', 'legacy config gets the default Flash key');
 });
 
 test('without a websocket, polling still surfaces champ select and the phase', async () => {

@@ -57,17 +57,27 @@ async function pushRunes(lcu, gd, matchup) {
   }
 }
 
-async function pushSummoners(lcu, gd, matchup) {
+async function pushSummoners(lcu, gd, matchup, flashKey = 'F') {
   const names = (matchup.summoners || []).map(s => s.name).filter(Boolean);
   if (names.length < 2) throw new Error(`matchup lists ${names.length} summoner spells`);
   const ids = names.map(n => gd.spellByName(n));
   const missing = names.filter((n, i) => !ids[i]);
   if (missing.length) throw new ResolveError(missing.map(n => `spell "${n}" not found`));
+  // Flash goes on the user's preferred key (spell1 = D, spell2 = F); the
+  // other spell takes the remaining slot. Matchups without Flash keep the
+  // Bible's order.
+  let ordered = ids;
+  const fi = ids.findIndex(s => s.name === 'Flash');
+  if (fi !== -1) {
+    const flash = ids[fi];
+    const other = ids.find((_, i) => i !== fi);
+    ordered = flashKey === 'D' ? [flash, other] : [other, flash];
+  }
   await lcu.patch('/lol-champ-select/v1/session/my-selection', {
-    spell1Id: ids[0].id,
-    spell2Id: ids[1].id,
+    spell1Id: ordered[0].id,
+    spell2Id: ordered[1].id,
   });
-  return { spell1: ids[0].name, spell2: ids[1].name };
+  return { spell1: ordered[0].name, spell2: ordered[1].name };
 }
 
 module.exports = { pushRunes, pushSummoners, ResolveError, PREFIX };

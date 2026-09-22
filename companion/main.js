@@ -122,6 +122,10 @@ function createTray() {
       { label: 'Set summoners', type: 'checkbox', checked: t.summoners, click: i => companion.setToggle('summoners', i.checked) },
       { label: 'Overlay enabled', type: 'checkbox', checked: t.overlay, click: i => companion.setToggle('overlay', i.checked) },
       { label: 'Live item advice', type: 'checkbox', checked: t.advisor, click: i => companion.setToggle('advisor', i.checked) },
+      { label: 'Flash key', submenu: ['D', 'F'].map(k => ({
+        label: `Flash on ${k}`, type: 'radio', checked: companion.state.flashKey === k,
+        click: () => companion.setFlashKey(k),
+      })) },
       { type: 'separator' },
       { label: 'Quit', click: () => { app.isQuitting = true; app.quit(); } },
     ]));
@@ -187,6 +191,7 @@ app.whenReady().then(async () => {
     if (k === 'overlay') showOverlay(!!v);
   });
   ipcMain.on('section', (_e, k) => companion.setOverlayFocus(k));
+  ipcMain.on('flash-key', (_e, k) => companion.setFlashKey(k));
   ipcMain.on('overlay-hide', () => overlay.hide());
   let resizeStart = null;
   ipcMain.on('overlay-resize-start', () => {

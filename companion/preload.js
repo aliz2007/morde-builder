@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld('mb', {
   ready: () => ipcRenderer.send('ready'),
   pick: name => ipcRenderer.send('pick', name),
   setToggle: (key, value) => ipcRenderer.send('toggle', key, value),
+  setFlashKey: key => ipcRenderer.send('flash-key', key),
   setSection: key => ipcRenderer.send('section', key),
   overlayHide: () => ipcRenderer.send('overlay-hide'),
   overlayResizeStart: () => ipcRenderer.send('overlay-resize-start'),
