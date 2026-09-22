@@ -295,7 +295,7 @@ app.whenReady().then(async () => {
         items: items.map(id => ({ itemID: id, price: 0 })),
       });
       smoke.live.setGame({
-        activePlayer: { riotId: 'me', summonerName: 'me' },
+        activePlayer: { riotId: 'me', summonerName: 'me', currentGold: 1375 },
         gameData: { gameTime: 900 },
         allPlayers: [
           { ...mk('Mordekaiser', 'TOP', 'ORDER'), riotId: 'me', summonerName: 'me' },
@@ -328,10 +328,24 @@ app.whenReady().then(async () => {
         && checks.adviceState.missing.length > 0
         && checks.adviceDom.visible
         && checks.adviceDom.text.includes('Finish your core');
+      // gold diff badge: me (0 items + 1375 pocket) vs Aatrox (one 0g mock item)
+      checks.goldBadge = await overlay.webContents.executeJavaScript(`(() => {
+        const g = document.querySelector('#gold');
+        return {
+          visible: !g.classList.contains('hidden'),
+          text: g.textContent,
+          positive: g.classList.contains('pos'),
+          negative: g.classList.contains('neg'),
+        };
+      })()`);
+      checks.goldOk = checks.goldBadge.visible
+        && checks.goldBadge.text === '+1.4k'
+        && checks.goldBadge.positive
+        && companion.state.advice?.goldDiff === 1375;
       await shot(overlay, 'smoke-overlay-live.png');
 
       console.log('SMOKE CHECKS', JSON.stringify(checks));
-      if (!checks.resized || !checks.westResized || !checks.onlyTradeShown.tipsWrapHasTrade || !checks.onlyTradeShown.buildsHidden || !checks.focusPersisted || !checks.adviceOk) {
+      if (!checks.resized || !checks.westResized || !checks.onlyTradeShown.tipsWrapHasTrade || !checks.onlyTradeShown.buildsHidden || !checks.focusPersisted || !checks.adviceOk || !checks.goldOk) {
         console.error('SMOKE INTERACTION FAILED');
         process.exitCode = 1;
       }
