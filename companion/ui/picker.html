@@ -87,6 +87,11 @@
     color:var(--muted); cursor:pointer; }
   #toggles label:hover{ color:var(--text); }
   #toggles input{ accent-color:var(--glow); }
+  #flashkey{ display:flex; gap:8px; align-items:center;
+    font:500 12px var(--chrome); text-transform:uppercase; letter-spacing:.07em;
+    color:var(--muted); }
+  #flashkey label{ display:flex; gap:4px; align-items:center; cursor:pointer; }
+  #flashkey label:hover{ color:var(--text); }
   #log{
     font:11px/1.65 var(--mono); background:rgba(16,22,21,.82); border:1px solid var(--line);
     border-radius:2px; padding:8px 10px; height:118px; overflow-y:auto;
@@ -123,6 +128,11 @@
     <label><input type="checkbox" data-toggle="summoners"> Set summoners</label>
     <label><input type="checkbox" data-toggle="overlay"> Show overlay</label>
     <label><input type="checkbox" data-toggle="advisor"> Live item advice</label>
+    <div id="flashkey">
+      <span>Flash on</span>
+      <label><input type="radio" name="flashkey" value="D"> D</label>
+      <label><input type="radio" name="flashkey" value="F"> F</label>
+    </div>
   </div>
 
   <hr class="seam">

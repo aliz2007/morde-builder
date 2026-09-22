@@ -51,6 +51,8 @@ function render(state) {
   for (const input of document.querySelectorAll('[data-toggle]')) {
     input.checked = !!state.toggles[input.dataset.toggle];
   }
+  const fk = document.querySelector(`[name=flashkey][value="${state.flashKey || 'F'}"]`);
+  if (fk) fk.checked = true;
 
   const log = $('#log');
   log.innerHTML = state.log.slice(-30).map(l =>
@@ -60,6 +62,9 @@ function render(state) {
 
 for (const input of document.querySelectorAll('[data-toggle]')) {
   input.addEventListener('change', () => window.mb.setToggle(input.dataset.toggle, input.checked));
+}
+for (const input of document.querySelectorAll('[name=flashkey]')) {
+  input.addEventListener('change', () => { if (input.checked) window.mb.setFlashKey(input.value); });
 }
 $('#minimize').addEventListener('click', () => window.mb.pickerMin());
 $('#close').addEventListener('click', () => window.mb.pickerClose());

@@ -83,6 +83,7 @@ That one click, depending on your toggles:
 | **Push runes** | Creates a page called `MB: <champion>` in your client and selects it. Re-picking replaces it instead of stacking new pages. |
 | **Save item set** | Saves the matchup's build — both paths, with the author's notes as row labels — as an item set named `MB: <champion>`, visible in the in-game shop. Your own item sets are left alone. |
 | **Set summoners** | Off by default. Sets the matchup's summoner spells. Only works during champ select. |
+| **Flash on D / F** | Which key Flash lands on (the other spell takes the remaining key). Default F. Flip it in the picker or the tray menu — if you're already in champ select with a matchup picked, the spells are re-pushed immediately. |
 | **Show overlay** | Opens the overlay card. |
 
 Every toggle is in the picker window and the tray menu, and your choice sticks
