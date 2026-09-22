@@ -26,6 +26,20 @@ function render(state) {
   const show = key => focus === 'all' || focus === key;
   if ($('#focus').value !== focus) $('#focus').value = focus;
 
+  // gold diff badge: your items + pocket gold vs your lane opponent's items
+  const g = $('#gold');
+  const gd = state.advice?.goldDiff;
+  if (gd == null) {
+    g.classList.add('hidden');
+  } else {
+    const abs = Math.abs(gd);
+    g.textContent = (gd >= 0 ? '+' : '-') + (abs >= 1000 ? `${(abs / 1000).toFixed(1)}k` : Math.round(abs));
+    g.classList.remove('hidden');
+    g.classList.toggle('pos', gd >= 0);
+    g.classList.toggle('neg', gd < 0);
+    g.title = `gold vs ${state.advice.goldVs || 'opponent'} (your items + pocket gold vs their items)`;
+  }
+
   if (m && m.name !== lastName) {
     lastName = m.name;
     const card = document.querySelector('#card');
