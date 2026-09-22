@@ -34,7 +34,8 @@ const CH = {
   mobileMelee: new Set(['Yasuo', 'Yone', 'Irelia', 'Sylas', 'Ambessa', 'Akali', 'Katarina', 'Fiora',
     'Camille', 'Riven', 'Jax', 'Tryndamere', 'Master Yi', "Bel'Veth", 'Viego', 'Gwen', 'Nilah', 'Briar']),
   healers: new Set(['Soraka', 'Sona', 'Yuumi', 'Nami', 'Milio', 'Aatrox', 'Dr. Mundo', 'Vladimir',
-    'Warwick', 'Briar', 'Fiora', 'Illaoi', 'Olaf', 'Swain', 'Sylas', 'Renekton', 'Nasus', 'Kayn', 'Gwen', 'Trundle']),
+    'Warwick', 'Briar', 'Fiora', 'Illaoi', 'Olaf', 'Swain', 'Sylas', 'Renekton', 'Nasus', 'Kayn',
+    'Gwen', 'Trundle', 'Senna', 'Seraphine', 'Volibear', 'Samira', 'Nilah']),
   shielders: new Set(['Janna', 'Lulu', 'Karma', 'Seraphine', 'Sona', 'Milio', 'Yuumi', 'Lux', 'Orianna',
     'Rakan', 'Sett', 'Riven', 'Ambessa', 'Tahm Kench', 'Shen', 'Mordekaiser', 'Camille', 'Vi', 'Blitzcrank']),
   cc: new Set(['Nautilus', 'Leona', 'Morgana', 'Lux', 'Zyra', 'Sejuani', 'Maokai', 'Rammus', 'Lissandra',
@@ -43,10 +44,19 @@ const CH = {
   slows: new Set(['Ashe', 'Anivia', 'Singed', 'Olaf', 'Nasus', 'Zilean', 'Sejuani', 'Maokai',
     'Aurelion Sol', 'Taliyah', 'Janna', 'Senna', 'Gragas', 'Trundle']),
   assassins: new Set(['Zed', 'Talon', 'Katarina', 'Akali', 'Fizz', 'LeBlanc', 'Qiyana', 'Rengar',
-    "Kha'Zix", 'Evelynn', 'Shaco', 'Naafiri', 'Briar', 'Nocturne']),
+    "Kha'Zix", 'Evelynn', 'Shaco', 'Naafiri', 'Briar', 'Nocturne', 'Diana']),
   enchanters: new Set(['Janna', 'Lulu', 'Soraka', 'Sona', 'Yuumi', 'Milio', 'Nami', 'Karma',
-    'Seraphine', 'Renata Glasc', 'Taric']),
+    'Seraphine', 'Renata Glasc', 'Taric', 'Senna']),
   tankRatio: new Set(["K'Sante", 'Ornn', 'Sion', 'Cho\'Gath', 'Malphite', 'Rammus']),
+  // Tank by KIT, regardless of items — a one-item K'Sante is not "squishy".
+  tanks: new Set(["K'Sante", 'Ornn', 'Sion', "Cho'Gath", 'Malphite', 'Maokai', 'Sejuani', 'Nautilus',
+    'Leona', 'Alistar', 'Braum', 'Tahm Kench', 'Rammus', 'Zac', 'Dr. Mundo', 'Shen', 'Poppy',
+    'Galio', 'Amumu', 'Rell', 'Skarner', 'Gragas']),
+  // Bruisers/juggernauts itemize HP and sustain — never count them as squishy either.
+  juggernauts: new Set(['Warwick', 'Darius', 'Garen', 'Sett', 'Urgot', 'Mordekaiser', 'Volibear',
+    'Trundle', 'Illaoi', 'Nasus', 'Yorick', 'Olaf', 'Aatrox', 'Renekton', 'Wukong', 'Vi', 'Hecarim',
+    'Shyvana', 'Udyr', 'Viego', 'Nocturne', 'Xin Zhao', 'Jarvan IV', "Rek'Sai", 'Gnar', 'Kled',
+    'Camille', 'Diana', 'Kayn', 'Briar', 'Swain']),
 };
 
 const has = (it, f) => (it.flags || []).includes(f);
@@ -133,7 +143,8 @@ function modelTeam(players) {
     runaway: per.filter(e => CH.runaway.has(e.championName)).length,
     mrStackers: per.filter(e => e.mr >= 60).length,
     hpStackers: per.filter(e => e.hp >= 1400).length,
-    squishies: per.filter(e => e.hp < 700 && e.mr < 55 && e.armor < 55 && e.items.length >= 2).length,
+    squishies: per.filter(e => !CH.tanks.has(e.championName) && !CH.juggernauts.has(e.championName)
+      && e.hp < 700 && e.mr < 55 && e.armor < 55 && e.items.length >= 2).length,
     kills: per.reduce((s, e) => s + e.kills, 0),
   };
 }
@@ -143,7 +154,21 @@ const fmt = t => `${t.championName} (${t.kills}/${t.deaths}/${t.assists})`;
 // --------------------------------------------------------------------------
 function advise({ me, enemies, allies = [], core, pool, gameMinutes = 20 }) {
   const myIds = new Set(me.items.map(i => Number(i.id)));
-  const out = { coreDone: true, missingCore: [], recommendations: [], boots: null, notes: [] };
+  const out = { coreDone: true, missingCore: [], recommendations: [], boots: null, notes: [], goldDiff: null, goldVs: null };
+
+  // 0. gold diff vs your lane opponent: your items + pocket gold vs their
+  // items (the API only exposes pocket gold for you). Falls back to the
+  // strongest enemy when positions aren't assigned (ARAM etc.).
+  {
+    const priceOf = i => i.priceTotal ?? i.price ?? 0;
+    const opp = enemies.find(e => e.position && me.position && e.position === me.position) || enemies[0];
+    if (opp) {
+      const myWorth = me.items.reduce((s, i) => s + priceOf(i), 0) + (me.currentGold || 0);
+      const oppWorth = opp.items.reduce((s, i) => s + priceOf(i), 0);
+      out.goldDiff = Math.round(myWorth - oppWorth);
+      out.goldVs = opp.championName;
+    }
+  }
 
   // 1. core gate
   const completed = me.items.filter(i => (i.price ?? 0) >= 2000).length;
@@ -200,13 +225,25 @@ function advise({ me, enemies, allies = [], core, pool, gameMinutes = 20 }) {
   }
 
   // ------------------------------------------------------------- fed threat
+  // Order matters: HOW the fed enemy kills you decides the counter, per the
+  // guide (AA healers -> Thornmail, crit -> Randuin's, AS -> Frozen Heart,
+  // burst -> the anti-burst trio, fed tank -> percent pen and burn).
   if (threat) {
     const label = `${fmt(threat)} is the fed threat — itemize for ${threat.championName}`;
-    if (threat.crit >= 40) bump(pick("Randuin's Omen"), 45, label);
-    else if (threat.as >= 60) bump(pick('Frozen Heart'), 45, label);
-    else if (threat.magic > threat.phys && threat.burst >= 2) bump(pick('Kaenic Rookern'), 45, label);
-    else if (threat.magic > threat.phys) for (const c of picks('Force of Nature', 'Spirit Visage')) bump(c, 40, label);
-    else if (threat.burst >= 2) for (const c of picks("Death's Dance", "Zhonya's Hourglass")) bump(c, 40, label);
+    const aaHealerThreat = threat.heal >= 2 && threat.phys >= threat.magic;
+    if (aaHealerThreat) {
+      // guide: "if I'm ulting one target and they heal via auto attacks -> Thornmail"
+      bump(pick('Thornmail'), 55, `${label} — they heal off every auto; Thornmail turns their sustain against them`);
+      bump(pick('Oblivion Orb'), 25, `cheap Grievous until you finish Thornmail for ${threat.championName}`);
+    } else if (CH.tankRatio.has(threat.championName) || (threat.hp >= 1400 && threat.phys < 60 && threat.magic < 60)) {
+      for (const c of picks("Bloodletter's Curse", 'Void Staff', "Liandry's Torment")) {
+        bump(c, 45, `${label} — but a fed tank dies to percent pen and burn, not to resistances`);
+      }
+    } else if (threat.crit >= 40) bump(pick("Randuin's Omen"), 50, label);
+    else if (threat.as >= 60) bump(pick('Frozen Heart'), 50, label);
+    else if (threat.magic > threat.phys && threat.burst >= 2) bump(pick('Kaenic Rookern'), 50, label);
+    else if (threat.magic > threat.phys) for (const c of picks('Force of Nature', 'Spirit Visage')) bump(c, 45, label);
+    else if (threat.burst >= 2) for (const c of picks("Death's Dance", "Zhonya's Hourglass")) bump(c, 45, label);
     else bump(pick('Plated Steelcaps') || pick("Randuin's Omen"), 25, label);
     if (threat.deaths === 0) bump(pick("Zhonya's Hourglass"), 15, `${threat.championName} hasn't died — stasis can waste their all-in`);
     if (teamBehind) bump(pick("Guardian's Angel"), 10, `stall ${threat.championName} in the death realm even after dying`);
@@ -248,9 +285,11 @@ function advise({ me, enemies, allies = [], core, pool, gameMinutes = 20 }) {
   }
 
   // ---------------------------------------------------------------- healing
-  const aaHealer = E.per.find(e => e.heal >= 2 && (e.as >= 30 || CH.mobileMelee.has(e.championName)));
+  // Kit healers (Warwick, Aatrox, Volibear...) count even before they buy AS —
+  // phys-dominant sustain means they heal off hitting you, per the guide.
+  const aaHealer = E.per.find(e => e.heal >= 2 && e.phys >= e.magic && !CH.enchanters.has(e.championName));
   if (aaHealer && (!threat || aaHealer === threat)) {
-    bump(pick('Thornmail'), 30, `${aaHealer.championName} heals off auto attacks — Thornmail punishes every hit they land on you`);
+    bump(pick('Thornmail'), 35, `${aaHealer.championName} heals off hitting you — Thornmail punishes every hit they land`);
   }
   if (E.healUsers >= 2) {
     bump(pick('Morellonomicon'), 40, `${E.healUsers} enemies have serious sustain — spread Grievous Wounds with your AoE`);

@@ -265,3 +265,34 @@ test('items you already built are never recommended', () => {
   assert.ok(!names(out).includes("Randuin's Omen"));
   assert.ok(!names(out).includes('Riftmaker'));
 });
+
+// Regression: the exact game that produced bad advice — fed Warwick plus
+// K'Sante must NOT read as "all squishy -> damage" and must NOT pick Frozen
+// Heart when the fed threat is a kit healer.
+test('regression: fed Warwick vs Vayne/K\'Sante/Senna/Diana -> Thornmail, not D&D/Gunblade/Frozen Heart', () => {
+  const out = run(five([
+    P('Vayne', ['Kraken Slayer', "Guinsoo's Rageblade"], 2, 2, 3, 'TOP'),
+    P('Warwick', ['Sundered Sky', 'Titanic Hydra'], 8, 1, 4, 'JUNGLE'),
+    P("K'Sante", ['Heartsteel', "Jak'Sho, The Protean"], 1, 2, 2, 'MIDDLE'),
+    P('Senna', ['Echoes of Helia', 'Moonstone Renewer'], 1, 3, 9, 'UTILITY'),
+    P('Diana', ['Stormsurge', "Zhonya's Hourglass"], 3, 2, 3, 'JUNGLE'),
+  ]));
+  assert.equal(out.recommendations[0]?.name, 'Thornmail', `top pick was ${names(out)}`);
+  assert.ok(
+    names(out).includes("Bloodletter's Curse") || names(out).includes('Morellonomicon'),
+    `expected pen/grievous in top 3, got ${names(out)}`,
+  );
+  for (const bad of ['Dusk and Dawn', 'Hextech Gunblade', 'Frozen Heart']) {
+    assert.ok(!names(out).includes(bad), `${bad} should not be recommended here: ${names(out)}`);
+  }
+});
+
+test('gold diff: your items + pocket gold vs lane opponent items', () => {
+  const me = { ...ME(), currentGold: 500 };
+  const out = run([
+    P('Vayne', ['Kraken Slayer', "Guinsoo's Rageblade"], 2, 2, 3, 'TOP'),
+    P('Warwick', ['Sundered Sky'], 1, 1, 1, 'JUNGLE'),
+  ], me);
+  assert.equal(out.goldVs, 'Vayne');
+  assert.equal(out.goldDiff, 3 * 3000 + 500 - 2 * 3000); // +3500
+});

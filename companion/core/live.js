@@ -73,7 +73,7 @@ class LiveClient extends EventEmitter {
     });
     const state = {
       gameTime: all.gameData?.gameTime ?? 0,
-      me: slim(me),
+      me: { ...slim(me), currentGold: Math.round(all.activePlayer?.currentGold ?? 0) },
       enemies: all.allPlayers.filter(p => p.team !== me.team).map(slim),
       allies: all.allPlayers.filter(p => p.team === me.team && p !== me).map(slim),
     };

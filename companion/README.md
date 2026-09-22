@@ -113,8 +113,13 @@ the matchup's core items it just tells you what's missing; after that it reads
 the enemy team's actual builds, scores and champions every few seconds and
 recommends your next items with the reasoning attached — crit stackers pull
 out Randuin's, MR stackers pull Void Staff, a fed enemy pulls a targeted
-counter named after them, squishy teams pull burst, healing teams pull
-Grievous, and so on. It follows the Bible author's own itemization guide
+counter named after them (a fed Warwick or Aatrox who heals off hitting you
+pulls Thornmail, a fed tank pulls percent pen and burn instead of
+resistances), squishy teams pull burst, healing teams pull Grievous, and so
+on. Champions are classed by kit, not just items — a two-item K'Sante or
+Warwick never counts as "squishy". A small pill in the title bar tracks your
+gold lead or deficit against your lane opponent (your items + pocket gold vs
+their items). It follows the Bible author's own itemization guide
 (anti-burst, anti-kite, tank and situational sections), warns you when Mejai's
 is a trap, and suggests boots. It never recommends something you already
 built, and it only recommends items that exist in your patch. Turn it off with
