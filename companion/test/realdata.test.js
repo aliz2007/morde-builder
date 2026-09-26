@@ -159,16 +159,28 @@ test('every matchup yields an item set of ids that exist in the catalog', () => 
   assert.deepEqual(unknown, []);
 });
 
-test('every item set opens with the starting items', () => {
+test('every item set opens with the matchup-specific starter', () => {
   const morde = gd.champByName('Mordekaiser');
   const known = new Map(gd.items.map(i => [String(i.id), i.name]));
-  for (const name of ['Aatrox', "Cho'Gath", 'Jax', 'Olaf']) {
+  const first = name => {
     const { set } = buildItemSet(gd, bible.find(name), morde.id);
-    assert.equal(set.blocks[0].type, 'Starting items', `${name}: first block`);
-    const starters = set.blocks[0].items.map(it => known.get(it.id));
-    assert.ok(starters.includes("Doran's Ring"), `${name}: ring — got ${starters}`);
-    assert.ok(starters.includes("Doran's Shield"), `${name}: shield — got ${starters}`);
-  }
+    return { type: set.blocks[0].type, items: set.blocks[0].items.map(it => known.get(it.id)) };
+  };
+  // the Bible's icon files identify the starter per matchup
+  assert.deepEqual(first('Aatrox'), { type: 'Start vs Aatrox', items: ["Doran's Helm"] });
+  assert.deepEqual(first('Ahri'), { type: 'Start vs Ahri', items: ["Doran's Shield"] });
+  assert.deepEqual(first('Akali'), { type: 'Start vs Akali', items: ["Doran's Ring"] });
+  assert.deepEqual(first('Nasus'), { type: 'Start vs Nasus', items: ['Dark Seal'] });
+});
+
+test('a matchup with unknown starter icons falls back to the Doran choices', () => {
+  const morde = gd.champByName('Mordekaiser');
+  const fake = { name: 'Testchamp', builds: [{ condition: '', icons: [{ file: 'image9999.jpg', name: null }], steps: [{ item: 'Riftmaker' }] }] };
+  const { set } = buildItemSet(gd, fake, morde.id);
+  assert.equal(set.blocks[0].type, 'Starting items');
+  const starters = set.blocks[0].items.map(it => gd.items.find(i => String(i.id) === it.id)?.name);
+  assert.ok(starters.includes("Doran's Ring"));
+  assert.ok(starters.includes("Doran's Shield"));
 });
 
 test('build steps drop prose but keep real items', () => {
