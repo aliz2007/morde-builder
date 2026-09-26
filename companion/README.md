@@ -104,6 +104,13 @@ paths and the tips:
   the tray icon (check the ^ overflow next to the clock) and flip **Overlay
   enabled** off and on — it also comes back on its own when a new game starts
 
+> **The overlay needs League in Borderless, not Full Screen.** League's
+> "Full Screen" mode is exclusive — Windows lets no external window draw
+> over it, for any app. Set **Video → Window Mode → Borderless** in the
+> League client: it looks identical to fullscreen and the overlay stays on
+> top of it. The app re-pins itself to the top whenever a game starts, so
+> in Borderless it just works.
+
 Once the game tells the app who the enemy top laner actually is, the overlay
 switches to that matchup on its own — so a wrong guess at champ select fixes
 itself.
@@ -119,8 +126,13 @@ pulls Thornmail, a fed tank pulls percent pen and burn instead of
 resistances), squishy teams pull burst, healing teams pull Grievous, and so
 on. Champions are classed by kit, not just items — a two-item K'Sante or
 Warwick never counts as "squishy". A small pill in the title bar tracks your
-gold lead or deficit against your lane opponent (your items + pocket gold vs
-their items). It follows the Bible author's own itemization guide
+gold lead or deficit against your lane opponent — the matchup you picked in
+champ select (or the real enemy top laner once the game reveals them). It
+counts your items + pocket gold vs their items; the one thing the game API
+won't show is their unspent gold, so right after their big recall the badge
+can flatter you until they spend it. Items the catalog doesn't know yet (new
+patch) still count their live price toward the diff. It follows the Bible
+author's own itemization guide
 (anti-burst, anti-kite, tank and situational sections), warns you when Mejai's
 is a trap, and suggests boots. It never recommends something you already
 built, and it only recommends items that exist in your patch. Turn it off with

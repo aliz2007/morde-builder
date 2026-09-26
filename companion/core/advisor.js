@@ -152,16 +152,19 @@ function modelTeam(players) {
 const fmt = t => `${t.championName} (${t.kills}/${t.deaths}/${t.assists})`;
 
 // --------------------------------------------------------------------------
-function advise({ me, enemies, allies = [], core, pool, gameMinutes = 20 }) {
+function advise({ me, enemies, allies = [], core, pool, gameMinutes = 20, laneOpponent = null }) {
   const myIds = new Set(me.items.map(i => Number(i.id)));
   const out = { coreDone: true, missingCore: [], recommendations: [], boots: null, notes: [], goldDiff: null, goldVs: null };
 
   // 0. gold diff vs your lane opponent: your items + pocket gold vs their
-  // items (the API only exposes pocket gold for you). Falls back to the
-  // strongest enemy when positions aren't assigned (ARAM etc.).
+  // items (the API only exposes pocket gold for you, so their unspent gold
+  // is invisible). Opponent = the matchup you picked (most accurate), then
+  // position match, then the first enemy listed (live data orders by role).
   {
     const priceOf = i => i.priceTotal ?? i.price ?? 0;
-    const opp = enemies.find(e => e.position && me.position && e.position === me.position) || enemies[0];
+    const opp = enemies.find(e => laneOpponent && e.championName === laneOpponent)
+      || enemies.find(e => e.position && me.position && e.position === me.position)
+      || enemies[0];
     if (opp) {
       const myWorth = me.items.reduce((s, i) => s + priceOf(i), 0) + (me.currentGold || 0);
       const oppWorth = opp.items.reduce((s, i) => s + priceOf(i), 0);

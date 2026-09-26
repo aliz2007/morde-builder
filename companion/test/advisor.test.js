@@ -296,3 +296,14 @@ test('gold diff: your items + pocket gold vs lane opponent items', () => {
   assert.equal(out.goldVs, 'Vayne');
   assert.equal(out.goldDiff, 3 * 3000 + 500 - 2 * 3000); // +3500
 });
+
+test('gold diff: the picked matchup wins over position and list order', () => {
+  const me = { ...ME(), currentGold: 0 };
+  const enemies = [
+    P('Vayne', ['Kraken Slayer', "Guinsoo's Rageblade"], 2, 2, 3, 'TOP'),   // position match, listed first
+    P('Warwick', ['Sundered Sky'], 1, 1, 1, 'JUNGLE'),                       // picked matchup
+  ];
+  const out = advise({ me, enemies, allies: [], core: CORE, pool: POOL, gameMinutes: 22, laneOpponent: 'Warwick' });
+  assert.equal(out.goldVs, 'Warwick');
+  assert.equal(out.goldDiff, 3 * 3000 - 3000); // vs Warwick's single item, not Vayne's two
+});

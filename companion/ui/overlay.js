@@ -37,7 +37,7 @@ function render(state) {
     g.classList.remove('hidden');
     g.classList.toggle('pos', gd >= 0);
     g.classList.toggle('neg', gd < 0);
-    g.title = `gold vs ${state.advice.goldVs || 'opponent'} (your items + pocket gold vs their items)`;
+    g.title = `gold vs ${state.advice.goldVs || 'opponent'} — your items + pocket gold vs their items (their unspent gold isn't visible)`;
   }
 
   if (m && m.name !== lastName) {
