@@ -2,10 +2,34 @@ const { PREFIX } = require('./runes');
 
 const FILLER = /^(?:flex|variety|items?|flex items?|flex boots?|build variety|build variety items?)$/i;
 
-// Mordekaiser's standard level-1 buys. The Bible doesn't list a starter per
-// matchup, so every set opens with the choices. Starters that don't exist in
-// the current patch's catalog are skipped silently (no bogus warnings).
+// The Bible's build icons are mostly unnamed, but the icon FILES are stable
+// identifiers across the whole document: the first icon of every build path
+// is the level-1 starter the author recommends against that specific
+// opponent. Identified visually: image97 = Doran's Ring, image116 = Doran's
+// Helm, image91 = Doran's Shield, image237 = Dark Seal.
+const STARTER_BY_ICON_FILE = {
+  'image97.jpg': "Doran's Ring",
+  'image116.jpg': "Doran's Helm",
+  'image91.jpg': "Doran's Shield",
+  'image237.jpg': 'Dark Seal',
+};
+
+// Fallback when a matchup's starter can't be identified: the three Doran's
+// choices. Starters that don't exist in the current patch's catalog are
+// skipped silently (no bogus warnings).
 const STARTERS = ["Doran's Ring", "Doran's Shield", "Doran's Helm"];
+
+// The matchup-specific starter: the first icon of each build path, resolved
+// by name when the Bible names it, otherwise by icon file.
+function startersFor(matchup) {
+  const names = [];
+  for (const b of matchup.builds || []) {
+    const ic = (b.icons || [])[0];
+    const name = ic?.name || STARTER_BY_ICON_FILE[ic?.file];
+    if (name && STARTERS.concat('Dark Seal').includes(name) && !names.includes(name)) names.push(name);
+  }
+  return names;
+}
 
 function fragments(stepText) {
   return String(stepText).split(/\s*(?:\/|->)\s*/)
@@ -16,10 +40,17 @@ function fragments(stepText) {
 function buildItemSet(gd, matchup, mordeId) {
   const unresolved = [];
   const blocks = [];
-  const starters = STARTERS.map(n => gd.itemByName(n))
+  const specific = startersFor(matchup);
+  const starters = (specific.length ? specific : STARTERS)
+    .map(n => gd.itemByName(n))
     .filter(Boolean)
     .map(i => ({ id: String(i.id), count: 1 }));
-  if (starters.length) blocks.push({ type: 'Starting items', items: starters });
+  if (starters.length) {
+    blocks.push({
+      type: specific.length ? `Start vs ${matchup.name}` : 'Starting items',
+      items: starters,
+    });
+  }
   for (const [bi, build] of (matchup.builds || []).entries()) {
     const label = build.condition
       ? build.condition.replace(/:$/, '')

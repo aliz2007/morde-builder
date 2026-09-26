@@ -1,6 +1,6 @@
 {
   "name": "mordekaiser-bible-companion",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Champ-select rune/item importer and in-game overlay for the Mordekaiser Bible",
   "main": "main.js",
   "scripts": {
