@@ -223,11 +223,13 @@ class Companion extends EventEmitter {
 
   onGameState(gs) {
     if (!this.state.toggles.advisor || !this.pool) return;
+    // Unknown items (new patch, catalog not refreshed) still count their live
+    // price toward the gold diff instead of silently vanishing.
     const enrich = p => ({
       ...p,
       items: p.items
-        .map(i => this.catalogById.get(Number(i.id)))
-        .filter(Boolean)
+        .map(i => this.catalogById.get(Number(i.id))
+          || { id: i.id, name: `#${i.id}`, price: i.price ?? 0 })
         .map(resolveItem),
     });
     const advice = advise({
@@ -237,6 +239,7 @@ class Companion extends EventEmitter {
       core: this.coreFor(this.state.overlayMatchup),
       pool: this.pool,
       gameMinutes: Math.max(1, (gs.gameTime || 0) / 60),
+      laneOpponent: this.state.overlayMatchup?.name || null,
     });
     const key = JSON.stringify(advice);
     if (key !== this.lastAdviceKey) {

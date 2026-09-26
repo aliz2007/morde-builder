@@ -96,8 +96,13 @@ function createOverlay() {
 
 function showOverlay(show) {
   if (!overlay) return;
-  if (show && companion.state.toggles.overlay) overlay.showInactive();
-  else overlay.hide();
+  if (show && companion.state.toggles.overlay) {
+    // Re-assert topmost at the highest window level — after a game grabs
+    // focus, borderless windows can silently drop below it in z-order.
+    overlay.setAlwaysOnTop(true, 'screen-saver');
+    overlay.showInactive();
+    overlay.moveTop();
+  } else overlay.hide();
 }
 
 function broadcast() {
@@ -174,6 +179,12 @@ app.whenReady().then(async () => {
     if (s.phase !== lastPhase) {
       lastPhase = s.phase;
       if (s.phase === 'ChampSelect' && picker && !picker.isVisible()) picker.show();
+      // Game just launched: re-pin the overlay above a borderless game window
+      // (exclusive fullscreen hides every external overlay — borderless only).
+      if (s.phase === 'InProgress' && overlay && !overlay.isDestroyed() && overlay.isVisible()) {
+        overlay.setAlwaysOnTop(true, 'screen-saver');
+        overlay.moveTop();
+      }
     }
     const name = s.overlay?.name || null;
     if (name && name !== lastOverlayName) {
